@@ -1,5 +1,5 @@
-MapServer
-=========
+MapServer BADLY INCOMPLETE
+==========================
 
 Cycles trough steps, while using supplied models to calculate the results of 
 the simulation.
