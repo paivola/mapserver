@@ -1,10 +1,15 @@
 package fi.paivola.mapserver.core;
 
+import fi.paivola.mapserver.utils.CCs;
 import fi.paivola.mapserver.utils.Color;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The base class for all models. Has some basic functions that you will surely
@@ -30,9 +35,25 @@ public abstract class Model {
      * Type of the model (point, connection...)
      */
     public String type;
+    /**
+     * List of all connections (connection models).
+     */
     public List<Model> connections;
+    /**
+     * List of events waiting.
+     */
     public List<Event> events;
+    /**
+     * List of all settings that are exposed to the end user in the map.
+     */
     public List<Setting> settings;
+    /**
+     * All data that are automatically saved to a DataFrame.
+     */
+    public Map<String, String> data;
+    /**
+     * Extension models that are active.
+     */
     public Map<String, ExtensionModel> extensions;
 
     public Model(int id) {
@@ -40,6 +61,7 @@ public abstract class Model {
         this.connections = new ArrayList<>();
         this.events = new ArrayList<>();
         this.settings = new ArrayList<>();
+        this.data = new HashMap();
         this.extensions = new HashMap();
     }
 
@@ -50,21 +72,55 @@ public abstract class Model {
      * @param current current dataframe
      */
     public void onTickStart(DataFrame last, DataFrame current) {
+
         // lets check if there is some events waiting to get trough
         for (Event i : this.events) {
             if (i.frame == last.index) {
                 this.onEvent(i);
-                this.events.remove(i);
             }
         }
+
         this.onTick(last, current);
         for (Map.Entry pairs : this.extensions.entrySet()) {
             ((ExtensionModel) pairs.getValue())
-                    .onExtensionTick(this, last, current);
+                    .onExtensionTickStart(this, last, current);
+            // lets go trough the events ONCE again... this time for extensions
+            for (Event i : this.events) {
+                if (i.frame == last.index) {
+                    ((ExtensionModel) pairs.getValue()).onEvent(i);
+                }
+            }
+        }
+
+        // lets delete the events that we used
+        for (Event i : this.events) {
+            if (i.frame == last.index) {
+                this.events.remove(i);
+            }
+        }
+
+        this.dumpToDataFrame(current);
+    }
+
+    /**
+     * Dumps all data in data map to a dataframe
+     *
+     * @param frame frame to dump to
+     */
+    public void dumpToDataFrame(DataFrame frame) {
+        for (Map.Entry pairs : this.data.entrySet()) {
+            frame.saveData(this,
+                    pairs.getKey().toString(), pairs.getValue().toString());
         }
     }
 
-    public void addEvent(Event e) {
+    /**
+     * Adds an event to this model
+     *
+     * @param e event to add
+     * @param m model from where the event originates
+     */
+    public void addEvent(Event e, Model m) {
         this.events.add(e);
     }
 
@@ -77,7 +133,7 @@ public abstract class Model {
      */
     public void addEventTo(Model model, DataFrame frame, Event e) {
         e.frame = frame.index;
-        model.addEvent(e);
+        model.addEvent(e, this);
     }
 
     /**
@@ -89,7 +145,47 @@ public abstract class Model {
     public void addEventToAll(DataFrame frame, Event e) {
         e.frame = frame.index;
         for (Model i : this.connections) {
-            i.addEvent(e);
+            i.addEvent(e, this);
+        }
+    }
+
+    /**
+     * Adds a extension model.
+     *
+     * @param name name for the extension model to go by
+     * @param extension the extension model
+     * @return returns true if succeeded, false otherwise
+     */
+    public boolean addExtension(String name, ExtensionModel extension) {
+        return this.extensions.put(name, extension) == null;
+    }
+
+    /**
+     * Adds a bunch of extension models from a map of strings and classes.
+     *
+     * @param gm game master
+     * @param clss map of strings and classes
+     */
+    public void addExtensions(GameManager gm, Map<String, Object> clss) {
+        for (Map.Entry pair : clss.entrySet()) {
+            Class cls;
+            cls = (Class) pair.getValue();
+            System.out.println(pair.getKey().toString());
+            Constructor<Model> c;
+            try {
+                c = cls.getDeclaredConstructor(int.class);
+                c.setAccessible(true);
+                try {
+                    this.addExtension(pair.getKey().toString(),
+                            (ExtensionModel) c.newInstance(gm.current_id++));
+                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                    Logger.getLogger(GameManager.class.getName())
+                            .log(Level.SEVERE, null, ex);
+                }
+            } catch (NoSuchMethodException | SecurityException ex) {
+                Logger.getLogger(GameManager.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -105,8 +201,17 @@ public abstract class Model {
     /**
      * Called when there is a event to handle.
      *
-     * @param e
+     * @param e event thats handled
      */
     public abstract void onEvent(Event e);
+
+    /**
+     * Called when a particular model is added to the database of possible
+     * models. Useful if you need to, say, register the current model as a
+     * extension to some other model.
+     *
+     * @param gm game manager
+     */
+    public abstract void onRegisteration(GameManager gm);
 
 }

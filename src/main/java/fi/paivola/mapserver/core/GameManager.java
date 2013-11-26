@@ -1,5 +1,6 @@
 package fi.paivola.mapserver.core;
 
+import fi.paivola.mapserver.utils.CCs;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -14,7 +15,7 @@ public class GameManager {
 
     public int tick_amount;
     public int tick_current;
-    private Map<String, Object> models;
+    private Map<String, CCs> models;
     private final List<DataFrame> frames;
     private final List<Model> active_models;
     private SettingsParser sp;
@@ -31,10 +32,35 @@ public class GameManager {
             this.sp = new SettingsParser();
             this.models = this.sp.getModels();
         } catch (IOException | ParseException ex) {
-            Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameManager.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
 
         clearFrames();
+        runRegisterations();
+    }
+
+    private void runRegisterations() {
+        for (Map.Entry pair : this.models.entrySet()) {
+            Class cls;
+            cls = (Class) ((CCs) pair.getValue()).cls;
+            Constructor<Model> c;
+            try {
+                c = cls.getDeclaredConstructor(int.class);
+                c.setAccessible(true);
+                Model m;
+                try {
+                    m = c.newInstance(this.current_id++);
+                    m.onRegisteration(this);
+                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                    Logger.getLogger(GameManager.class.getName())
+                            .log(Level.SEVERE, null, ex);
+                }
+            } catch (NoSuchMethodException | SecurityException ex) {
+                Logger.getLogger(GameManager.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     private void clearFrames() {
@@ -46,21 +72,26 @@ public class GameManager {
 
     public int createModel(String type) {
         Class cls;
-        cls = (Class) models.get(type);
+        cls = (Class) models.get(type).cls;
         if (cls == null) {
             return 1;
         }
         try {
             Constructor<Model> c;
-            c = cls.getDeclaredConstructor(long.class);
+            c = cls.getDeclaredConstructor(int.class);
             c.setAccessible(true);
             try {
                 this.active_models.add(c.newInstance(this.current_id++));
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+                this.active_models.get(this.active_models.size() - 1)
+                        .addExtensions(this, models.get(type).clss);
+            } catch (InstantiationException | IllegalAccessException |
+                    IllegalArgumentException | InvocationTargetException ex) {
+                Logger.getLogger(GameManager.class.getName())
+                        .log(Level.SEVERE, null, ex);
             }
         } catch (NoSuchMethodException | SecurityException ex) {
-            Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameManager.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
         return 0;
     }
@@ -97,6 +128,17 @@ public class GameManager {
         this.tick_current++;
 
         return 0;
+    }
+
+    /**
+     * Adds a extender that will be added to each subsequent target model.
+     *
+     * @param towhere the models name where to add
+     * @param name name of the extender
+     * @param cls the extending class
+     */
+    public void registerExtension(String towhere, String name, Object cls) {
+        this.models.get(towhere).clss.put(name, cls);
     }
 
 }

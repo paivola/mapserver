@@ -1,5 +1,6 @@
 package fi.paivola.mapserver.core;
 
+import fi.paivola.mapserver.utils.CCs;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -32,8 +33,8 @@ public class SettingsParser {
 
     }
 
-    public Map<String, Object> getModels() {
-        Map<String, Object> map = new HashMap<>();
+    public Map<String, CCs> getModels() {
+        Map<String, CCs> map = new HashMap<>();
 
         // array of models that we totally want to use
         JSONArray msg = (JSONArray) obj.get("models");
@@ -42,7 +43,7 @@ public class SettingsParser {
             JSONObject ob = iterator.next();
             System.out.println(ob.get("name").toString());
             try {
-                map.put(ob.get("name").toString(), Class.forName(ob.get("class").toString()));
+                map.put(ob.get("name").toString(), new CCs(Class.forName(ob.get("class").toString())));
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(SettingsParser.class.getName()).log(Level.SEVERE, null, ex);
             }

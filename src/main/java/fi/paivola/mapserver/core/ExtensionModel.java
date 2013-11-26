@@ -7,9 +7,17 @@ package fi.paivola.mapserver.core;
  */
 public abstract class ExtensionModel extends Model {
 
+    public boolean enabled;
+
     public ExtensionModel(int id) {
         super(id);
+        this.enabled = true;
         this.type = "extension";
+    }
+
+    @Override
+    public void onTickStart(DataFrame last, DataFrame current) {
+
     }
 
     @Override
@@ -24,7 +32,22 @@ public abstract class ExtensionModel extends Model {
      * @param last last dataframe
      * @param current current dataframe
      */
-    abstract void onExtensionTick(Model parent,
+    public abstract void onExtensionTick(Model parent,
             DataFrame last, DataFrame current);
+
+    /**
+     * Internal function that runs some checks and calls onExtensionTick.
+     *
+     * @param parent parent model
+     * @param last last dataframe
+     * @param current current dataframe
+     */
+    public void onExtensionTickStart(Model parent,
+            DataFrame last, DataFrame current) {
+        if (!this.enabled) {
+            return;
+        }
+        this.onExtensionTick(parent, last, current);
+    }
 
 }

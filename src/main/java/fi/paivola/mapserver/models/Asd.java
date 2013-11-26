@@ -3,7 +3,7 @@ package fi.paivola.mapserver.models;
 import fi.paivola.mapserver.utils.Color;
 import fi.paivola.mapserver.core.DataFrame;
 import fi.paivola.mapserver.core.Event;
-import fi.paivola.mapserver.core.Model;
+import fi.paivola.mapserver.core.GameManager;
 import fi.paivola.mapserver.core.PointModel;
 import fi.paivola.mapserver.core.Setting;
 
@@ -34,6 +34,11 @@ public class Asd extends PointModel {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onRegisteration(GameManager gm) {
+
     }
 
 }
