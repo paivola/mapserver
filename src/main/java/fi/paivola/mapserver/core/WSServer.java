@@ -7,13 +7,13 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 public class WSServer extends WebSocketServer {
-    
-    public WSServer( int port ) throws UnknownHostException {
-        super( new InetSocketAddress( port ) );
+
+    public WSServer(int port) throws UnknownHostException {
+        super(new InetSocketAddress(port));
     }
 
-    public WSServer( InetSocketAddress address ) {
-        super( address );
+    public WSServer(InetSocketAddress address) {
+        super(address);
     }
 
     @Override
@@ -35,5 +35,5 @@ public class WSServer extends WebSocketServer {
     public void onError(WebSocket ws, Exception excptn) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

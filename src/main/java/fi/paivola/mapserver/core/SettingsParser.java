@@ -17,12 +17,12 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class SettingsParser {
-    
+
     public List<String> models;
     private final JSONObject obj;
 
     public SettingsParser() throws IOException, ParseException {
-        
+
         models = new ArrayList<>();
 
         InputStream is = getClass().getClassLoader().getResourceAsStream("settings.json");
@@ -31,10 +31,10 @@ public class SettingsParser {
         obj = (JSONObject) (new JSONParser().parse(writer.toString()));
 
     }
-    
+
     public Map<String, Object> getModels() {
         Map<String, Object> map = new HashMap<>();
-        
+
         // array of models that we totally want to use
         JSONArray msg = (JSONArray) obj.get("models");
         Iterator<JSONObject> iterator = msg.iterator();
@@ -47,7 +47,7 @@ public class SettingsParser {
                 Logger.getLogger(SettingsParser.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         return map;
     }
 

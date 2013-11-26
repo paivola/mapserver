@@ -1,6 +1,6 @@
 package fi.paivola.mapserver.models;
 
-import utils.Color;
+import fi.paivola.mapserver.utils.Color;
 import fi.paivola.mapserver.core.DataFrame;
 import fi.paivola.mapserver.core.Event;
 import fi.paivola.mapserver.core.Model;
@@ -8,7 +8,7 @@ import fi.paivola.mapserver.core.PointModel;
 import fi.paivola.mapserver.core.Setting;
 
 public class Asd extends PointModel {
-    
+
     public int boomcount;
 
     public Asd(int id) {
@@ -27,7 +27,7 @@ public class Asd extends PointModel {
 
     @Override
     public void onEvent(Event e) {
-        switch(e.name) {
+        switch (e.name) {
             case "boom":
                 this.boomcount++;
                 break;
@@ -35,5 +35,5 @@ public class Asd extends PointModel {
                 break;
         }
     }
-    
+
 }
