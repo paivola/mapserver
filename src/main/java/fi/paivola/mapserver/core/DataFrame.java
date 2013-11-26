@@ -5,10 +5,10 @@ import java.util.Map;
 
 public class DataFrame {
     
-    public long index;
+    public int index;
     private final Map<String, Object> data;
     
-    public DataFrame(long index) {
+    public DataFrame(int index) {
         this.index = index;
         this.data = new HashMap();
     }

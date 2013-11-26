@@ -4,48 +4,48 @@ MapServer BADLY INCOMPLETE
 Cycles trough steps, while using supplied models to calculate the results of 
 the simulation.
 
-        Server sends client UI                  ╮
+        Server sends client UI                  ┐
     possible objects and attributes             ├ Client initialization
-        + possible connections                  ╯
+        + possible connections                  ┘
                   |                             
-                 ╲ ╱                            
+                 \ /                            
                                                 
-          User clicks away,                     ╮
+          User clicks away,                     ┐
      creating the world and it's                ├ Boring part
           initial properties                    │
-         and presses simulate                   ╯
+         and presses simulate                   ┘
                   |                             
-                 ╲ ╱                            
+                 \ /                            
                                                 
-      Objects are created using                 ╮
+      Objects are created using                 ┐
        the user defined and or                  ├ Server initialization
-           default values                       ╯
+           default values                       ┘
                   |                             
-                 ╲ ╱                            
+                 \ /                            
                                                 
-                Step 0 ───────╮                 ╮
+                Step 0 ───────┐                 ┐
                  Data         │                 │
-                             ╲ ╱                │
+                             \ /                │
                                                 │
-       ╭─────── Step 1 <─── Models              │
+       ┌─────── Step 1 <─── Models              │
        │         Data        Run                │
-      ╲ ╱                                       │
+      \ /                                       │
                                                 │
-    Models ───> Step 2 ───────╮                 ├ Simulation
+    Models ───> Step 2 ───────┐                 ├ Simulation
      Run         Data         │                 │
-                             ╲ ╱                │
+                             \ /                │
                                                 │
-       ╭─────── Step 3 <─── Models              │
+       ┌─────── Step 3 <─── Models              │
        │         Data        Run                │
-      ╲ ╱                                       │
+      \ /                                       │
                                                 │
-    Models ───> Step 4                          ╯
+    Models ───> Step 4                          ┘
      Run          │                             
-                 ╲ ╱                            
+                 \ /                            
                                                  
-         Results are rendered                   ╮
+         Results are rendered                   ┐
            in the client UI                     ├ Results
-            Export to CSV                       ╯
+            Export to CSV                       ┘
 
 
 Models

@@ -18,7 +18,7 @@ public class GameManager {
     private final List<DataFrame> frames;
     private final List<Model> active_models;
     private SettingsParser sp;
-    public long current_id;
+    public int current_id;
     
     public GameManager(int tick_amount) {
         this.tick_amount = tick_amount;
@@ -39,7 +39,7 @@ public class GameManager {
     
     private void clearFrames() {
         frames.clear();
-        for(long i = 0; i < this.tick_amount; i++) {
+        for(int i = 0; i < this.tick_amount; i++) {
             frames.add( new DataFrame(i) );
         }
     }
