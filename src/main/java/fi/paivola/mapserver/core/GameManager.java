@@ -11,14 +11,37 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.simple.parser.ParseException;
 
+/**
+ * GameManager handles the simulation.
+ * 
+ * @author Juhani
+ */
 public class GameManager {
 
+    /**
+     * How many ticks are there in the whole simulation.
+     */
     public int tick_amount;
+    /**
+     * Current tick.
+     */
     public int tick_current;
+    /**
+     * Models that are available.
+     */
     private Map<String, CCs> models;
+    /**
+     * All your dataframe are belong to us.
+     */
     private final List<DataFrame> frames;
+    /**
+     * All of the active models, EG. objects.
+     */
     private final List<Model> active_models;
     private SettingsParser sp;
+    /**
+     * How many models are active / where are we going.
+     */
     public int current_id;
 
     public GameManager(int tick_amount) {
@@ -40,6 +63,9 @@ public class GameManager {
         runRegisterations();
     }
 
+    /**
+     * Runs all of the onRegisteration functions in models.
+     */
     private void runRegisterations() {
         for (Map.Entry pair : this.models.entrySet()) {
             Class cls;
@@ -63,6 +89,9 @@ public class GameManager {
         }
     }
 
+    /**
+     * Initializes all of the dataframes.
+     */
     private void clearFrames() {
         frames.clear();
         for (int i = 0; i < this.tick_amount; i++) {
@@ -75,6 +104,12 @@ public class GameManager {
         return this.active_models.add(m);
     }
 
+    /**
+     * Creates a model based on a string.
+     * 
+     * @param type  name of the model
+     * @return      returns the model if success, null otherwise
+     */
     public Model createModel(String type) {
         Class cls;
         cls = (Class) models.get(type).cls;
@@ -116,24 +151,40 @@ public class GameManager {
         return true;
     }
 
-    public int populateDefaults(Model m, DataFrame df) {
+    /**
+     * Supposed to populate the first dataframe with default values.
+     * 
+     * @param m     model from where to get the defaults
+     * @param df    dataframe to populate to
+     * @return      returns true
+     */
+    public boolean populateDefaults(Model m, DataFrame df) {
 
         System.out.println("Init defaults for " + m.id);
 
-        //this.sp.
-        return 0;
+        return true;
     }
 
-    public int stepTrough() {
+    /**
+     * Steps trough all of the frames.
+     * 
+     * @return  returns true
+     */
+    public boolean stepTrough() {
 
         while (this.tick_current < this.tick_amount) {
             this.step();
         }
 
-        return 0;
+        return true;
     }
 
-    public int step() {
+    /**
+     * Steps trough one frame. If it's the first one, we populate the defaults.
+     * 
+     * @return  true
+     */
+    public boolean step() {
 
         System.out.println(" ---[ STEP " + String.format("%5d", this.tick_current) + " ]--- ");
 
@@ -151,7 +202,7 @@ public class GameManager {
 
         this.tick_current++;
 
-        return 0;
+        return true;
     }
 
     /**
