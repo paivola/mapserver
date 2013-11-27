@@ -4,6 +4,11 @@ import fi.paivola.mapserver.utils.Range;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
+/**
+ * Settings are used for getting data from the UI back to the models.
+ *
+ * @author Juhani
+ */
 public class Setting {
 
     public String type;

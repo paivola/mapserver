@@ -1,11 +1,13 @@
 package fi.paivola.mapserver.core;
 
-import fi.paivola.mapserver.utils.CCs;
 import fi.paivola.mapserver.utils.Color;
+import static java.lang.Double.parseDouble;
+import static java.lang.Integer.parseInt;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -93,9 +95,10 @@ public abstract class Model {
         }
 
         // lets delete the events that we used
-        for (Event i : this.events) {
-            if (i.frame == last.index) {
-                this.events.remove(i);
+        Iterator<Event> it = this.events.iterator();
+        while (it.hasNext()) {
+            if (it.next().frame == last.index) {
+                it.remove();
             }
         }
 
@@ -187,6 +190,38 @@ public abstract class Model {
                         .log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    public boolean linkModel(Model m) {
+        return this.connections.add(m);
+    }
+
+    public boolean delinkModel(Model m) {
+        return this.connections.remove(m);
+    }
+
+    public void saveInt(String name, int a) {
+        this.data.put(name, "" + a);
+    }
+
+    public void saveDouble(String name, double a) {
+        this.data.put(name, "" + a);
+    }
+
+    public void saveString(String name, String a) {
+        this.data.put(name, a);
+    }
+
+    public int getInt(String name) {
+        return parseInt(this.data.get(name));
+    }
+
+    public double getDouble(String name) {
+        return parseDouble(this.data.get(name));
+    }
+
+    public String getString(String name) {
+        return (this.data.get(name));
     }
 
     /**

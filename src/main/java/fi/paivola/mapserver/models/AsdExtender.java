@@ -14,12 +14,19 @@ public class AsdExtender extends ExtensionModel {
 
     @Override
     public void onExtensionTick(Model p, DataFrame l, DataFrame c) {
-
+        p.addEventToAll(c, new Event("boom2", "integer", "1"));
+        System.out.println(this.id + " (extender) sent boom2 trough " + p.id);
     }
 
     @Override
     public void onEvent(Event e) {
-
+        System.out.println(this.id + " (extender) recieved a " + e.name);
+        switch (e.name) {
+            case "boom2":
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

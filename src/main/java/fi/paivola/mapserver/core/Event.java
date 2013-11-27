@@ -3,6 +3,11 @@ package fi.paivola.mapserver.core;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
+/**
+ * Events are used for passing data in the map.
+ *
+ * @author Juhani
+ */
 public class Event {
 
     public String type;

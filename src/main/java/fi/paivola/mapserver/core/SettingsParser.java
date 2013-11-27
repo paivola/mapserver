@@ -17,6 +17,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+/**
+ * Parses a JSON file for all settings.
+ *
+ * @author Juhani
+ */
 public class SettingsParser {
 
     public List<String> models;

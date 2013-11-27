@@ -1,7 +1,16 @@
 {
     "models": [
-                {"name": "asd", "class": "fi.paivola.mapserver.models.Asd"},
-                {"name": "asdExtender", "class": "fi.paivola.mapserver.models.AsdExtender"},
-                {"name": "asdConnection", "class": "fi.paivola.mapserver.models.AsdConnection"}
+                {
+                    "name": "asd",
+                    "class": "fi.paivola.mapserver.models.Asd"
+                },
+                {
+                    "name": "asdExtender",
+                    "class": "fi.paivola.mapserver.models.AsdExtender"
+                },
+                {
+                    "name": "asdConnection",
+                    "class": "fi.paivola.mapserver.models.AsdConnection"
+                }
             ]
 }

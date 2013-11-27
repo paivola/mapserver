@@ -23,13 +23,15 @@ public class Asd extends PointModel {
     @Override
     public void onTick(DataFrame last, DataFrame current) {
         this.addEventToAll(current, new Event("boom", "integer", "9001"));
+        System.out.println(this.id + " sent boom");
     }
 
     @Override
     public void onEvent(Event e) {
         switch (e.name) {
             case "boom":
-                this.boomcount++;
+                this.boomcount += e.getInt();
+                System.out.println(this.id + " recieved " + e.name + ": " + this.boomcount);
                 break;
             default:
                 break;

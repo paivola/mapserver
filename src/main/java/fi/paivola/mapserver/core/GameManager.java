@@ -50,7 +50,7 @@ public class GameManager {
                 c.setAccessible(true);
                 Model m;
                 try {
-                    m = c.newInstance(this.current_id++);
+                    m = c.newInstance(0);
                     m.onRegisteration(this);
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                     Logger.getLogger(GameManager.class.getName())
@@ -70,20 +70,21 @@ public class GameManager {
         }
     }
 
-    public int createModel(String type) {
+    public boolean addModel(Model m, String type) {
+        m.addExtensions(this, models.get(type).clss);
+        return this.active_models.add(m);
+    }
+
+    public Model createModel(String type) {
         Class cls;
         cls = (Class) models.get(type).cls;
-        if (cls == null) {
-            return 1;
-        }
+        Model m = null;
         try {
             Constructor<Model> c;
             c = cls.getDeclaredConstructor(int.class);
             c.setAccessible(true);
             try {
-                this.active_models.add(c.newInstance(this.current_id++));
-                this.active_models.get(this.active_models.size() - 1)
-                        .addExtensions(this, models.get(type).clss);
+                m = c.newInstance(this.current_id++);
             } catch (InstantiationException | IllegalAccessException |
                     IllegalArgumentException | InvocationTargetException ex) {
                 Logger.getLogger(GameManager.class.getName())
@@ -93,10 +94,31 @@ public class GameManager {
             Logger.getLogger(GameManager.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
-        return 0;
+        return m;
+    }
+
+    /**
+     * Links two models together.
+     *
+     * @param first first model
+     * @param second second model
+     * @return returns true if successful, false otherwise
+     */
+    public boolean linkModels(Model first, Model second) {
+        if (!first.linkModel(second)) {
+            return false;
+        }
+        if (!second.linkModel(first)) {
+            first.delinkModel(second);
+            return false;
+        }
+
+        return true;
     }
 
     public int populateDefaults(Model m, DataFrame df) {
+
+        System.out.println("Init defaults for " + m.id);
 
         //this.sp.
         return 0;
@@ -113,11 +135,13 @@ public class GameManager {
 
     public int step() {
 
+        System.out.println(" ---[ STEP " + String.format("%5d", this.tick_current) + " ]--- ");
+
         DataFrame current = this.frames.get(this.tick_current);
         if (this.tick_current > 0) {
             DataFrame last = this.frames.get(this.tick_current - 1);
             for (int i = 0; i < this.active_models.size(); i++) {
-                this.active_models.get(i).onTick(last, current);
+                this.active_models.get(i).onTickStart(last, current);
             }
         } else { //step 0 needs to use default values
             for (int i = 0; i < this.active_models.size(); i++) {
