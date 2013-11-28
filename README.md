@@ -48,6 +48,15 @@ the simulation.
             Export to CSV                       ┘
 
 
+
+Usage
+-----
+
+* Install [Maven](https://maven.apache.org/)
+* Run `mvn javadoc:javadoc`
+* Read the documentation in `target/site/apidocs/index.html`
+* Run `mvn exec:java` to run the program
+
 Models
 ------
 
