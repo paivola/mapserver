@@ -173,7 +173,7 @@ public abstract class Model {
         for (Map.Entry pair : clss.entrySet()) {
             Class cls;
             cls = (Class) pair.getValue();
-            System.out.println(pair.getKey().toString());
+            //System.out.println(pair.getKey().toString());
             Constructor<Model> c;
             try {
                 c = cls.getDeclaredConstructor(int.class);
@@ -248,5 +248,10 @@ public abstract class Model {
      * @param gm game manager
      */
     public abstract void onRegisteration(GameManager gm);
+    
+    /**
+     * Called when the module is asked for defaults, use save* here.
+     */
+    public abstract void onGenerateDefaults();
 
 }

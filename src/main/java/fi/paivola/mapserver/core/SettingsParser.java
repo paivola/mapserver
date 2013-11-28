@@ -46,7 +46,6 @@ public class SettingsParser {
         Iterator<JSONObject> iterator = msg.iterator();
         while (iterator.hasNext()) {
             JSONObject ob = iterator.next();
-            System.out.println(ob.get("name").toString());
             try {
                 map.put(ob.get("name").toString(), new CCs(Class.forName(ob.get("class").toString())));
             } catch (ClassNotFoundException ex) {

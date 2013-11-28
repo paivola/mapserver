@@ -23,7 +23,8 @@ public class Asd extends PointModel {
     @Override
     public void onTick(DataFrame last, DataFrame current) {
         this.addEventToAll(current, new Event("boom", "integer", "9001"));
-        System.out.println(this.id + " sent boom");
+        //System.out.println(this.id + " sent boom");
+        this.saveInt("booms", boomcount);
     }
 
     @Override
@@ -31,7 +32,7 @@ public class Asd extends PointModel {
         switch (e.name) {
             case "boom":
                 this.boomcount += e.getInt();
-                System.out.println(this.id + " recieved " + e.name + ": " + this.boomcount);
+                //System.out.println(this.id + " recieved " + e.name + ": " + this.boomcount);
                 break;
             default:
                 break;
@@ -41,6 +42,11 @@ public class Asd extends PointModel {
     @Override
     public void onRegisteration(GameManager gm) {
 
+    }
+
+    @Override
+    public void onGenerateDefaults() {
+        this.saveInt("booms", boomcount);
     }
 
 }

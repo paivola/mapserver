@@ -29,4 +29,9 @@ public class AsdConnection extends ConnectionModel {
 
     }
 
+    @Override
+    public void onGenerateDefaults() {
+
+    }
+
 }

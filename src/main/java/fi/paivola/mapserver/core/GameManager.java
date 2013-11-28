@@ -67,10 +67,12 @@ public class GameManager {
      * Runs all of the onRegisteration functions in models.
      */
     private void runRegisterations() {
+        System.out.println(" ---[ REGISTERATIONS ]--- ");
         for (Map.Entry pair : this.models.entrySet()) {
             Class cls;
             cls = (Class) ((CCs) pair.getValue()).cls;
             Constructor<Model> c;
+            System.out.println("Register - "+pair.getKey());
             try {
                 c = cls.getDeclaredConstructor(int.class);
                 c.setAccessible(true);
@@ -160,7 +162,8 @@ public class GameManager {
      */
     public boolean populateDefaults(Model m, DataFrame df) {
 
-        System.out.println("Init defaults for " + m.id);
+        m.onGenerateDefaults();
+        m.dumpToDataFrame(df);
 
         return true;
     }
@@ -174,8 +177,12 @@ public class GameManager {
 
         while (this.tick_current < this.tick_amount) {
             this.step();
+            String[] tmparr = this.frames.get(this.tick_current-1).getATonOfStrings();
+            for (String tmparr1 : tmparr) {
+                System.out.println(tmparr1);
+            }
         }
-
+        
         return true;
     }
 
@@ -186,19 +193,28 @@ public class GameManager {
      */
     public boolean step() {
 
-        System.out.println(" ---[ STEP " + String.format("%5d", this.tick_current) + " ]--- ");
+        System.out.println(" ---[ RUN STEP " + String.format("%5d", this.tick_current) + " ]--- ");
 
         DataFrame current = this.frames.get(this.tick_current);
+        current.locked = false;
         if (this.tick_current > 0) {
             DataFrame last = this.frames.get(this.tick_current - 1);
             for (int i = 0; i < this.active_models.size(); i++) {
                 this.active_models.get(i).onTickStart(last, current);
             }
         } else { //step 0 needs to use default values
+            System.out.print("Generating defaults ");
             for (int i = 0; i < this.active_models.size(); i++) {
                 this.populateDefaults(this.active_models.get(i), current);
+                
+                if(i%1000 == 0) {
+                    System.out.print(".");
+                }
+                
             }
+            System.out.println(" done");
         }
+        current.locked = true;
 
         this.tick_current++;
 
