@@ -57,6 +57,7 @@ public abstract class Model {
      * Extension models that are active.
      */
     public Map<String, ExtensionModel> extensions;
+    public Model parent = null;
 
     public Model(int id) {
         this.id = id;
@@ -85,7 +86,7 @@ public abstract class Model {
         this.onTick(last, current);
         for (Map.Entry pairs : this.extensions.entrySet()) {
             ((ExtensionModel) pairs.getValue())
-                    .onExtensionTickStart(this, last, current);
+                    .onExtensionTickStart(last, current);
             // lets go trough the events ONCE again... this time for extensions
             for (Event i : this.events) {
                 if (i.frame == last.index) {
@@ -179,8 +180,9 @@ public abstract class Model {
                 c = cls.getDeclaredConstructor(int.class);
                 c.setAccessible(true);
                 try {
-                    this.addExtension(pair.getKey().toString(),
-                            (ExtensionModel) c.newInstance(gm.current_id++));
+                    ExtensionModel em = (ExtensionModel) c.newInstance(gm.current_id++);
+                    em.parent = this;
+                    this.addExtension(pair.getKey().toString(), em);
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                     Logger.getLogger(GameManager.class.getName())
                             .log(Level.SEVERE, null, ex);
@@ -201,62 +203,83 @@ public abstract class Model {
     }
 
     /**
-     * Saves an integer. Will be saved to dataframe.
+     * Saves an integer. Will be saved to dataframe. Uses parents data if possible.
      * 
      * @param name  name of the integer
      * @param a     actual integer
      */
     public void saveInt(String name, int a) {
-        this.data.put(name, "" + a);
+        if(this.parent != null) {
+            this.parent.saveInt(name, a);
+        }else{
+            this.data.put(name, "" + a);
+        }
     }
 
     /**
-     * Saves a double. Will be saved to dataframe.
+     * Saves a double. Will be saved to dataframe. Uses parents data if possible.
      * 
      * @param name  name of the double
      * @param a     actual double
      */
     public void saveDouble(String name, double a) {
-        this.data.put(name, "" + a);
+        if(this.parent != null) {
+            this.parent.saveDouble(name, a);
+        }else{
+            this.data.put(name, "" + a);
+        }
     }
 
     /**
-     * Saves a string. Will be saved to dataframe.
+     * Saves a string. Will be saved to dataframe. Uses parents data if possible.
      * 
      * @param name  name of the string
      * @param a     actual string
      */
     public void saveString(String name, String a) {
-        this.data.put(name, a);
+        if(this.parent != null) {
+            this.parent.saveString(name, a);
+        }else{
+            this.data.put(name,a);
+        }
     }
 
     /**
-     * Gets an integer.
+     * Gets an integer. Uses parents data if possible.
      * 
      * @param name  name of the integer
      * @return      the integer or null
      */
     public int getInt(String name) {
+        if(this.parent != null) {
+            return this.parent.getInt(name);
+        }
         return parseInt(this.data.get(name));
     }
 
     /**
-     * Gets a double.
+     * Gets a double. Uses parents data if possible.
      * 
      * @param name  name of the double
      * @return      the double or null
      */
     public double getDouble(String name) {
+        if(this.parent != null) {
+            return this.parent.getDouble(name);
+        }
         return parseDouble(this.data.get(name));
     }
 
     /**
-     * Gets a string.
+     * Gets a string. Uses parents data if possible.
      * 
      * @param name  name of the string
      * @return      the string or null
      */
     public String getString(String name) {
+        if(this.parent != null) {
+            return this.parent.getString(name);
+        }
         return (this.data.get(name));
     }
 

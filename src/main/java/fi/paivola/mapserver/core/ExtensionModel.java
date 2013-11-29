@@ -28,26 +28,22 @@ public abstract class ExtensionModel extends Model {
     /**
      * A special onTick for extension models. Ran after master finishes.
      *
-     * @param parent parent model
      * @param last last dataframe
      * @param current current dataframe
      */
-    public abstract void onExtensionTick(Model parent,
-            DataFrame last, DataFrame current);
+    public abstract void onExtensionTick(DataFrame last, DataFrame current);
 
     /**
      * Internal function that runs some checks and calls onExtensionTick.
      *
-     * @param parent parent model
      * @param last last dataframe
      * @param current current dataframe
      */
-    public void onExtensionTickStart(Model parent,
-            DataFrame last, DataFrame current) {
+    public void onExtensionTickStart(DataFrame last, DataFrame current) {
         if (!this.enabled) {
             return;
         }
-        this.onExtensionTick(parent, last, current);
+        this.onExtensionTick(last, current);
     }
 
 }
