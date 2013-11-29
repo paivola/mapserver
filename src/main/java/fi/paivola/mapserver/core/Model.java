@@ -200,26 +200,62 @@ public abstract class Model {
         return this.connections.remove(m);
     }
 
+    /**
+     * Saves an integer. Will be saved to dataframe.
+     * 
+     * @param name  name of the integer
+     * @param a     actual integer
+     */
     public void saveInt(String name, int a) {
         this.data.put(name, "" + a);
     }
 
+    /**
+     * Saves a double. Will be saved to dataframe.
+     * 
+     * @param name  name of the double
+     * @param a     actual double
+     */
     public void saveDouble(String name, double a) {
         this.data.put(name, "" + a);
     }
 
+    /**
+     * Saves a string. Will be saved to dataframe.
+     * 
+     * @param name  name of the string
+     * @param a     actual string
+     */
     public void saveString(String name, String a) {
         this.data.put(name, a);
     }
 
+    /**
+     * Gets an integer.
+     * 
+     * @param name  name of the integer
+     * @return      the integer or null
+     */
     public int getInt(String name) {
         return parseInt(this.data.get(name));
     }
 
+    /**
+     * Gets a double.
+     * 
+     * @param name  name of the double
+     * @return      the double or null
+     */
     public double getDouble(String name) {
         return parseDouble(this.data.get(name));
     }
 
+    /**
+     * Gets a string.
+     * 
+     * @param name  name of the string
+     * @return      the string or null
+     */
     public String getString(String name) {
         return (this.data.get(name));
     }
