@@ -1,22 +1,20 @@
 package fi.paivola.mapserver.models;
 
-import fi.paivola.mapserver.core.ConnectionModel;
 import fi.paivola.mapserver.core.DataFrame;
 import fi.paivola.mapserver.core.Event;
 import fi.paivola.mapserver.core.GameManager;
-import fi.paivola.mapserver.utils.Color;
+import fi.paivola.mapserver.core.GlobalModel;
+import static java.lang.Integer.parseInt;
 
-public class AsdConnection extends ConnectionModel {
+public class AsdGlobal extends GlobalModel {
 
-    public AsdConnection(int id) {
+    public AsdGlobal(int id) {
         super(id);
-        this.passtrough = true;
-        this.color = new Color(64, 128, 256);
     }
 
     @Override
     public void onTick(DataFrame last, DataFrame current) {
-
+        current.saveGlobalData("asdness", ""+(parseInt(last.getGlobalData("asdness"))+ 1));
     }
 
     @Override
@@ -31,7 +29,7 @@ public class AsdConnection extends ConnectionModel {
 
     @Override
     public void onGenerateDefaults(DataFrame df) {
-
+        df.saveGlobalData("asdness", "1");
     }
 
 }

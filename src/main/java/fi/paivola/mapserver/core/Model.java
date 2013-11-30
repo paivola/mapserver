@@ -57,6 +57,10 @@ public abstract class Model {
      * Extension models that are active.
      */
     public Map<String, ExtensionModel> extensions;
+    /**
+     * Maximum connections.
+     */
+    public int maxConnections;
 
     public Model(int id) {
         this.id = id;
@@ -193,6 +197,9 @@ public abstract class Model {
     }
 
     public boolean linkModel(Model m) {
+        if (this.connections.size() >= this.maxConnections) {
+            return false;
+        }
         return this.connections.add(m);
     }
 
@@ -248,10 +255,11 @@ public abstract class Model {
      * @param gm game manager
      */
     public abstract void onRegisteration(GameManager gm);
-    
+
     /**
      * Called when the module is asked for defaults, use save* here.
+     * @param df dataframe
      */
-    public abstract void onGenerateDefaults();
+    public abstract void onGenerateDefaults(DataFrame df);
 
 }

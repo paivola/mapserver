@@ -9,6 +9,9 @@ public class App {
         System.out.println("mapserver 0");
         GameManager gm = new GameManager(10);
 
+        Model mg = gm.createModel("asdGlobal");
+        gm.addModel(mg, "asdGlobal");
+
         Model m1 = gm.createModel("asd");
         gm.addModel(m1, "asd");
         Model m2 = gm.createModel("asdConnection");

@@ -13,6 +13,7 @@ public abstract class ExtensionModel extends Model {
         super(id);
         this.enabled = true;
         this.type = "extension";
+        this.maxConnections = 0;
     }
 
     @Override

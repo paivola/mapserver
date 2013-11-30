@@ -13,6 +13,7 @@ public abstract class ConnectionModel extends Model {
         super(id);
         this.type = "connection";
         this.passtrough = true;
+        this.maxConnections = 2;
     }
 
     /**

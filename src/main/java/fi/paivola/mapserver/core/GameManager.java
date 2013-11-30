@@ -13,7 +13,7 @@ import org.json.simple.parser.ParseException;
 
 /**
  * GameManager handles the simulation.
- * 
+ *
  * @author Juhani
  */
 public class GameManager {
@@ -72,7 +72,7 @@ public class GameManager {
             Class cls;
             cls = (Class) ((CCs) pair.getValue()).cls;
             Constructor<Model> c;
-            System.out.println("Register - "+pair.getKey());
+            System.out.println("Register - " + pair.getKey());
             try {
                 c = cls.getDeclaredConstructor(int.class);
                 c.setAccessible(true);
@@ -108,9 +108,9 @@ public class GameManager {
 
     /**
      * Creates a model based on a string.
-     * 
-     * @param type  name of the model
-     * @return      returns the model if success, null otherwise
+     *
+     * @param type name of the model
+     * @return returns the model if success, null otherwise
      */
     public Model createModel(String type) {
         Class cls;
@@ -155,14 +155,14 @@ public class GameManager {
 
     /**
      * Supposed to populate the first dataframe with default values.
-     * 
-     * @param m     model from where to get the defaults
-     * @param df    dataframe to populate to
-     * @return      returns true
+     *
+     * @param m model from where to get the defaults
+     * @param df dataframe to populate to
+     * @return returns true
      */
     public boolean populateDefaults(Model m, DataFrame df) {
 
-        m.onGenerateDefaults();
+        m.onGenerateDefaults(df);
         m.dumpToDataFrame(df);
 
         return true;
@@ -170,26 +170,26 @@ public class GameManager {
 
     /**
      * Steps trough all of the frames.
-     * 
-     * @return  returns true
+     *
+     * @return returns true
      */
     public boolean stepTrough() {
 
         while (this.tick_current < this.tick_amount) {
             this.step();
-            String[] tmparr = this.frames.get(this.tick_current-1).getATonOfStrings();
+            String[] tmparr = this.frames.get(this.tick_current - 1).getATonOfStrings();
             for (String tmparr1 : tmparr) {
                 System.out.println(tmparr1);
             }
         }
-        
+
         return true;
     }
 
     /**
      * Steps trough one frame. If it's the first one, we populate the defaults.
-     * 
-     * @return  true
+     *
+     * @return true
      */
     public boolean step() {
 
@@ -206,11 +206,11 @@ public class GameManager {
             System.out.print("Generating defaults ");
             for (int i = 0; i < this.active_models.size(); i++) {
                 this.populateDefaults(this.active_models.get(i), current);
-                
-                if(i%1000 == 0) {
+
+                if (i % 1000 == 0) {
                     System.out.print(".");
                 }
-                
+
             }
             System.out.println(" done");
         }

@@ -36,8 +36,8 @@ public class AsdExtender extends ExtensionModel {
     }
 
     @Override
-    public void onGenerateDefaults() {
- 
+    public void onGenerateDefaults(DataFrame df) {
+
     }
 
 }

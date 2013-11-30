@@ -14,6 +14,8 @@ public class DataFrame {
     public int index;
     public boolean locked;
     private final Map<String, Object> data;
+    private static final String dataSeperator = "-";
+    private static final String outSeperator = "\t";
 
     /**
      * Class constructor.
@@ -41,7 +43,31 @@ public class DataFrame {
         if (this.locked) {
             return false;
         }
-        return this.data.put(model.id + "-" + name, data) == null;
+        return this.data.put(model.id + dataSeperator + name, data) == null;
+    }
+
+    /**
+     * Saves a piece of global data.
+     *
+     * @param name name of the data
+     * @param data data itself
+     * @return returns true if succeeded
+     */
+    public boolean saveGlobalData(String name, String data) {
+        if (this.locked) {
+            return false;
+        }
+        return this.data.put(" " + dataSeperator + name, data) == null;
+    }
+
+    /**
+     * Gets a global piece of data.
+     *
+     * @param name name of the data
+     * @return returns the data
+     */
+    public String getGlobalData(String name) {
+        return this.data.get(" " + dataSeperator + name).toString();
     }
 
     /**
@@ -53,8 +79,7 @@ public class DataFrame {
         String[] str = new String[this.data.size()];
         int i = 0;
         for (Map.Entry pairs : this.data.entrySet()) {
-            str[i++] = pairs.getKey().toString().replace("-", ", ") + ", "
-                    + pairs.getValue();
+            str[i++] = pairs.getKey().toString().replace(dataSeperator, outSeperator) + outSeperator + pairs.getValue();
         }
         return str;
     }
