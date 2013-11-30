@@ -55,6 +55,7 @@ Usage
 * Install [Maven](https://maven.apache.org/)
 * Run `mvn javadoc:javadoc`
 * Read the documentation in `target/site/apidocs/index.html`
+* Run `mvn compile` to compile the program
 * Run `mvn exec:java` to run the program
 
 Models
