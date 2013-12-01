@@ -28,10 +28,17 @@ public class SettingsParser {
     private final JSONObject obj;
 
     public SettingsParser() throws IOException, ParseException {
+        this(null);
+    }
+
+    public SettingsParser(InputStream is) throws IOException, ParseException {
+
+        if (is == null) {
+            is = SettingsParser.class.getClassLoader().getResourceAsStream("settings.json");
+        }
 
         models = new ArrayList<>();
 
-        InputStream is = getClass().getClassLoader().getResourceAsStream("settings.json");
         StringWriter writer = new StringWriter();
         IOUtils.copy(is, writer, "UTF-8");
         obj = (JSONObject) (new JSONParser().parse(writer.toString()));

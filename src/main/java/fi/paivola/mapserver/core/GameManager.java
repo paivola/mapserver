@@ -2,6 +2,7 @@ package fi.paivola.mapserver.core;
 
 import fi.paivola.mapserver.utils.CCs;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class GameManager {
      */
     public int current_id;
 
-    public GameManager(int tick_amount) {
+    public GameManager(int tick_amount, InputStream settings_file) {
         this.tick_amount = tick_amount;
         this.tick_current = 0;
         this.frames = new ArrayList<>();
@@ -52,7 +53,7 @@ public class GameManager {
         this.current_id = 0;
 
         try {
-            this.sp = new SettingsParser();
+            this.sp = new SettingsParser(settings_file);
             this.models = this.sp.getModels();
         } catch (IOException | ParseException ex) {
             Logger.getLogger(GameManager.class.getName())
@@ -61,6 +62,10 @@ public class GameManager {
 
         clearFrames();
         runRegisterations();
+    }
+
+    public GameManager(int tick_amount) {
+        this(tick_amount, null);
     }
 
     /**
