@@ -1,5 +1,6 @@
 package fi.paivola.mapserver.core;
 
+import fi.paivola.mapserver.core.setting.Setting;
 import fi.paivola.mapserver.utils.Color;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
@@ -48,7 +49,7 @@ public abstract class Model {
     /**
      * List of all settings that are exposed to the end user in the map.
      */
-    public List<Setting> settings;
+    public Map<String, Setting> settings;
     /**
      * All data that are automatically saved to a DataFrame.
      */
@@ -67,7 +68,7 @@ public abstract class Model {
         this.id = id;
         this.connections = new ArrayList<>();
         this.events = new ArrayList<>();
-        this.settings = new ArrayList<>();
+        this.settings = new HashMap();
         this.data = new HashMap();
         this.extensions = new HashMap();
     }

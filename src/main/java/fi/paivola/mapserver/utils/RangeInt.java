@@ -1,16 +1,16 @@
 package fi.paivola.mapserver.utils;
 
-public class Range {
+public class RangeInt {
 
-    public double s;
-    public double e;
+    public int s;
+    public int e;
 
-    public Range(double s, double e) {
+    public RangeInt(int s, int e) {
         this.s = s;
         this.e = e;
     }
 
-    public double clamp(double i) {
+    public int clamp(int i) {
         if (this.s > i) {
             return this.s;
         }

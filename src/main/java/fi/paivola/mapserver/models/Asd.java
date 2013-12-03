@@ -5,7 +5,8 @@ import fi.paivola.mapserver.core.DataFrame;
 import fi.paivola.mapserver.core.Event;
 import fi.paivola.mapserver.core.GameManager;
 import fi.paivola.mapserver.core.PointModel;
-import fi.paivola.mapserver.core.Setting;
+import fi.paivola.mapserver.core.setting.SettingInt;
+import fi.paivola.mapserver.core.setting.SettingList;
 
 public class Asd extends PointModel {
 
@@ -13,8 +14,8 @@ public class Asd extends PointModel {
 
     public Asd(int id) {
         super(id);
-        this.settings.add(new Setting("Heepo", "double", "0.1"));
-        this.settings.add(new Setting("Heepo2", "int", "45"));
+        this.settings.put("heepo", new SettingInt("Heepo").setRange(0, 17).setDefault("8"));
+        this.settings.put("heepo2", new SettingList("Heppa").addOption("bum").addOption("pam").setDefault("pam"));
         this.icon = "town";
         this.color = new Color(255, 128, 64);
         this.boomcount = 0;
