@@ -23,7 +23,7 @@ public class SettingInt extends Setting {
         this.def = 0;
     }
 
-    public SettingInt(String name, int value, Range range) {
+    public SettingInt(String name, int value, RangeInt range) {
         super(name);
         this.type = "integer";
         this.range = range;
