@@ -19,6 +19,13 @@ public class SettingBoolean extends Setting {
         this.def = false;
     }
 
+    public SettingBoolean(String name, boolean value) {
+        super(name);
+        this.type = "boolean";
+        this.value = value;
+        this.def = false;
+    }
+
     @Override
     public Setting setValue(String value) {
         this.value = "true".equals(value.toLowerCase());

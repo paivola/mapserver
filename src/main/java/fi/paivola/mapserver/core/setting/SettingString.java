@@ -19,6 +19,13 @@ public class SettingString extends Setting {
         this.def = "";
     }
 
+    public SettingString(String name, String value) {
+        super(name);
+        this.type = "string";
+        this.value = value;
+        this.def = "";
+    }
+
     @Override
     public Setting setValue(String value) {
         this.value = value;

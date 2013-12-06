@@ -22,6 +22,14 @@ public class SettingInt extends Setting {
         this.value = 0;
         this.def = 0;
     }
+
+    public SettingInt(String name, int value, Range range) {
+        super(name);
+        this.type = "integer";
+        this.range = range;
+        this.value = value;
+        this.def = 0;
+    }
     
     public SettingInt setRange(int start, int end) {
         this.range = new RangeInt(start, end);
