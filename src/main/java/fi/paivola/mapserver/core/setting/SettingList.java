@@ -23,6 +23,14 @@ public class SettingList extends Setting {
         this.def = 0;
     }
     
+    public SettingList(String name, ArrayList<String> strings) {
+        super(name);
+        this.type = "list";
+        this.strings = strings;
+        this.value = 0;
+        this.def = 0;
+    }
+    
     public SettingList addOption(String option) {
         this.strings.add(option);
         return this;
