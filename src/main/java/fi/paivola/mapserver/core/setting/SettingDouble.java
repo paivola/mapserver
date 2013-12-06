@@ -23,6 +23,14 @@ public class SettingDouble extends Setting {
         this.def = 0.0;
     }
     
+    public SettingDouble(String name, double value, Range range) {
+        super(name);
+        this.type = "double";
+        this.range = range;
+        this.value = value;
+        this.def = 0.0;
+    }
+
     public SettingDouble setRange(double start, double end) {
         this.range = new Range(start, end);
         return this;
