@@ -14,6 +14,7 @@ public class Event {
     public String value;
     public String name;
     public int frame;
+    public Model sender;
 
     public Event(String name, String type, String value) {
         this.name = name;

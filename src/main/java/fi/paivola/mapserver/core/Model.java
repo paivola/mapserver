@@ -142,6 +142,7 @@ public abstract class Model {
      */
     public void addEventTo(Model model, DataFrame frame, Event e) {
         e.frame = frame.index;
+        e.sender = this;
         model.addEvent(e, this);
     }
 
@@ -153,6 +154,7 @@ public abstract class Model {
      */
     public void addEventToAll(DataFrame frame, Event e) {
         e.frame = frame.index;
+        e.sender = this;
         for (Model i : this.connections) {
             i.addEvent(e, this);
         }
