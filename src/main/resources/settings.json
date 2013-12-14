@@ -1,4 +1,5 @@
 {
+    "default_ticks": 10,
     "models": [
         {
             "name": "asd",

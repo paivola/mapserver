@@ -1,11 +1,13 @@
 package fi.paivola.mapserver.core;
 
+import fi.paivola.mapserver.core.setting.Setting;
 import fi.paivola.mapserver.utils.CCs;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -38,19 +40,27 @@ public class GameManager {
     /**
      * All of the active models, EG. objects.
      */
-    private final List<Model> active_models;
+    private final Map<String, Model> active_models;
     private SettingsParser sp;
     /**
      * How many models are active / where are we going.
      */
     public int current_id;
+    
+    private final static Logger log = Logger.getLogger("mapserver");
+    
+    /**
+     * Are we done?
+     */
+    boolean ready = false;
 
     public GameManager(int tick_amount, InputStream settings_file) {
         this.tick_amount = tick_amount;
         this.tick_current = 0;
         this.frames = new ArrayList<>();
-        this.active_models = new ArrayList<>();
+        this.active_models = new HashMap<>();
         this.current_id = 0;
+        log.setLevel(Level.FINE);
 
         try {
             this.sp = new SettingsParser(settings_file);
@@ -72,12 +82,12 @@ public class GameManager {
      * Runs all of the onRegisteration functions in models.
      */
     private void runRegisterations() {
-        System.out.println(" ---[ REGISTERATIONS ]--- ");
+        log.log(Level.FINE, "Registering models ({0})...", this.models.size());
         for (Map.Entry pair : this.models.entrySet()) {
             Class cls;
             cls = (Class) ((CCs) pair.getValue()).cls;
             Constructor<Model> c;
-            System.out.println("Register - " + pair.getKey());
+            log.log(Level.FINE, "Registering {0}", pair.getKey());
             try {
                 c = cls.getDeclaredConstructor(int.class);
                 c.setAccessible(true);
@@ -95,6 +105,29 @@ public class GameManager {
             }
         }
     }
+    
+    /**
+     * 
+     * 
+     * @return 
+     */
+    public Map<String, Map<String, Setting>> getSettings() {
+        Map<String, Map<String, Setting>> settings = new HashMap<>();
+        for (int i = 0; i < this.active_models.size(); i++) {
+            settings.put(""+this.active_models.get(""+i).id, this.active_models.get(""+i).settings);
+        }
+        return settings;
+    }
+    
+    public Map<String, String[]> getData() {
+        Map<String, String[]> data = new HashMap<>();
+        
+        for (int i = 0; i < this.tick_amount; i++) {
+            data.put(""+i, this.frames.get(i).getATonOfStrings());
+        }
+        
+        return null;
+    }
 
     /**
      * Initializes all of the dataframes.
@@ -108,7 +141,7 @@ public class GameManager {
 
     public boolean addModel(Model m, String type) {
         m.addExtensions(this, models.get(type).clss);
-        return this.active_models.add(m);
+        return (this.active_models.put(""+m.id, m) == null);
     }
 
     /**
@@ -157,6 +190,26 @@ public class GameManager {
 
         return true;
     }
+    
+    /**
+     * Do we know a model by this id. ToDo: Better way :-)
+     * 
+     * @param id id of the model
+     * @return   Returns true if contains, false otherwise
+     */
+    public boolean containsModel(int id) {
+        return id<this.current_id;
+    }
+    
+    /**
+     * Gets a model by id.
+     * 
+     * @param id id of the model
+     * @return   Returns the model
+     */
+    public Model getActive(String id) {
+        return this.active_models.get(id);
+    }
 
     /**
      * Supposed to populate the first dataframe with default values.
@@ -179,14 +232,19 @@ public class GameManager {
      * @return returns true
      */
     public boolean stepTrough() {
+        
+        log.log(Level.FINE, "Stepping trough");
 
         while (this.tick_current < this.tick_amount) {
             this.step();
-            String[] tmparr = this.frames.get(this.tick_current - 1).getATonOfStrings();
+            /*String[] tmparr = this.frames.get(this.tick_current - 1).getATonOfStrings();
             for (String tmparr1 : tmparr) {
                 System.out.println(tmparr1);
-            }
+            }*/
         }
+        
+        this.ready = true;
+        log.log(Level.FINE, "Stepped trough");
 
         return true;
     }
@@ -198,26 +256,21 @@ public class GameManager {
      */
     public boolean step() {
 
-        System.out.println(" ---[ RUN STEP " + String.format("%5d", this.tick_current) + " ]--- ");
+        log.log(Level.FINE, "Running step {0}", this.tick_current);
 
         DataFrame current = this.frames.get(this.tick_current);
         current.locked = false;
         if (this.tick_current > 0) {
             DataFrame last = this.frames.get(this.tick_current - 1);
-            for (int i = 0; i < this.active_models.size(); i++) {
-                this.active_models.get(i).onTickStart(last, current);
+            for (Model value : this.active_models.values()) {
+                value.onTickStart(last, current);
             }
         } else { //step 0 needs to use default values
-            System.out.print("Generating defaults ");
-            for (int i = 0; i < this.active_models.size(); i++) {
-                this.populateDefaults(this.active_models.get(i), current);
-
-                if (i % 1000 == 0) {
-                    System.out.print(".");
-                }
-
+            log.log(Level.FINE, "Generating defaults ({0})", this.active_models.size());
+            for (Model value : this.active_models.values()) {
+                this.populateDefaults(value, current);
             }
-            System.out.println(" done");
+            log.log(Level.FINE, "Done");
         }
         current.locked = true;
 

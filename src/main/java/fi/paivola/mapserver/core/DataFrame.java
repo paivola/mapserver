@@ -83,5 +83,13 @@ public class DataFrame {
         }
         return str;
     }
+    
+    public static String getFormatted(String key, Object value) {
+        return key.replace(dataSeperator, outSeperator) + outSeperator + value.toString();
+    }
+
+    public Map<String, Object> getRaw() {
+        return this.data;
+    }
 
 }

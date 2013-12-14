@@ -1,14 +1,15 @@
 package fi.paivola.mapserver;
 
 import fi.paivola.mapserver.core.GameManager;
+import fi.paivola.mapserver.core.GameThread;
 import fi.paivola.mapserver.core.Model;
 
 public class App {
 
     public static void main(String[] args) {
-        System.out.println("mapserver 0");
-        GameManager gm = new GameManager(10);
-
+        GameThread one = new GameThread(100);
+        GameManager gm = one.game;
+        
         Model mg = gm.createModel("asdGlobal");
         gm.addModel(mg, "asdGlobal");
 
@@ -31,7 +32,7 @@ public class App {
         gm.linkModels(m4, m5);
         gm.linkModels(m5, m6);
         gm.linkModels(m6, m1);
-
-        gm.stepTrough();
+        
+        one.start();
     }
 }

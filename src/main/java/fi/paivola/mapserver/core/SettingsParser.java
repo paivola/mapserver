@@ -25,6 +25,7 @@ import org.json.simple.parser.ParseException;
 public class SettingsParser {
 
     public List<String> models;
+    public static JSONObject settings;
     private final JSONObject obj;
 
     public SettingsParser() throws IOException, ParseException {
@@ -41,7 +42,7 @@ public class SettingsParser {
 
         StringWriter writer = new StringWriter();
         IOUtils.copy(is, writer, "UTF-8");
-        obj = (JSONObject) (new JSONParser().parse(writer.toString()));
+        obj = settings = (JSONObject) (new JSONParser().parse(writer.toString()));
 
     }
 
