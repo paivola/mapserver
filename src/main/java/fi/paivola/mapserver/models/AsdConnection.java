@@ -4,14 +4,19 @@ import fi.paivola.mapserver.core.ConnectionModel;
 import fi.paivola.mapserver.core.DataFrame;
 import fi.paivola.mapserver.core.Event;
 import fi.paivola.mapserver.core.GameManager;
+import fi.paivola.mapserver.core.setting.SettingMaster;
 import fi.paivola.mapserver.utils.Color;
 
 public class AsdConnection extends ConnectionModel {
 
-    public AsdConnection(int id) {
-        super(id);
+    public AsdConnection(int id, SettingMaster sm) {
+        super(id, sm);
         this.passtrough = true;
-        this.color = new Color(64, 128, 256);
+    }
+    
+    public AsdConnection() {
+        super();
+        this.passtrough = true;
     }
 
     @Override
@@ -25,8 +30,8 @@ public class AsdConnection extends ConnectionModel {
     }
 
     @Override
-    public void onRegisteration(GameManager gm) {
-
+    public void onRegisteration(GameManager gm, SettingMaster sm) {
+        sm.color = new Color(64, 128, 256);
     }
 
     @Override

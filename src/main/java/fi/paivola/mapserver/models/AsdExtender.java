@@ -4,11 +4,16 @@ import fi.paivola.mapserver.core.DataFrame;
 import fi.paivola.mapserver.core.Event;
 import fi.paivola.mapserver.core.ExtensionModel;
 import fi.paivola.mapserver.core.GameManager;
+import fi.paivola.mapserver.core.setting.SettingMaster;
 
 public class AsdExtender extends ExtensionModel {
 
-    public AsdExtender(int id) {
-        super(id);
+    public AsdExtender(int id, SettingMaster sm) {
+        super(id, sm);
+    }
+    
+    public AsdExtender() {
+        super();
     }
 
     @Override
@@ -29,9 +34,8 @@ public class AsdExtender extends ExtensionModel {
     }
 
     @Override
-    public void onRegisteration(GameManager gm) {
+    public void onRegisteration(GameManager gm, SettingMaster sm) {
         gm.registerExtension("asd", "extender", this.getClass());
-        //System.out.println("jei");
     }
 
     @Override

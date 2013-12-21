@@ -1,6 +1,7 @@
 package fi.paivola.mapserver.core;
 
 import fi.paivola.mapserver.core.setting.Setting;
+import fi.paivola.mapserver.core.setting.SettingMaster;
 import fi.paivola.mapserver.utils.CCs;
 import java.io.IOException;
 import java.io.InputStream;
@@ -88,13 +89,17 @@ public class GameManager {
             cls = (Class) ((CCs) pair.getValue()).cls;
             Constructor<Model> c;
             log.log(Level.FINE, "Registering {0}", pair.getKey());
+            
+            SettingMaster blank = new SettingMaster();
+            
             try {
-                c = cls.getDeclaredConstructor(int.class);
+                c = cls.getDeclaredConstructor();
                 c.setAccessible(true);
                 Model m;
                 try {
-                    m = c.newInstance(0);
-                    m.onRegisteration(this);
+                    m = c.newInstance();
+                    m.onRegisteration(this, blank);
+                    ((CCs) pair.getValue()).sm = blank;
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                     Logger.getLogger(GameManager.class.getName())
                             .log(Level.SEVERE, null, ex);
@@ -107,18 +112,23 @@ public class GameManager {
     }
     
     /**
-     * 
+     * Get all of the default SettingMasters.
      * 
      * @return 
      */
-    public Map<String, Map<String, Setting>> getSettings() {
-        Map<String, Map<String, Setting>> settings = new HashMap<>();
-        for (int i = 0; i < this.active_models.size(); i++) {
-            settings.put(""+this.active_models.get(""+i).id, this.active_models.get(""+i).settings);
+    public Map<String, SettingMaster> getSettings() {
+        Map<String, SettingMaster> settings = new HashMap<>();
+        for (Map.Entry pair : this.models.entrySet()) {
+            settings.put(pair.getKey().toString(), ((CCs)pair.getValue()).sm);
         }
         return settings;
     }
     
+    /**
+     * Get all of the data formatted somehow.
+     * 
+     * @return 
+     */
     public Map<String, String[]> getData() {
         Map<String, String[]> data = new HashMap<>();
         
@@ -126,7 +136,7 @@ public class GameManager {
             data.put(""+i, this.frames.get(i).getATonOfStrings());
         }
         
-        return null;
+        return data;
     }
 
     /**
@@ -150,16 +160,16 @@ public class GameManager {
      * @param type name of the model
      * @return returns the model if success, null otherwise
      */
-    public Model createModel(String type) {
+    public Model createModel(String type, SettingMaster sm) {
         Class cls;
         cls = (Class) models.get(type).cls;
         Model m = null;
         try {
             Constructor<Model> c;
-            c = cls.getDeclaredConstructor(int.class);
+            c = cls.getDeclaredConstructor(int.class, SettingMaster.class);
             c.setAccessible(true);
             try {
-                m = c.newInstance(this.current_id++);
+                m = c.newInstance(this.current_id++, sm);
             } catch (InstantiationException | IllegalAccessException |
                     IllegalArgumentException | InvocationTargetException ex) {
                 Logger.getLogger(GameManager.class.getName())

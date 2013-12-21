@@ -3,11 +3,35 @@ package fi.paivola.mapserver;
 import fi.paivola.mapserver.core.GameManager;
 import fi.paivola.mapserver.core.GameThread;
 import fi.paivola.mapserver.core.Model;
+import fi.paivola.mapserver.core.SettingsParser;
+import fi.paivola.mapserver.core.WSServer;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import static java.lang.Integer.parseInt;
+import java.net.UnknownHostException;
+import org.json.simple.parser.ParseException;
 
 public class App {
 
-    public static void main(String[] args) {
-        GameThread one = new GameThread(100);
+    public static void main(String[] args) throws UnknownHostException, IOException, ParseException, InterruptedException {
+        
+        SettingsParser sp = new SettingsParser();
+        
+        WSServer ws = new WSServer(parseInt(SettingsParser.settings.get("websocket_port").toString()));
+        ws.start();
+        
+        
+        BufferedReader sysin = new BufferedReader( new InputStreamReader( System.in ) );
+        while(true) {
+            String in = sysin.readLine();
+            if(in.equals("q")) {
+                ws.stop();
+                break;
+            }
+        }
+        
+        /*GameThread one = new GameThread(100);
         GameManager gm = one.game;
         
         Model mg = gm.createModel("asdGlobal");
@@ -33,6 +57,6 @@ public class App {
         gm.linkModels(m5, m6);
         gm.linkModels(m6, m1);
         
-        one.start();
+        one.start();*/
     }
 }

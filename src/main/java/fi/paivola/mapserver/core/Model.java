@@ -1,7 +1,6 @@
 package fi.paivola.mapserver.core;
 
-import fi.paivola.mapserver.core.setting.Setting;
-import fi.paivola.mapserver.utils.Color;
+import fi.paivola.mapserver.core.setting.SettingMaster;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 import java.lang.reflect.Constructor;
@@ -27,14 +26,6 @@ public abstract class Model {
      */
     public int id;
     /**
-     * Icon is the representation on the map.
-     */
-    public String icon;
-    /**
-     * Color of the map icon
-     */
-    public Color color;
-    /**
      * Type of the model (point, connection...)
      */
     public String type;
@@ -47,10 +38,6 @@ public abstract class Model {
      */
     public List<Event> events;
     /**
-     * List of all settings that are exposed to the end user in the map.
-     */
-    public Map<String, Setting> settings;
-    /**
      * All data that are automatically saved to a DataFrame.
      */
     public Map<String, String> data;
@@ -62,15 +49,31 @@ public abstract class Model {
      * Maximum connections.
      */
     public int maxConnections;
+    /**
+     * Who is your daddy.
+     */
     public Model parent = null;
-
-    public Model(int id) {
+    
+    public boolean proto;
+    public SettingMaster sm;
+    
+    public Model(int id, SettingMaster sm) {
         this.id = id;
         this.connections = new ArrayList<>();
         this.events = new ArrayList<>();
-        this.settings = new HashMap();
         this.data = new HashMap();
         this.extensions = new HashMap();
+        if(sm == null) {
+            this.proto = true;
+            this.sm = null;
+        }else{
+            this.proto = false;
+            this.sm = sm;
+        }
+    }
+    
+    public Model() {
+        this(0, null);
     }
 
     /**
@@ -80,7 +83,10 @@ public abstract class Model {
      * @param current current dataframe
      */
     public void onTickStart(DataFrame last, DataFrame current) {
-
+        // breaking prototype models legs...
+        if(this.proto)
+            return;
+        
         // lets check if there is some events waiting to get trough
         for (Event i : this.events) {
             if (i.frame == last.index) {
@@ -311,12 +317,13 @@ public abstract class Model {
 
     /**
      * Called when a particular model is added to the database of possible
-     * models. Useful if you need to, say, register the current model as a
-     * extension to some other model.
+     * models. Add settings here! Useful if you need to, say, register the 
+     * current model as a extension to some other model.
      *
      * @param gm game manager
+     * @param sm setting master
      */
-    public abstract void onRegisteration(GameManager gm);
+    public abstract void onRegisteration(GameManager gm, SettingMaster sm);
 
     /**
      * Called when the module is asked for defaults, use save* here.

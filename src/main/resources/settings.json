@@ -1,5 +1,6 @@
 {
     "default_ticks": 10,
+    "websocket_port": 8080,
     "models": [
         {
             "name": "asd",

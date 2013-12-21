@@ -1,5 +1,6 @@
 package fi.paivola.mapserver.core;
 
+import fi.paivola.mapserver.core.setting.SettingMaster;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -13,19 +14,26 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+/**
+ * Meet WSServer, our communications manager.
+ * @author juhani
+ */
 public class WSServer extends WebSocketServer {
     
     private final JSONParser parser = new JSONParser();
     private final Map<String, GameThread> threads;
+    private final static Logger log = Logger.getLogger("mapserver");
 
     public WSServer(int port) throws UnknownHostException {
         super(new InetSocketAddress(port));
         threads = new HashMap<>();
+        log.log(Level.INFO, "created server on port: {0}", port);
     }
 
     public WSServer(InetSocketAddress address) {
         super(address);
         threads = new HashMap<>();
+        log.log(Level.INFO, "created server on port: {0}", address.getPort());
     }
 
     @Override
@@ -68,6 +76,9 @@ public class WSServer extends WebSocketServer {
             case "getdata":
                 this.callGetdata(obj, responce);
                 break;
+            case "info":
+                this.callInfo(obj, responce);
+                break;
             default:
                 break;
         }
@@ -101,9 +112,14 @@ public class WSServer extends WebSocketServer {
             return;
         
         String type = "undefined";
+        SettingMaster sm;
         if(in.containsKey("type"))
             type = in.get("type").toString();
-        Model mod = gt.game.createModel(type);
+        if(in.containsKey("settings"))
+            sm = SettingMaster.fromJSON(in.get("settings").toString());
+        else
+            return;
+        Model mod = gt.game.createModel(type, sm);
         gt.game.addModel(mod, type);
         out.put("model_id", mod.id);
         success(out);

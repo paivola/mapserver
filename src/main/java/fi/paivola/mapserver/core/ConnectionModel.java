@@ -1,5 +1,7 @@
 package fi.paivola.mapserver.core;
 
+import fi.paivola.mapserver.core.setting.SettingMaster;
+
 /**
  * The base class for connection models.
  *
@@ -9,8 +11,15 @@ public abstract class ConnectionModel extends Model {
 
     public boolean passtrough;
 
-    public ConnectionModel(int id) {
-        super(id);
+    public ConnectionModel(int id, SettingMaster sm) {
+        super(id, sm);
+        this.type = "connection";
+        this.passtrough = true;
+        this.maxConnections = 2;
+    }
+    
+    public ConnectionModel() {
+        super();
         this.type = "connection";
         this.passtrough = true;
         this.maxConnections = 2;

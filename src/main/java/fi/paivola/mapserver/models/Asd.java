@@ -7,17 +7,20 @@ import fi.paivola.mapserver.core.GameManager;
 import fi.paivola.mapserver.core.PointModel;
 import fi.paivola.mapserver.core.setting.SettingInt;
 import fi.paivola.mapserver.core.setting.SettingList;
+import fi.paivola.mapserver.core.setting.SettingMaster;
+import fi.paivola.mapserver.utils.Icon;
 
 public class Asd extends PointModel {
 
     public int boomcount;
 
-    public Asd(int id) {
-        super(id);
-        this.settings.put("heepo", new SettingInt("Heepo").setRange(0, 17).setDefault("8"));
-        this.settings.put("heepo2", new SettingList("Heppa").addOption("bum").addOption("pam").setDefault("pam"));
-        this.icon = "town";
-        this.color = new Color(255, 128, 64);
+    public Asd(int id, SettingMaster sm) {
+        super(id, sm);
+        this.boomcount = 0;
+    }
+    
+    public Asd() {
+        super();
         this.boomcount = 0;
     }
 
@@ -41,8 +44,11 @@ public class Asd extends PointModel {
     }
 
     @Override
-    public void onRegisteration(GameManager gm) {
-
+    public void onRegisteration(GameManager gm, SettingMaster sm) {
+        sm.setIcon(Icon.TOWN);
+        sm.color = new Color(255, 128, 64);
+        sm.settings.put("heepo", new SettingInt("Heepo").setRange(0, 17).setDefault("8"));
+        sm.settings.put("heepo2", new SettingList("Heppa").addOption("bum").addOption("pam").setDefault("pam"));
     }
 
     @Override

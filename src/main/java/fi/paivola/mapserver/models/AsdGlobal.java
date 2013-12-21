@@ -4,12 +4,17 @@ import fi.paivola.mapserver.core.DataFrame;
 import fi.paivola.mapserver.core.Event;
 import fi.paivola.mapserver.core.GameManager;
 import fi.paivola.mapserver.core.GlobalModel;
+import fi.paivola.mapserver.core.setting.SettingMaster;
 import static java.lang.Integer.parseInt;
 
 public class AsdGlobal extends GlobalModel {
 
-    public AsdGlobal(int id) {
-        super(id);
+    public AsdGlobal(int id, SettingMaster sm) {
+        super(id, sm);
+    }
+    
+    public AsdGlobal() {
+        super();
     }
 
     @Override
@@ -23,7 +28,7 @@ public class AsdGlobal extends GlobalModel {
     }
 
     @Override
-    public void onRegisteration(GameManager gm) {
+    public void onRegisteration(GameManager gm, SettingMaster sm) {
 
     }
 

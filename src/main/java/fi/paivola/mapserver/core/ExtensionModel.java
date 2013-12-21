@@ -1,5 +1,7 @@
 package fi.paivola.mapserver.core;
 
+import fi.paivola.mapserver.core.setting.SettingMaster;
+
 /**
  * The base class for extension models.
  *
@@ -9,8 +11,15 @@ public abstract class ExtensionModel extends Model {
 
     public boolean enabled;
 
-    public ExtensionModel(int id) {
-        super(id);
+    public ExtensionModel(int id, SettingMaster sm) {
+        super(id, sm);
+        this.enabled = true;
+        this.type = "extension";
+        this.maxConnections = 0;
+    }
+    
+    public ExtensionModel() {
+        super();
         this.enabled = true;
         this.type = "extension";
         this.maxConnections = 0;
