@@ -1,6 +1,7 @@
 package fi.paivola.mapserver.core;
 
 import fi.paivola.mapserver.core.setting.SettingMaster;
+import fi.paivola.mapserver.utils.LatLng;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 import java.lang.reflect.Constructor;
@@ -53,6 +54,10 @@ public abstract class Model {
      * Who is your daddy.
      */
     public Model parent = null;
+    /**
+     * Latitude & Longitude
+     */
+    public LatLng ll;
     
     public boolean proto;
     public SettingMaster sm;
@@ -70,10 +75,29 @@ public abstract class Model {
             this.proto = false;
             this.sm = sm;
         }
+        this.ll = new LatLng(0,0);
     }
     
     public Model() {
         this(0, null);
+    }
+    
+    public void setLatLng(double lat, double lng) {
+        this.ll.latitude = lat;
+        this.ll.longitude = lng;
+    }
+    
+    public LatLng getLatLng() {
+        return this.ll;
+    }
+    
+    /**
+     * How far is this model from another one.
+     * @param m The other model
+     * @return distance in km.
+     */
+    public double distanceTo(Model m) {
+        return this.ll.distanceTo(m.ll);
     }
 
     /**
