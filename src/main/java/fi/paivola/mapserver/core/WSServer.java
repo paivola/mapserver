@@ -38,12 +38,12 @@ public class WSServer extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket ws, ClientHandshake ch) {
-
+        log.log(Level.INFO, "client connected from {0}", ws.getRemoteSocketAddress().getAddress().toString());
     }
 
     @Override
     public void onClose(WebSocket ws, int i, String string, boolean bln) {
- 
+        log.log(Level.INFO, "client disconnected from {0}", ws.getRemoteSocketAddress().getAddress().toString());
     }
 
     @Override
@@ -70,6 +70,9 @@ public class WSServer extends WebSocketServer {
             case "start":
                 this.callStart(obj, responce);
                 break;
+            case "getsettings":
+                this.callGetSettings(obj, responce);
+                break;
             case "add":
                 this.callAdd(obj, responce);
                 break;
@@ -79,11 +82,15 @@ public class WSServer extends WebSocketServer {
             case "info":
                 this.callInfo(obj, responce);
                 break;
+            case "hello":
+                this.callHello(obj, responce);
+                break;
             default:
+                this.error(responce, "Command not found!");
                 break;
         }
         
-        ws.send(obj.toJSONString());
+        ws.send(responce.toJSONString());
     }
     
     private void callCreate(JSONObject in, JSONObject out) {
@@ -96,6 +103,7 @@ public class WSServer extends WebSocketServer {
         GameThread newthread = new GameThread(ticks);
         this.threads.put(""+this.threads.size(), newthread);
         out.put("manager_id", ""+(this.threads.size()-1));
+        success(out);
     }
     
     private void callStart(JSONObject in, JSONObject out) {
@@ -146,6 +154,18 @@ public class WSServer extends WebSocketServer {
             return;
         }
         out.put("data", gt.game.getData());
+        success(out);
+    }
+    
+    private void callGetSettings(JSONObject in, JSONObject out) {
+        GameThread gt;
+        if((gt = getThread(in, out)) == null)
+            return;
+        out.put("settings", gt.game.getSettings());
+        success(out);
+    }
+    
+    private void callHello(JSONObject in, JSONObject out) {
         success(out);
     }
     
