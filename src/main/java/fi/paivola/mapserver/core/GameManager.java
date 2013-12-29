@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 /**
@@ -116,10 +117,10 @@ public class GameManager {
      * 
      * @return 
      */
-    public Map<String, SettingMaster> getSettings() {
-        Map<String, SettingMaster> settings = new HashMap<>();
+    public Map<String, JSONObject> getSettings() {
+        Map<String, JSONObject> settings = new HashMap<>();
         for (Map.Entry pair : this.models.entrySet()) {
-            settings.put(pair.getKey().toString(), ((CCs)pair.getValue()).sm);
+            settings.put(pair.getKey().toString(), ((CCs)pair.getValue()).sm.getJSONObject());
         }
         return settings;
     }

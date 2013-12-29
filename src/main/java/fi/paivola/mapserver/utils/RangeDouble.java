@@ -1,11 +1,13 @@
 package fi.paivola.mapserver.utils;
 
-public class Range {
+import org.json.simple.JSONObject;
+
+public class RangeDouble {
 
     public double s;
     public double e;
 
-    public Range(double s, double e) {
+    public RangeDouble(double s, double e) {
         this.s = s;
         this.e = e;
     }
@@ -23,5 +25,12 @@ public class Range {
     @Override
     public String toString() {
         return "{min:"+this.s+",max:"+this.e+"}";
+    }
+    
+    public JSONObject getJSONObject() {
+        JSONObject obj = new JSONObject();
+        obj.put("min", this.s);
+        obj.put("max", this.e);
+        return obj;
     }
 }

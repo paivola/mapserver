@@ -1,6 +1,6 @@
 package fi.paivola.mapserver.core.setting;
 
-import fi.paivola.mapserver.utils.Range;
+import fi.paivola.mapserver.utils.RangeDouble;
 import static java.lang.Double.parseDouble;
 import org.json.simple.JSONObject;
 
@@ -13,17 +13,17 @@ public class SettingDouble extends Setting {
 
     private double value;
     private double def;
-    private Range range;
+    private RangeDouble range;
     
     public SettingDouble(String name) {
         super(name);
         this.type = "double";
-        this.range = new Range(0.0, 17.0);
+        this.range = new RangeDouble(0.0, 17.0);
         this.value = 0.0;
         this.def = 0.0;
     }
     
-    public SettingDouble(String name, double value, Range range) {
+    public SettingDouble(String name, double value, RangeDouble range) {
         super(name);
         this.type = "double";
         this.range = range;
@@ -32,7 +32,7 @@ public class SettingDouble extends Setting {
     }
 
     public SettingDouble setRange(double start, double end) {
-        this.range = new Range(start, end);
+        this.range = new RangeDouble(start, end);
         return this;
     }
 
@@ -54,16 +54,16 @@ public class SettingDouble extends Setting {
     }
 
     @Override
-    public String toString() {
+    public JSONObject getJSONObject() {
         JSONObject obj = new JSONObject();
         
         obj.put("type", this.type);
         obj.put("name", this.name);
         obj.put("default", this.def);
         obj.put("value", this.value);
-        obj.put("range", this.range.toString());
+        obj.put("range", this.range.getJSONObject());
         
-        return obj.toString();
+        return obj;
     }
     
 }

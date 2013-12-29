@@ -54,16 +54,16 @@ public class SettingInt extends Setting {
     }
 
     @Override
-    public String toString() {
+    public JSONObject getJSONObject() {
         JSONObject obj  = new JSONObject();
         
         obj.put("type", this.type);
         obj.put("name", this.name);
         obj.put("default", this.def);
         obj.put("value", this.value);
-        obj.put("range", this.range.toString());
+        obj.put("range", this.range.getJSONObject());
         
-        return obj.toString();
+        return obj;
     }
     
 }

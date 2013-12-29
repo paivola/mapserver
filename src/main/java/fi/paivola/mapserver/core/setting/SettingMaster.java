@@ -45,13 +45,17 @@ public class SettingMaster {
      */
     @Override
     public String toString() {
+        return this.getJSONObject().toJSONString();
+    }
+    
+    public JSONObject getJSONObject() {
         JSONObject objParent = new JSONObject();
         JSONObject objSettings = new JSONObject(this.settings);
         JSONObject objMisc = new JSONObject(this.misc);
-        objParent.put("settings", objSettings.toJSONString());
-        objParent.put("misc", objMisc.toJSONString());
+        objParent.put("settings", objSettings);
+        objParent.put("misc", objMisc);
         objParent.put("color", this.color.toString());
-        return objParent.toJSONString();
+        return objParent;
     }
     
     /**

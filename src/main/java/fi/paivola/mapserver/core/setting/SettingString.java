@@ -44,7 +44,7 @@ public class SettingString extends Setting {
     }
 
     @Override
-    public String toString() {
+        public JSONObject getJSONObject() {
         JSONObject obj = new JSONObject();
         
         obj.put("type", this.type);
@@ -52,7 +52,7 @@ public class SettingString extends Setting {
         obj.put("default", this.def);
         obj.put("value", this.value);
         
-        return obj.toString();
+        return obj;
     }
     
 }

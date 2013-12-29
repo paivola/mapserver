@@ -54,5 +54,17 @@ public class SettingBoolean extends Setting {
         
         return obj.toString();
     }
+
+    @Override
+    public JSONObject getJSONObject() {
+        JSONObject obj = new JSONObject();
+        
+        obj.put("type", this.type);
+        obj.put("name", this.name);
+        obj.put("value", this.value);
+        obj.put("default", this.def);
+        
+        return obj;
+    }
     
 }

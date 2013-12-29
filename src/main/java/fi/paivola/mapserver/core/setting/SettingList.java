@@ -54,7 +54,7 @@ public class SettingList extends Setting {
     }
 
     @Override
-    public String toString() {
+        public JSONObject getJSONObject() {
         JSONObject obj = new JSONObject();
         
         obj.put("type", this.type);
@@ -63,7 +63,7 @@ public class SettingList extends Setting {
         obj.put("default", this.def);
         obj.put("list", this.strings);
         
-        return obj.toString();
+        return obj;
     }
     
 }
