@@ -338,6 +338,17 @@ public abstract class Model {
      * @param e event thats handled
      */
     public abstract void onEvent(Event e);
+    
+    /**
+     * This is called from the GameManager and performs some extra steps before
+     * the users own onRegisteration is called.
+     * @param gm
+     * @param sm
+     */
+    public void onActualRegisteration(GameManager gm, SettingMaster sm) {
+        sm.type = this.type;
+        this.onRegisteration(gm, sm);
+    }
 
     /**
      * Called when a particular model is added to the database of possible

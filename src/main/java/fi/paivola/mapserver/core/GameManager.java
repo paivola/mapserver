@@ -99,7 +99,7 @@ public class GameManager {
                 Model m;
                 try {
                     m = c.newInstance();
-                    m.onRegisteration(this, blank);
+                    m.onActualRegisteration(this, blank);
                     ((CCs) pair.getValue()).sm = blank;
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                     Logger.getLogger(GameManager.class.getName())

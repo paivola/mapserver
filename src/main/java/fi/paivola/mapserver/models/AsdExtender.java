@@ -36,6 +36,8 @@ public class AsdExtender extends ExtensionModel {
     @Override
     public void onRegisteration(GameManager gm, SettingMaster sm) {
         gm.registerExtension("asd", "extender", this.getClass());
+        // temp workaround ToDo: make it better for the user
+        sm.exts.add("asd");
     }
 
     @Override

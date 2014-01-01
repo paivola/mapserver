@@ -1,7 +1,9 @@
 package fi.paivola.mapserver.core.setting;
 
 import fi.paivola.mapserver.utils.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.json.simple.JSONObject;
 
@@ -24,15 +26,25 @@ public class SettingMaster {
      * Color.
      */
     public Color color;
+    /**
+     * Type.
+     */
+    public String type;
+    /**
+     * Names of the things this extends.
+     */
+    public List<String> exts;
     
     public SettingMaster() {
         settings = new HashMap<>();
         misc = new HashMap<>();
         color = new Color(0,0,0);
+        exts = new ArrayList();
+        type = "";
     }
     
     /**
-     * Set icon plz.
+     * Sets a icon.
      * @param iconName Icons name, you can use Icon.TOWN etc
      */
     public void setIcon(String iconName) {
@@ -55,6 +67,8 @@ public class SettingMaster {
         objParent.put("settings", objSettings);
         objParent.put("misc", objMisc);
         objParent.put("color", this.color.toString());
+        objParent.put("extends", this.exts);
+        objParent.put("type", this.type);
         return objParent;
     }
     
