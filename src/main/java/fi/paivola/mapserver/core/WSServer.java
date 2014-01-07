@@ -76,6 +76,9 @@ public class WSServer extends WebSocketServer {
             case "add":
                 this.callAdd(obj, responce);
                 break;
+            case "link":
+                this.callLink(obj, responce);
+                break;
             case "getdata":
                 this.callGetdata(obj, responce);
                 break;
@@ -130,6 +133,23 @@ public class WSServer extends WebSocketServer {
         Model mod = gt.game.createModel(type, sm);
         gt.game.addModel(mod, type);
         out.put("model_id", mod.id);
+        success(out);
+    }
+    
+    private void callLink(JSONObject in, JSONObject out) {
+        GameThread gt;
+        if((gt = getThread(in, out)) == null)
+            return;
+        
+        Model mod1;
+        Model mod2;
+        if((mod1 = getModel(in, out, gt.game)) == null)
+            return;
+        if((mod2 = getModel(in, out, gt.game)) == null)
+            return;
+        
+        gt.game.linkModels(mod1, mod2);
+        
         success(out);
     }
     

@@ -58,6 +58,10 @@ public abstract class Model {
      * Latitude & Longitude
      */
     public LatLng ll;
+    /**
+     * List of allowed connection tags.
+     */
+    public List<String> allowedTags;
     
     public boolean proto;
     public SettingMaster sm;
@@ -68,6 +72,7 @@ public abstract class Model {
         this.events = new ArrayList<>();
         this.data = new HashMap();
         this.extensions = new HashMap();
+        this.allowedTags = new ArrayList<>();
         if(sm == null) {
             this.proto = true;
             this.sm = null;
@@ -348,6 +353,7 @@ public abstract class Model {
     public void onActualRegisteration(GameManager gm, SettingMaster sm) {
         sm.type = this.type;
         this.onRegisteration(gm, sm);
+        this.allowedTags = sm.allowedTags;
     }
 
     /**

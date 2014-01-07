@@ -45,10 +45,11 @@ public class Asd extends PointModel {
 
     @Override
     public void onRegisteration(GameManager gm, SettingMaster sm) {
-        sm.setIcon(Icon.TOWN);
-        sm.color = new Color(255, 128, 64);
+        sm.setIcon(Icon.TOWN); // ToDo: Have some effect.
+        sm.color = new Color(255, 128, 64); // What color is displayed in client.
         sm.settings.put("heepo", new SettingInt("Heepo").setRange(0, 17).setDefault("8"));
         sm.settings.put("heepo2", new SettingList("Heppa").addOption("bum").addOption("pam").setDefault("pam"));
+        sm.allowedTags.add("asdConnection"); // The things trying to get connected to this need satisfy atleast one of these tags.
     }
 
     @Override

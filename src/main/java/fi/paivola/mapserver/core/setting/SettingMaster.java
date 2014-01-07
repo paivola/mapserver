@@ -34,12 +34,17 @@ public class SettingMaster {
      * Names of the things this extends.
      */
     public List<String> exts;
+    /**
+     * Tags that are allowed to be connected.
+    */
+    public List<String> allowedTags;
     
     public SettingMaster() {
         settings = new HashMap<>();
         misc = new HashMap<>();
         color = new Color(0,0,0);
         exts = new ArrayList();
+        allowedTags = new ArrayList();
         type = "";
     }
     
@@ -69,6 +74,7 @@ public class SettingMaster {
         objParent.put("color", this.color.toString());
         objParent.put("extends", this.exts);
         objParent.put("type", this.type);
+        objParent.put("allowedTags", this.allowedTags);
         return objParent;
     }
     
