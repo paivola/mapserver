@@ -7,6 +7,10 @@ import fi.paivola.mapserver.core.GameManager;
 import fi.paivola.mapserver.core.setting.SettingMaster;
 import fi.paivola.mapserver.utils.Color;
 
+/**
+ * Example connection model.
+ * @author juhani
+ */
 public class AsdConnection extends ConnectionModel {
 
     public AsdConnection(int id, SettingMaster sm) {
