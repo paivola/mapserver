@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.simple.JSONObject;
@@ -48,6 +49,10 @@ public class GameManager {
      * How many models are active / where are we going.
      */
     public int current_id;
+    /**
+     * Should we print final data when done?
+     */
+    public int printOnDone = 0;
     
     private final static Logger log = Logger.getLogger("mapserver");
     
@@ -156,9 +161,9 @@ public class GameManager {
     }
 
     /**
-     * Creates a model based on a string.
+     * Creates a model based on a SettingMaster.
      *
-     * @param type name of the model
+     * @param type name of the models type
      * @return returns the model if success, null otherwise
      */
     public Model createModel(String type, SettingMaster sm) {
@@ -181,6 +186,15 @@ public class GameManager {
                     .log(Level.SEVERE, null, ex);
         }
         return m;
+    }
+    
+    /**
+     * Creates a model with the default SettingMaster for that model.
+     * @param type name of the models type
+     * @return returns the model if success, null otherwise
+     */
+    public Model createModel(String type) {
+        return this.createModel(type, this.models.get(type).sm);
     }
 
     /**
@@ -221,6 +235,35 @@ public class GameManager {
     public Model getActive(String id) {
         return this.active_models.get(id);
     }
+    
+    /**
+     * Gets the default SettingMaster for specified model type.
+     * 
+     * @param type what model type are you looking for
+     * @return SettingMaster
+     */
+    public SettingMaster getDefaultSM(String type) {
+        return this.models.get(type).sm;
+    }
+    
+    /**
+     * Gets the default SettingMaster for specified class.
+     * 
+     * @param cls what model type are you looking for
+     * @return SettingMaster
+     */
+    public SettingMaster getDefaultSM(Class cls) {
+        /**
+         * Lets find our name...
+         */
+        String type = "";
+        for(Entry<String, CCs> e : this.models.entrySet()) {
+            if(cls.equals(e.getValue().cls)) {
+                type = e.getKey();
+            }
+        }
+        return this.models.get(type).sm;
+    }
 
     /**
      * Supposed to populate the first dataframe with default values.
@@ -256,6 +299,15 @@ public class GameManager {
         
         this.ready = true;
         log.log(Level.FINE, "Stepped trough");
+        
+        if(this.printOnDone == 1) {
+            for(Entry<String, String[]> e : this.getData().entrySet()) {
+                System.out.println("TICK: "+e.getKey());
+                for(String s : e.getValue()) {
+                    System.out.println(s);
+                }
+            }
+        }
 
         return true;
     }

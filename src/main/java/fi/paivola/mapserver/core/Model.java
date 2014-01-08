@@ -208,6 +208,7 @@ public abstract class Model {
 
     /**
      * Adds a bunch of extension models from a map of strings and classes.
+     * ToDo: respect settings!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      *
      * @param gm game master
      * @param clss map of strings and classes
@@ -216,13 +217,12 @@ public abstract class Model {
         for (Map.Entry pair : clss.entrySet()) {
             Class cls;
             cls = (Class) pair.getValue();
-            //System.out.println(pair.getKey().toString());
             Constructor<Model> c;
             try {
-                c = cls.getDeclaredConstructor(int.class);
+                c = cls.getDeclaredConstructor(int.class, SettingMaster.class);
                 c.setAccessible(true);
                 try {
-                    ExtensionModel em = (ExtensionModel) c.newInstance(gm.current_id++);
+                    ExtensionModel em = (ExtensionModel) c.newInstance(gm.current_id++, gm.getDefaultSM((Class) pair.getValue()));
                     em.parent = this;
                     this.addExtension(pair.getKey().toString(), em);
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {

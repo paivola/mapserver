@@ -24,15 +24,26 @@ public class App {
         
         
         BufferedReader sysin = new BufferedReader( new InputStreamReader( System.in ) );
+        mainloop:
         while(true) {
             String in = sysin.readLine();
-            if(in.equals("q")) {
-                ws.stop();
-                break;
+            switch(in) {
+                case "q": case "quit": case "e": case "exit":
+                    ws.stop();
+                    break mainloop;
+                case "t": case "test":
+                    ws.stop();
+                    runTest();
+                    break mainloop;
+                default:
+                    break;
             }
         }
+    }
+    
+    static void runTest() {
         
-        /*GameThread one = new GameThread(100);
+        GameThread one = new GameThread(100);
         GameManager gm = one.game;
         
         Model mg = gm.createModel("asdGlobal");
@@ -58,6 +69,8 @@ public class App {
         gm.linkModels(m5, m6);
         gm.linkModels(m6, m1);
         
-        one.start();*/
+        gm.printOnDone = 1;
+        
+        one.start();
     }
 }
