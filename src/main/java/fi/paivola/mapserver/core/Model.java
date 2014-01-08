@@ -117,10 +117,15 @@ public abstract class Model {
             return;
         
         // lets check if there is some events waiting to get trough
+        // fixes java.util.ConcurrentModificationException
+        List<Event> _buf = new ArrayList<>();
         for (Event i : this.events) {
             if (i.frame == last.index) {
-                this.onEvent(i, current);
+                _buf.add(i);
             }
+        }
+        for(Event i : _buf){
+            this.onEvent(i, current);
         }
 
         this.onTick(last, current);
