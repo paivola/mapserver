@@ -29,7 +29,7 @@ public class AsdConnection extends ConnectionModel {
     }
 
     @Override
-    public void onEvent(Event e) {
+    public void onEvent(Event e, DataFrame current) {
 
     }
 

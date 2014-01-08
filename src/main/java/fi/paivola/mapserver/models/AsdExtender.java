@@ -36,7 +36,7 @@ public class AsdExtender extends ExtensionModel {
      * @param e 
      */
     @Override
-    public void onEvent(Event e) {
+    public void onEvent(Event e, DataFrame current) {
         //System.out.println(this.id + " (extender) recieved a " + e.name);
         switch (e.name) {
             case "boom2":

@@ -28,7 +28,7 @@ public class AsdGlobal extends GlobalModel {
     }
 
     @Override
-    public void onEvent(Event e) {
+    public void onEvent(Event e, DataFrame current) {
 
     }
 

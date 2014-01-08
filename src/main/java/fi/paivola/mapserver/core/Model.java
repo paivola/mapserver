@@ -119,7 +119,7 @@ public abstract class Model {
         // lets check if there is some events waiting to get trough
         for (Event i : this.events) {
             if (i.frame == last.index) {
-                this.onEvent(i);
+                this.onEvent(i, current);
             }
         }
 
@@ -130,7 +130,7 @@ public abstract class Model {
             // lets go trough the events ONCE again... this time for extensions
             for (Event i : this.events) {
                 if (i.frame == last.index) {
-                    ((ExtensionModel) pairs.getValue()).onEvent(i);
+                    ((ExtensionModel) pairs.getValue()).onEvent(i, current);
                 }
             }
         }
@@ -342,7 +342,7 @@ public abstract class Model {
      *
      * @param e event thats handled
      */
-    public abstract void onEvent(Event e);
+    public abstract void onEvent(Event e, DataFrame current);
     
     /**
      * This is called from the GameManager and performs some extra steps before

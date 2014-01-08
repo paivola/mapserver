@@ -53,7 +53,7 @@ public class Asd extends PointModel {
      * @param e 
      */
     @Override
-    public void onEvent(Event e) {
+    public void onEvent(Event e, DataFrame current) {
         switch (e.name) {
             case "boom":
                 this.boomcount += e.getInt();
