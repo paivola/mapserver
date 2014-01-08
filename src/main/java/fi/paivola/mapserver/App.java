@@ -22,7 +22,6 @@ public class App {
         WSServer ws = new WSServer(parseInt(SettingsParser.settings.get("websocket_port").toString()));
         ws.start();
         
-        
         BufferedReader sysin = new BufferedReader( new InputStreamReader( System.in ) );
         mainloop:
         while(true) {
@@ -35,17 +34,29 @@ public class App {
                     ws.stop();
                     runTest();
                     break mainloop;
+                case "h": case "help":
+                    System.out.println(
+                              "q|e|quit|exit   - Quits the program\n"
+                            + "t|test          - Run the test function\n"
+                            + "h|help          - Display this help");
+                    break;
                 default:
+                    System.out.println("Unknown command ("+in+")");
                     break;
             }
         }
     }
     
+    /**
+     * This function can be used for testing your own models. Please modify this!
+     */
     static void runTest() {
         
+        // How many ticks? Each one is a week.
         GameThread one = new GameThread(100);
         GameManager gm = one.game;
         
+        // Create and add
         Model mg = gm.createModel("asdGlobal");
         gm.addModel(mg, "asdGlobal");
 
@@ -62,6 +73,7 @@ public class App {
         Model m6 = gm.createModel("asdConnection");
         gm.addModel(m6, "asdConnection");
 
+        // And link!
         gm.linkModels(m1, m2);
         gm.linkModels(m2, m3);
         gm.linkModels(m3, m4);
@@ -69,8 +81,10 @@ public class App {
         gm.linkModels(m5, m6);
         gm.linkModels(m6, m1);
         
+        // Print final data in the end?
         gm.printOnDone = 1;
         
+        // Start the gamethread
         one.start();
     }
 }
