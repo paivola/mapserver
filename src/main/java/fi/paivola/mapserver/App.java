@@ -23,6 +23,7 @@ public class App {
         ws.start();
         
         BufferedReader sysin = new BufferedReader( new InputStreamReader( System.in ) );
+        printHelp();
         mainloop:
         while(true) {
             String in = sysin.readLine();
@@ -35,16 +36,20 @@ public class App {
                     runTest();
                     break mainloop;
                 case "h": case "help":
-                    System.out.println(
-                              "q|e|quit|exit   - Quits the program\n"
-                            + "t|test          - Run the test function\n"
-                            + "h|help          - Display this help");
+                    printHelp();
                     break;
                 default:
                     System.out.println("Unknown command ("+in+")");
+                    printHelp();
                     break;
             }
         }
+    }
+    
+    static void printHelp() {
+        System.out.println("q|e|quit|exit   - Quits the program\n"
+                         + "t|test          - Run the test function\n"
+                         + "h|help          - Display this help");
     }
     
     /**

@@ -76,8 +76,9 @@ public class DataFrame {
      * @return An array of CSV strings containing all of the data saved
      */
     public String[] getATonOfStrings() {
-        String[] str = new String[this.data.size()];
+        String[] str = new String[this.data.size()+1];
         int i = 0;
+        str[i++] = "id"+outSeperator+"name"+outSeperator+"value";
         for (Map.Entry pairs : this.data.entrySet()) {
             str[i++] = pairs.getKey().toString().replace(dataSeperator, outSeperator) + outSeperator + pairs.getValue();
         }
