@@ -48,12 +48,4 @@ public abstract class ConnectionModel extends Model {
         }
     }
 
-    @Override
-    public boolean linkModel(Model m) {
-        if (this.connections.size() >= 2) {
-            return false;
-        }
-        return super.linkModel(m);
-    }
-
 }
