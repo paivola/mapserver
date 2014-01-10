@@ -169,10 +169,8 @@ public abstract class Model {
             ((ExtensionModel) pairs.getValue())
                     .onExtensionTickStart(last, current);
             // lets go trough the events ONCE again... this time for extensions
-            for (Event i : this.events) {
-                if (i.frame == last.index) {
-                    ((ExtensionModel) pairs.getValue()).onEvent(i, current);
-                }
+            for(Event i : _buf){
+                ((ExtensionModel) pairs.getValue()).onEvent(i, current);
             }
         }
 

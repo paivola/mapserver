@@ -1,5 +1,6 @@
 package fi.paivola.mapserver.core;
 
+import fi.paivola.mapserver.utils.StringPair;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,9 +14,8 @@ public class DataFrame {
 
     public int index;
     public boolean locked;
-    private final Map<String, Object> data;
-    private static final String dataSeperator = "-";
-    private static final String outSeperator = "\t";
+    private final Map<StringPair, Object> data;
+    private static final String dataSeperator = "\t";
 
     /**
      * Class constructor.
@@ -43,7 +43,7 @@ public class DataFrame {
         if (this.locked) {
             return false;
         }
-        return this.data.put(model.id + dataSeperator + name, data) == null;
+        return this.data.put(new StringPair(Integer.toString(model.id), name), data) == null;
     }
 
     /**
@@ -57,7 +57,7 @@ public class DataFrame {
         if (this.locked) {
             return false;
         }
-        return this.data.put(" " + dataSeperator + name, data) == null;
+        return this.data.put(new StringPair(" ", name), data) == null;
     }
 
     /**
@@ -67,7 +67,7 @@ public class DataFrame {
      * @return returns the data
      */
     public String getGlobalData(String name) {
-        return this.data.get(" " + dataSeperator + name).toString();
+        return this.data.get(new StringPair(" ", name)).toString();
     }
 
     /**
@@ -78,18 +78,18 @@ public class DataFrame {
     public String[] getATonOfStrings() {
         String[] str = new String[this.data.size()+1];
         int i = 0;
-        str[i++] = "id"+outSeperator+"name"+outSeperator+"value";
+        str[i++] = "id"+dataSeperator+"name"+dataSeperator+"value";
         for (Map.Entry pairs : this.data.entrySet()) {
-            str[i++] = pairs.getKey().toString().replace(dataSeperator, outSeperator) + outSeperator + pairs.getValue();
+            str[i++] = ((StringPair)pairs.getKey()).one + dataSeperator + ((StringPair)pairs.getKey()).two + dataSeperator + pairs.getValue();
         }
         return str;
     }
     
     public static String getFormatted(String key, Object value) {
-        return key.replace(dataSeperator, outSeperator) + outSeperator + value.toString();
+        return key + dataSeperator + value.toString();
     }
 
-    public Map<String, Object> getRaw() {
+    public Map<StringPair, Object> getRaw() {
         return this.data;
     }
 
