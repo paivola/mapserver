@@ -36,6 +36,7 @@ public class AsdConnection extends ConnectionModel {
     @Override
     public void onRegisteration(GameManager gm, SettingMaster sm) {
         sm.color = new Color(64, 128, 256);
+        sm.name = "asdConnection";
     }
 
     @Override

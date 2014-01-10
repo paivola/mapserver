@@ -51,6 +51,7 @@ public class AsdExtender extends ExtensionModel {
         gm.registerExtension("asd", "extender", this.getClass()); // This registers this model as a extension to "asd"
         // temp workaround ToDo: make it better for the user
         sm.exts.add("asd"); // oh and you need to do this too
+        sm.name = "asdExtender";
     }
 
     @Override

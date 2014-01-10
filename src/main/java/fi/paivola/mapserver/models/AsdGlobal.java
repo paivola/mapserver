@@ -34,7 +34,7 @@ public class AsdGlobal extends GlobalModel {
 
     @Override
     public void onRegisteration(GameManager gm, SettingMaster sm) {
-
+        sm.name = "asdGlobal";
     }
 
     @Override
