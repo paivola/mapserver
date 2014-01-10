@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
@@ -80,13 +81,18 @@ public class SettingMaster {
     
     /**
      * Summons a SettingMaster from a JSON string.
-     * @param JSON The JSON string.
+     * @param obj The JSON object.
      * @return SettingMaster, the master of all settings. Now with 100% more resurrection.
      */
-    public static SettingMaster fromJSON(String JSON) {
+    public static SettingMaster fromJSON(JSONObject obj) {
         SettingMaster sm = new SettingMaster();
         
-        
+        sm.misc.putAll(((JSONObject)obj.get("misc")));
+        sm.settings.putAll(((JSONObject)obj.get("settings")));
+        sm.color = new Color(obj.get("color").toString());
+        sm.exts.addAll((JSONArray)obj.get("extends"));
+        sm.type = obj.get("type").toString();
+        sm.allowedTags.addAll((JSONArray)obj.get("allowedTags"));
         
         return sm;
     }

@@ -131,7 +131,7 @@ public class WSServer extends WebSocketServer {
         if(in.containsKey("type"))
             type = in.get("type").toString();
         if(in.containsKey("settings"))
-            sm = SettingMaster.fromJSON(in.get("settings").toString());
+            sm = SettingMaster.fromJSON((JSONObject)in.get("settings"));
         else
             return;
         Model mod = gt.game.createModel(type, sm);

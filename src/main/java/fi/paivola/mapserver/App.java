@@ -87,7 +87,7 @@ public class App {
         gm.linkModels(m6, m1);
         
         // Print final data in the end?
-        gm.printOnDone = 1;
+        gm.printOnDone = 2;
         
         // Start the gamethread
         one.start();

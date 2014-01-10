@@ -293,6 +293,7 @@ public class GameManager {
             this.step();
             if(this.printOnDone == 2) {
                 String[] tmparr = this.frames.get(this.tick_current - 1).getATonOfStrings();
+                System.out.println("TICK: "+(this.tick_current - 1));
                 for (String s : tmparr) {
                     System.out.println(s);
                 }
