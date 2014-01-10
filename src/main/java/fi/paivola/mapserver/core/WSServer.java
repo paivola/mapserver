@@ -1,6 +1,7 @@
 package fi.paivola.mapserver.core;
 
 import fi.paivola.mapserver.core.setting.SettingMaster;
+import fi.paivola.mapserver.utils.LatLng;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -76,6 +77,9 @@ public class WSServer extends WebSocketServer {
             case "add":
                 this.callAdd(obj, responce);
                 break;
+            case "move":
+                this.callMove(obj, responce);
+                break;
             case "link":
                 this.callLink(obj, responce);
                 break;
@@ -136,6 +140,24 @@ public class WSServer extends WebSocketServer {
         success(out);
     }
     
+    private void callMove(JSONObject in, JSONObject out) {
+        GameThread gt;
+        if((gt = getThread(in, out)) == null)
+            return;
+        
+        Model mod;
+        if((mod = getModel(in, out, gt.game)) == null)
+            return;
+        
+        LatLng ll;
+        if((ll = getLatLng(in, out)) == null)
+            return;
+        
+        mod.ll = ll;
+        
+        success(out);
+    }
+    
     private void callLink(JSONObject in, JSONObject out) {
         GameThread gt;
         if((gt = getThread(in, out)) == null)
@@ -143,9 +165,9 @@ public class WSServer extends WebSocketServer {
         
         Model mod1;
         Model mod2;
-        if((mod1 = getModel(in, out, gt.game)) == null)
+        if((mod1 = getModel1(in, out, gt.game)) == null)
             return;
-        if((mod2 = getModel(in, out, gt.game)) == null)
+        if((mod2 = getModel2(in, out, gt.game)) == null)
             return;
         
         gt.game.linkModels(mod1, mod2);
@@ -207,11 +229,35 @@ public class WSServer extends WebSocketServer {
     }
     
     private Model getModel(JSONObject in, JSONObject out, GameManager gm) {
-        if(in.containsKey("model_id") || !gm.containsModel(Integer.parseInt(in.get("model_id").toString()))) {
+        if(!in.containsKey("model_id") || !gm.containsModel(Integer.parseInt(in.get("model_id").toString()))) {
             error(out, "You need to provide a existing model_id!");
             return null;
         }
         return gm.getActive(in.get("model_id").toString());
+    }
+    
+    private Model getModel1(JSONObject in, JSONObject out, GameManager gm) {
+        if(!in.containsKey("model1_id") || !gm.containsModel(Integer.parseInt(in.get("model1_id").toString()))) {
+            error(out, "You need to provide a existing model1_id!");
+            return null;
+        }
+        return gm.getActive(in.get("model_id1").toString());
+    }
+    
+    private Model getModel2(JSONObject in, JSONObject out, GameManager gm) {
+        if(!in.containsKey("model2_id") || !gm.containsModel(Integer.parseInt(in.get("model2_id").toString()))) {
+            error(out, "You need to provide a existing model2_id!");
+            return null;
+        }
+        return gm.getActive(in.get("model_id2").toString());
+    }
+    
+    private LatLng getLatLng(JSONObject in, JSONObject out) {
+        if(!in.containsKey("lat") || !in.containsKey("lng")) {
+            error(out, "You need to provice lat and lng");
+            return null;
+        }
+        return new LatLng(Double.parseDouble(in.get("lat").toString()), Double.parseDouble(in.get("lng").toString()));
     }
 
     @Override
