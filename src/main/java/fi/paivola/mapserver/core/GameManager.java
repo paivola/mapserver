@@ -150,7 +150,7 @@ public class GameManager {
      */
     private void clearFrames() {
         frames.clear();
-        for (int i = 0; i < this.tick_amount; i++) {
+        for (int i = 0; i <= this.tick_amount; i++) {
             frames.add(new DataFrame(i));
         }
     }
@@ -289,12 +289,14 @@ public class GameManager {
         
         log.log(Level.FINE, "Stepping trough");
 
-        while (this.tick_current < this.tick_amount) {
+        while (this.tick_current <= this.tick_amount) {
             this.step();
-            /*String[] tmparr = this.frames.get(this.tick_current - 1).getATonOfStrings();
-            for (String tmparr1 : tmparr) {
-                System.out.println(tmparr1);
-            }*/
+            if(this.printOnDone == 2) {
+                String[] tmparr = this.frames.get(this.tick_current - 1).getATonOfStrings();
+                for (String s : tmparr) {
+                    System.out.println(s);
+                }
+            }
         }
         
         this.ready = true;
