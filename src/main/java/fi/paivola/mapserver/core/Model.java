@@ -63,9 +63,21 @@ public abstract class Model {
      */
     public List<String> allowedTags;
     
+    /**
+     * Is this model a prototype model or not?
+     */
     public boolean proto;
+    
+    /**
+     * This is our SettingMaster with the user changed data.
+     */
     public SettingMaster sm;
     
+    /**
+     * This is used when the model is actually used in a simulation
+     * @param id id of this model
+     * @param sm SettingMaster with all of the user changed data (and original).
+     */
     public Model(int id, SettingMaster sm) {
         this.id = id;
         this.connections = new ArrayList<>();
@@ -83,15 +95,35 @@ public abstract class Model {
         this.ll = new LatLng(0,0);
     }
     
+    /**
+     * This is for prototype model, eg initializing the default SettingMaster and registerations.
+     */
     public Model() {
         this(0, null);
     }
     
+    /**
+     * Change the latitude and longitude
+     * @param lat latitude
+     * @param lng longitude
+     */
     public void setLatLng(double lat, double lng) {
         this.ll.latitude = lat;
         this.ll.longitude = lng;
     }
     
+    /**
+     * Change the latitude and longitude
+     * @param ll LatLng that is the desired position
+     */
+    public void setLatLng(LatLng ll) {
+        this.ll = ll;
+    }
+    
+    /**
+     * Get the latitude and longitude as a LatLng
+     * @return 
+     */
     public LatLng getLatLng() {
         return this.ll;
     }

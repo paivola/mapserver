@@ -153,7 +153,7 @@ public class WSServer extends WebSocketServer {
         if((ll = getLatLng(in, out)) == null)
             return;
         
-        mod.ll = ll;
+        mod.setLatLng(ll);
         
         success(out);
     }
