@@ -22,7 +22,7 @@ public class Asd extends PointModel {
     public int boomcount;
 
     /**
-     * Constructor, this is needed!
+     * Constructor for actual instances of this model.
      * @param id just pass it around.
      * @param sm theoretically you would get your settings from this.
      */
@@ -31,6 +31,9 @@ public class Asd extends PointModel {
         this.boomcount = 0;
     }
     
+    /**
+     * Constructor for the prototype model, just for calling onRegisteration and such.
+     */
     public Asd() {
         super();
         this.boomcount = 0;

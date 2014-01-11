@@ -3,7 +3,6 @@ package fi.paivola.mapserver.core;
 import fi.paivola.mapserver.utils.CCs;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -40,9 +38,8 @@ public class SettingsParser {
 
         models = new ArrayList<>();
 
-        StringWriter writer = new StringWriter();
-        IOUtils.copy(is, writer, "UTF-8");
-        obj = settings = (JSONObject) (new JSONParser().parse(writer.toString()));
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        obj = settings = (JSONObject) (new JSONParser().parse( s.hasNext() ? s.next() : ""));
 
     }
 
