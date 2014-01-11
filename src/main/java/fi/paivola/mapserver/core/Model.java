@@ -166,12 +166,12 @@ public abstract class Model {
 
         this.onTick(last, current);
         for (Map.Entry pairs : this.extensions.entrySet()) {
-            ((ExtensionModel) pairs.getValue())
-                    .onExtensionTickStart(last, current);
             // lets go trough the events ONCE again... this time for extensions
             for(Event i : _buf){
                 ((ExtensionModel) pairs.getValue()).onEvent(i, current);
             }
+            ((ExtensionModel) pairs.getValue())
+                    .onExtensionTickStart(last, current);
         }
 
         // lets delete the events that we used
@@ -275,17 +275,26 @@ public abstract class Model {
         }
     }
 
+    /**
+     * Links this model to another model. Note: This is not two way. You need to link it in the other way also.
+     * @param m what to link to
+     * @return true if succeeded, false otherwise
+     */
     public boolean linkModel(Model m) {
         if (this.connections.size() >= this.maxConnections) {
             return false;
         }
-        if (this.allowedNames.size() != 0 && this.allowedNames.contains(m.name)) {
-            return false;
-        }
-        return this.connections.add(m);
+        if (this.allowedNames.isEmpty() || this.allowedNames.contains(m.name))
+            return this.connections.add(m);
+        return false;
     }
 
-    public boolean delinkModel(Model m) {
+    /**
+     * Removes a link to another model. Note: this is not two way. You need to unlink it in the other way also.
+     * @param m what to unlink from
+     * @return True if succeeded, false otherwise
+     */
+    public boolean unlinkModel(Model m) {
         return this.connections.remove(m);
     }
 
@@ -383,6 +392,7 @@ public abstract class Model {
      * Called when there is a event to handle.
      *
      * @param e event thats handled
+     * @param current current dataframe
      */
     public abstract void onEvent(Event e, DataFrame current);
     

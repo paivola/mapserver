@@ -209,7 +209,7 @@ public class GameManager {
             return false;
         }
         if (!second.linkModel(first)) {
-            first.delinkModel(second);
+            first.unlinkModel(second);
             return false;
         }
 
