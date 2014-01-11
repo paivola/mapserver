@@ -9,19 +9,19 @@ import fi.paivola.mapserver.core.setting.SettingMaster;
  */
 public abstract class ConnectionModel extends Model {
 
-    public boolean passtrough;
+    public boolean passthrough;
 
     public ConnectionModel(int id, SettingMaster sm) {
         super(id, sm);
         this.type = "connection";
-        this.passtrough = true;
+        this.passthrough = true;
         this.maxConnections = 2;
     }
     
     public ConnectionModel() {
         super();
         this.type = "connection";
-        this.passtrough = true;
+        this.passthrough = true;
         this.maxConnections = 2;
     }
 
@@ -41,7 +41,7 @@ public abstract class ConnectionModel extends Model {
 
     @Override
     public void addEvent(Event e, Model m) {
-        if (this.passtrough) {
+        if (this.passthrough) {
             this.addEventToAllExceptOne(e, m);
         } else {
             super.addEvent(e, m);

@@ -15,12 +15,12 @@ public class AsdConnection extends ConnectionModel {
 
     public AsdConnection(int id, SettingMaster sm) {
         super(id, sm);
-        this.passtrough = true;
+        this.passthrough = true;
     }
     
     public AsdConnection() {
         super();
-        this.passtrough = true;
+        this.passthrough = true;
     }
 
     @Override
