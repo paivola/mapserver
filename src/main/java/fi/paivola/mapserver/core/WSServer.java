@@ -58,51 +58,60 @@ public class WSServer extends WebSocketServer {
             Logger.getLogger(WSServer.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        // check if we actually have a JSONobject and that it contains something for use to do.
         if(obj == null || !obj.containsKey("action")) {
             return;
         }
         
+        // since we are responding to the action, just copy it over.
         responce.put("action", obj.get("action"));
         
+        // switching the action seems like the best way to do this.
         switch(obj.get("action").toString()) {
-            case "create":
+            case "create": // creation of a gameManager
                 this.callCreate(obj, responce);
                 break;
-            case "start":
+            case "start": // starting the simulation
                 this.callStart(obj, responce);
                 break;
-            case "getsettings":
+            case "getsettings": // get all settings from all models
                 this.callGetSettings(obj, responce);
                 break;
-            case "setsettings":
+            case "setsettings": // set settings for a model_id
                 this.callSetSettings(obj, responce);
                 break;
-            case "add":
+            case "add": // add a model to the gameManager
                 this.callAdd(obj, responce);
                 break;
-            case "move":
+            case "move": // set position for a model_id
                 this.callMove(obj, responce);
                 break;
-            case "link":
+            case "link": // link two models together
                 this.callLink(obj, responce);
                 break;
-            case "getdata":
+            case "getdata": // gets csv data
                 this.callGetdata(obj, responce);
                 break;
-            case "info":
+            case "info": // get information of a model_id
                 this.callInfo(obj, responce);
                 break;
-            case "hello":
+            case "hello": // just popping in to say hello!
                 this.callHello(obj, responce);
                 break;
-            default:
+            default: // otherwise there seems to be no match, thats a error
                 this.error(responce, "Command not found!");
                 break;
         }
         
+        // and finally send our responce back
         ws.send(responce.toJSONString());
     }
     
+    /**
+     * Create a gameManager, returns manager_id.
+     * @param in
+     * @param out 
+     */
     private void callCreate(JSONObject in, JSONObject out) {
         int ticks;
         if(in.containsKey("ticks")) {
@@ -116,6 +125,11 @@ public class WSServer extends WebSocketServer {
         success(out);
     }
     
+    /**
+     * Starts simulation in a manager_id.
+     * @param in
+     * @param out 
+     */
     private void callStart(JSONObject in, JSONObject out) {
         GameThread gt;
         if((gt = getThread(in, out)) == null)
@@ -124,6 +138,11 @@ public class WSServer extends WebSocketServer {
         success(out);
     }
     
+    /**
+     * Creates a model in manager_id with given settings and optional Longitude, Latitude.
+     * @param in
+     * @param out 
+     */
     private void callAdd(JSONObject in, JSONObject out) {
         GameThread gt;
         if((gt = getThread(in, out)) == null)
@@ -150,6 +169,11 @@ public class WSServer extends WebSocketServer {
         success(out);
     }
     
+    /**
+     * Moves a model_id to a new Longitude/Latitude.
+     * @param in
+     * @param out 
+     */
     private void callMove(JSONObject in, JSONObject out) {
         GameThread gt;
         if((gt = getThread(in, out)) == null)
@@ -168,6 +192,11 @@ public class WSServer extends WebSocketServer {
         success(out);
     }
     
+    /**
+     * Links two models together.
+     * @param in
+     * @param out 
+     */
     private void callLink(JSONObject in, JSONObject out) {
         GameThread gt;
         if((gt = getThread(in, out)) == null)
@@ -185,6 +214,11 @@ public class WSServer extends WebSocketServer {
         success(out);
     }
     
+    /**
+     * This does something.
+     * @param in
+     * @param out 
+     */
     private void callInfo(JSONObject in, JSONObject out) {
         GameThread gt;
         if((gt = getThread(in, out)) == null)
@@ -197,6 +231,11 @@ public class WSServer extends WebSocketServer {
         success(out);
     }
     
+    /**
+     * Returns CSV data after the simulation is complete from a manager_id.
+     * @param in
+     * @param out 
+     */
     private void callGetdata(JSONObject in, JSONObject out) {
         GameThread gt;
         if((gt = getThread(in, out)) == null)
@@ -209,6 +248,11 @@ public class WSServer extends WebSocketServer {
         success(out);
     }
     
+    /**
+     * Sets the settings of a model_id.
+     * @param in
+     * @param out 
+     */
     private void callSetSettings(JSONObject in, JSONObject out) {
         GameThread gt;
         if((gt = getThread(in, out)) == null)
@@ -224,6 +268,11 @@ public class WSServer extends WebSocketServer {
         success(out);
     }
     
+    /**
+     * Gets all settings from all models in a manager_id.
+     * @param in
+     * @param out 
+     */
     private void callGetSettings(JSONObject in, JSONObject out) {
         GameThread gt;
         if((gt = getThread(in, out)) == null)
@@ -232,19 +281,39 @@ public class WSServer extends WebSocketServer {
         success(out);
     }
     
+    /**
+     * Just popping in to say hello!
+     * @param in
+     * @param out 
+     */
     private void callHello(JSONObject in, JSONObject out) {
         success(out);
     }
     
+    /**
+     * Adds a error to out.
+     * @param out JSONObject that is our to-be-serialized message
+     * @param message verbose error message for other developers to understand their mistakes
+     */
     private void error(JSONObject out, String message) {
         out.put("status", "error");
         out.put("error", message);
     }
     
+    /**
+     * Adds a status: success to out.
+     * @param out JSONObject that is our to-be-serialized message
+     */
     private void success(JSONObject out) {
         out.put("status", "success");
     }
     
+    /**
+     * Gets the thread by manager_id
+     * @param in
+     * @param out
+     * @return GameThread if success, otherwise null
+     */
     private GameThread getThread(JSONObject in, JSONObject out) {
         if(!in.containsKey("manager_id") || !this.threads.containsKey(in.get("manager_id").toString())) {
             error(out, "You need to provide a existing manager_id!");
@@ -253,6 +322,13 @@ public class WSServer extends WebSocketServer {
         return this.threads.get(in.get("manager_id").toString());
     }
     
+    /**
+     * Gets the model from GameManager by model_id.
+     * @param in
+     * @param out
+     * @param gm GameManager that has been resolved from getThread
+     * @return Model if success, otherwise null
+     */
     private Model getModel(JSONObject in, JSONObject out, GameManager gm) {
         if(!in.containsKey("model_id") || !gm.containsModel(Integer.parseInt(in.get("model_id").toString()))) {
             error(out, "You need to provide a existing model_id!");
@@ -261,6 +337,13 @@ public class WSServer extends WebSocketServer {
         return gm.getActive(in.get("model_id").toString());
     }
     
+    /**
+     * Gets the model from GameManager by model1_id.
+     * @param in
+     * @param out
+     * @param gm GameManager that has been resolved from getThread
+     * @return Model if success, otherwise null
+     */
     private Model getModel1(JSONObject in, JSONObject out, GameManager gm) {
         if(!in.containsKey("model1_id") || !gm.containsModel(Integer.parseInt(in.get("model1_id").toString()))) {
             error(out, "You need to provide a existing model1_id!");
@@ -269,6 +352,13 @@ public class WSServer extends WebSocketServer {
         return gm.getActive(in.get("model_id1").toString());
     }
     
+    /**
+     * Gets the model from GameManager by model2_id.
+     * @param in
+     * @param out
+     * @param gm GameManager that has been resolved from getThread
+     * @return Model if success, otherwise null
+     */
     private Model getModel2(JSONObject in, JSONObject out, GameManager gm) {
         if(!in.containsKey("model2_id") || !gm.containsModel(Integer.parseInt(in.get("model2_id").toString()))) {
             error(out, "You need to provide a existing model2_id!");
@@ -277,6 +367,12 @@ public class WSServer extends WebSocketServer {
         return gm.getActive(in.get("model_id2").toString());
     }
     
+    /**
+     * Gets a LatLng object from a JSONObject.
+     * @param in
+     * @param out
+     * @return LatLng if success, otherwise null
+     */
     private LatLng getLatLng(JSONObject in, JSONObject out) {
         if(!in.containsKey("lat") || !in.containsKey("lng")) {
             error(out, "You need to provice lat and lng");
