@@ -74,6 +74,9 @@ public class WSServer extends WebSocketServer {
             case "getsettings":
                 this.callGetSettings(obj, responce);
                 break;
+            case "setsettings":
+                this.callSetSettings(obj, responce);
+                break;
             case "add":
                 this.callAdd(obj, responce);
                 break;
@@ -134,7 +137,14 @@ public class WSServer extends WebSocketServer {
             sm = SettingMaster.fromJSON((JSONObject)in.get("settings"));
         else
             return;
+        
         Model mod = gt.game.createModel(type, sm);
+        
+        if(in.containsKey("lat"))
+            mod.ll.latitude = Double.parseDouble(in.get("lat").toString());
+        if(in.containsKey("lng"))
+            mod.ll.longitude = Double.parseDouble(in.get("lng").toString());
+        
         gt.game.addModel(mod, type);
         out.put("model_id", mod.id);
         success(out);
@@ -196,6 +206,21 @@ public class WSServer extends WebSocketServer {
             return;
         }
         out.put("data", gt.game.getData());
+        success(out);
+    }
+    
+    private void callSetSettings(JSONObject in, JSONObject out) {
+        GameThread gt;
+        if((gt = getThread(in, out)) == null)
+            return;
+        
+        Model mod;
+        if((mod = getModel(in, out, gt.game)) == null)
+            return;
+        
+        mod.sm = SettingMaster.fromJSON((JSONObject)in.get("settings"));
+        mod.addEvent(new Event("settingsChanged", "notice", ""), mod);
+        
         success(out);
     }
     
