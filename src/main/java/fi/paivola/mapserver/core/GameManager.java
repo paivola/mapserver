@@ -162,7 +162,8 @@ public class GameManager {
     }
 
     /**
-     * Creates a model based on a SettingMaster.
+     * Creates a model based on a SettingMaster and adds that to the active
+     * model pool.
      *
      * @param type name of the models type
      * @param sm
@@ -188,11 +189,15 @@ public class GameManager {
             Logger.getLogger(GameManager.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
-        return m;
+        if (this.addModel(m, type)) {
+            return m;
+        }
+        return null;
     }
 
     /**
-     * Creates a model with the default SettingMaster for that model.
+     * Creates a model with the default SettingMaster for that model and adds
+     * that to the active model pool.
      *
      * @param type name of the models type
      * @return returns the model if success, null otherwise
@@ -218,6 +223,14 @@ public class GameManager {
         }
 
         return true;
+    }
+
+    public boolean linkModelsWith(Model from, Model to, Model with) {
+        if (!this.linkModels(from, with)) {
+            return false;
+        }
+
+        return this.linkModels(with, to);
     }
 
     /**

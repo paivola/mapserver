@@ -5,7 +5,6 @@ import fi.paivola.mapserver.core.DataFrame;
 import fi.paivola.mapserver.core.Event;
 import fi.paivola.mapserver.core.GameManager;
 import fi.paivola.mapserver.core.PointModel;
-import fi.paivola.mapserver.core.setting.Setting;
 import fi.paivola.mapserver.core.setting.SettingDouble;
 import fi.paivola.mapserver.core.setting.SettingMaster;
 import fi.paivola.mapserver.utils.Icon;
@@ -112,8 +111,8 @@ public class ExamplePoint extends PointModel {
 
     @Override
     public void onUpdateSettings(SettingMaster sm) {
-        this.skill = Double.parseDouble(((Setting) sm.settings.get("skill")).getValue());
-        this.annoyanceEasyness = Double.parseDouble(((Setting) sm.settings.get("annoy")).getValue());
+        this.skill = Double.parseDouble(sm.settings.get("skill").getValue());
+        this.annoyanceEasyness = Double.parseDouble(sm.settings.get("annoy").getValue());
     }
 
 }

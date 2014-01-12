@@ -4,7 +4,6 @@ import fi.paivola.mapserver.core.DataFrame;
 import fi.paivola.mapserver.core.Event;
 import fi.paivola.mapserver.core.GameManager;
 import fi.paivola.mapserver.core.GlobalModel;
-import fi.paivola.mapserver.core.setting.Setting;
 import fi.paivola.mapserver.core.setting.SettingDouble;
 import fi.paivola.mapserver.core.setting.SettingMaster;
 import fi.paivola.mapserver.utils.RangeDouble;
@@ -47,7 +46,7 @@ public class ExampleGlobal extends GlobalModel {
 
     @Override
     public void onUpdateSettings(SettingMaster sm) {
-        luck = Double.parseDouble(((Setting) sm.settings.get("luck")).getValue());
+        luck = Double.parseDouble(sm.settings.get("luck").getValue());
     }
 
 }

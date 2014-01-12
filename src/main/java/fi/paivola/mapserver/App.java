@@ -5,6 +5,7 @@ import fi.paivola.mapserver.core.GameThread;
 import fi.paivola.mapserver.core.Model;
 import fi.paivola.mapserver.core.SettingsParser;
 import fi.paivola.mapserver.core.WSServer;
+import fi.paivola.mapserver.core.setting.SettingMaster;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -82,28 +83,23 @@ public class App {
 
         // Create and add
         Model mg = gm.createModel("exampleGlobal");
-        gm.addModel(mg, "exampleGlobal");
 
-        Model m1 = gm.createModel("examplePoint");
-        gm.addModel(m1, "examplePoint");
-        Model m2 = gm.createModel("exampleConnection");
-        gm.addModel(m2, "exampleConnection");
-        Model m3 = gm.createModel("examplePoint");
-        gm.addModel(m3, "examplePoint");
-        Model m4 = gm.createModel("exampleConnection");
-        gm.addModel(m4, "exampleConnection");
-        Model m5 = gm.createModel("examplePoint");
-        gm.addModel(m5, "examplePoint");
-        Model m6 = gm.createModel("exampleConnection");
-        gm.addModel(m6, "exampleConnection");
+        // This is how you change a "setting" from the code.
+        SettingMaster sm = gm.getDefaultSM("exampleGlobal");
+        sm.settings.get("luck").setValue("0.7");
+        mg.onActualUpdateSettings(sm);
+
+        Model p1 = gm.createModel("examplePoint");
+        Model c1 = gm.createModel("exampleConnection");
+        Model p2 = gm.createModel("examplePoint");
+        Model c2 = gm.createModel("exampleConnection");
+        Model p3 = gm.createModel("examplePoint");
+        Model c3 = gm.createModel("exampleConnection");
 
         // And link!
-        gm.linkModels(m1, m2);
-        gm.linkModels(m2, m3);
-        gm.linkModels(m3, m4);
-        gm.linkModels(m4, m5);
-        gm.linkModels(m5, m6);
-        gm.linkModels(m6, m1);
+        gm.linkModelsWith(p1, p2, c1);
+        gm.linkModelsWith(p2, p3, c2);
+        gm.linkModelsWith(p3, p1, c3);
 
         // Print final data in the end?
         if (!profilingRun) {
