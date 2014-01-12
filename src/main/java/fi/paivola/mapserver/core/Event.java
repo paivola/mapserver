@@ -17,7 +17,7 @@ public class Event {
     /**
      * Value as a string.
      */
-    public String value;
+    public Object value;
     /**
      * This events name.
      */
@@ -31,21 +31,21 @@ public class Event {
      */
     public Model sender;
 
-    public Event(String name, String type, String value) {
+    public Event(String name, String type, Object value) {
         this.name = name;
         this.type = type;
         this.value = value;
     }
 
     public int getInt() {
-        return parseInt(this.value);
+        return parseInt("" + this.value);
     }
 
     public String getString() {
-        return this.value;
+        return "" + this.value;
     }
 
     public double getDouble() {
-        return parseDouble(this.value);
+        return parseDouble("" + this.value);
     }
 }
