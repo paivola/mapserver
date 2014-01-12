@@ -162,7 +162,7 @@ public class GameManager {
      * @param type type of that model
      * @return true if successful, false otherwise
      */
-    public boolean addModel(Model m, String type) {
+    private boolean addModel(Model m, String type) {
         m.addExtensions(this, models.get(type).clss);
         return (this.active_models.put("" + m.id, m) == null);
     }

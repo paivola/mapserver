@@ -175,7 +175,6 @@ public class WSServer extends WebSocketServer {
             mod.ll.longitude = Double.parseDouble(in.get("lng").toString());
         }
 
-        gt.game.addModel(mod, type);
         out.put("model_id", mod.id);
         success(out);
     }
