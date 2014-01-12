@@ -155,7 +155,7 @@ public abstract class Model {
         for (Event i : _buf) {
             this.onEvent(i, current);
         }
-
+        
         this.onTick(last, current);
         for (Map.Entry pairs : this.extensions.entrySet()) {
             // lets go trough the events ONCE again... this time for extensions
@@ -173,7 +173,7 @@ public abstract class Model {
                 it.remove();
             }
         }
-
+        
         this.dumpToDataFrame(current);
     }
 
@@ -250,11 +250,12 @@ public abstract class Model {
             cls = (Class) pair.getValue();
             Constructor<Model> c;
             try {
-                c = cls.getDeclaredConstructor(int.class, SettingMaster.class);
+                c = cls.getDeclaredConstructor(int.class);
                 c.setAccessible(true);
                 try {
-                    ExtensionModel em = (ExtensionModel) c.newInstance(gm.current_id++, gm.getDefaultSM((Class) pair.getValue()));
+                    ExtensionModel em = (ExtensionModel) c.newInstance(gm.current_id++);
                     em.parent = this;
+                    em.onActualUpdateSettings(gm.getDefaultSM((Class) pair.getValue()));
                     this.addExtension(pair.getKey().toString(), em);
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                     Logger.getLogger(GameManager.class.getName())

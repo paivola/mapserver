@@ -158,6 +158,7 @@ public class GameManager {
 
     /**
      * DON'T CALL THIS MANUALLY!
+     *
      * @param m Model
      * @param type type of that model
      * @return true if successful, false otherwise
@@ -233,7 +234,7 @@ public class GameManager {
 
     /**
      * Links two models together using a third model.
-     * 
+     *
      * @param from first model
      * @param to second model
      * @param with model to link with
