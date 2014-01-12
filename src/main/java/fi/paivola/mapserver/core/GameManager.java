@@ -156,6 +156,12 @@ public class GameManager {
         }
     }
 
+    /**
+     * DON'T CALL THIS MANUALLY!
+     * @param m Model
+     * @param type type of that model
+     * @return true if successful, false otherwise
+     */
     public boolean addModel(Model m, String type) {
         m.addExtensions(this, models.get(type).clss);
         return (this.active_models.put("" + m.id, m) == null);
@@ -225,6 +231,14 @@ public class GameManager {
         return true;
     }
 
+    /**
+     * Links two models together using a third model.
+     * 
+     * @param from first model
+     * @param to second model
+     * @param with model to link with
+     * @return returns true if successful, false otherwise
+     */
     public boolean linkModelsWith(Model from, Model to, Model with) {
         if (!this.linkModels(from, with)) {
             return false;
