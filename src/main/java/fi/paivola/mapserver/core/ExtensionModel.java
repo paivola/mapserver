@@ -9,44 +9,41 @@ import fi.paivola.mapserver.core.setting.SettingMaster;
  */
 public abstract class ExtensionModel extends Model {
 
-    public boolean enabled;
+    /**
+     * Who is your daddy.
+     */
+    public Model parent;
 
     public ExtensionModel(int id) {
         super(id);
-        this.enabled = true;
+        this.parent = null;
         this.type = "extension";
         this.maxConnections = 0;
     }
 
     @Override
     public void onTickStart(DataFrame last, DataFrame current) {
+        if (this.proto || this.needsSM) {
+            return;
+        }
 
+        this.onTick(last, current);
     }
 
     @Override
-    public void onTick(DataFrame last, DataFrame current) {
-
+    public void onActualRegisteration(GameManager gm, SettingMaster sm) {
+        sm.type = this.type;
+        this.onRegisteration(gm, sm);
+        gm.registerExtension(sm.exts, this.getClass());
     }
 
-    /**
-     * A special onTick for extension models. Ran after master finishes.
-     *
-     * @param last last dataframe
-     * @param current current dataframe
-     */
-    public abstract void onExtensionTick(DataFrame last, DataFrame current);
-
-    /**
-     * Internal function that runs some checks and calls onExtensionTick.
-     *
-     * @param last last dataframe
-     * @param current current dataframe
-     */
-    public void onExtensionTickStart(DataFrame last, DataFrame current) {
-        if (!this.enabled) {
-            return;
+    @Override
+    public void onActualUpdateSettings(SettingMaster sm) {
+        this.needsSM = false;
+        if (this.name.isEmpty()) {
+            this.name = sm.name;
         }
-        this.onExtensionTick(last, current);
+        this.onUpdateSettings(sm);
     }
 
 }

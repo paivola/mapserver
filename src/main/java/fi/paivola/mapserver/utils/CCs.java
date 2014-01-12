@@ -11,11 +11,12 @@ import java.util.Map;
  */
 public class CCs {
 
-    public Object cls;
+    public Class cls;
     public Map<String, Object> clss;
     public SettingMaster sm;
+    public String misc;
 
-    public CCs(Object cls) {
+    public CCs(Class cls) {
         this.cls = cls;
         this.clss = new HashMap<>();
         this.sm = null;

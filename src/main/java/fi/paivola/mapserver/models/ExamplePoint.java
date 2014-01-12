@@ -19,9 +19,7 @@ import java.util.Random;
 public class ExamplePoint extends PointModel {
 
     public int catSightings;
-    public int othersAnnoyed;
     private double skill;
-    private double annoyanceEasyness;
 
     /**
      * Constructor for instances of this model.
@@ -31,7 +29,6 @@ public class ExamplePoint extends PointModel {
     public ExamplePoint(int id) {
         super(id);
         this.catSightings = 0;
-        this.othersAnnoyed = 0;
         this.skill = 0;
     }
 
@@ -54,7 +51,6 @@ public class ExamplePoint extends PointModel {
         }
 
         this.saveInt("catsSeen", catSightings);
-        this.saveInt("othersAnnoyed", othersAnnoyed);
     }
 
     /**
@@ -65,19 +61,7 @@ public class ExamplePoint extends PointModel {
      */
     @Override
     public void onEvent(Event e, DataFrame current) {
-        switch (e.name) {
-            // Somebody else saw a cat
-            case "I saw a cat!":
-                // Are we annoyed?
-                if ((new Random()).nextFloat() < this.annoyanceEasyness) {
-                    this.addEventTo(e.sender, current, new Event("Oh thats so nice.", Event.Type.NOTIFICATION, null));
-                }
-                break;
-            // Somebody got annoyed, yeaa!
-            case "Oh thats so nice.":
-                this.othersAnnoyed++;
-                break;
-        }
+
     }
 
     /**
@@ -92,7 +76,6 @@ public class ExamplePoint extends PointModel {
         sm.setIcon(Icon.CAPE); // ToDo: Have some effect.
         sm.color = new Color(255, 204, 255); // What color is displayed in client.
         sm.settings.put("skill", new SettingDouble("How skillfull is this model?", 0.75, new RangeDouble(0, 1)));
-        sm.settings.put("annoy", new SettingDouble("How easy is it to annoy this model?", 0.5, new RangeDouble(0, 1)));
         sm.allowedNames.add("exampleConnection"); // The things trying to get connected to this need satisfy atleast one of these tags.
         sm.name = "examplePoint";
     }
@@ -106,13 +89,11 @@ public class ExamplePoint extends PointModel {
     @Override
     public void onGenerateDefaults(DataFrame df) {
         this.saveInt("catsSeen", catSightings);
-        this.saveInt("othersAnnoyed", othersAnnoyed);
     }
 
     @Override
     public void onUpdateSettings(SettingMaster sm) {
         this.skill = Double.parseDouble(sm.settings.get("skill").getValue());
-        this.annoyanceEasyness = Double.parseDouble(sm.settings.get("annoy").getValue());
     }
 
 }

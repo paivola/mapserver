@@ -33,9 +33,9 @@ public class SettingMaster {
      */
     public String type;
     /**
-     * Names of the things this extends.
+     * Name of the thing this might extends.
      */
-    public List<String> exts;
+    public String exts;
     /**
      * Names that are allowed to be connected.
      */
@@ -49,7 +49,7 @@ public class SettingMaster {
         settings = new HashMap<>();
         misc = new HashMap<>();
         color = new Color(0, 0, 0);
-        exts = new ArrayList();
+        exts = "";
         allowedNames = new ArrayList();
         type = "";
         name = "";
@@ -100,7 +100,7 @@ public class SettingMaster {
         sm.misc.putAll(((JSONObject) obj.get("misc")));
         sm.settings.putAll(((JSONObject) obj.get("settings")));
         sm.color = new Color(obj.get("color").toString());
-        sm.exts.addAll((JSONArray) obj.get("extends"));
+        sm.exts = obj.get("extends").toString();
         sm.type = obj.get("type").toString();
         sm.allowedNames.addAll((JSONArray) obj.get("allowedNames"));
         sm.name = obj.get("name").toString();

@@ -44,6 +44,10 @@ public class GameManager {
      */
     private final Map<String, Model> active_models;
     /**
+     * Extensions that are waiting for a while.
+     */
+    private final List<CCs> waiting_extensions;
+    /**
      * How many models are active / where are we going.
      */
     public int current_id;
@@ -64,6 +68,7 @@ public class GameManager {
         this.tick_current = 0;
         this.frames = new ArrayList<>();
         this.active_models = new HashMap<>();
+        this.waiting_extensions = new ArrayList<>();
         this.current_id = 0;
         log.setLevel(Level.FINE);
 
@@ -115,6 +120,11 @@ public class GameManager {
                 Logger.getLogger(GameManager.class.getName())
                         .log(Level.SEVERE, null, ex);
             }
+        }
+        for (CCs c : this.waiting_extensions) {
+            SettingMaster sl = this.getDefaultSM(c.cls);
+            this.models.get(c.misc).clss.put(sl.name, c.cls);
+            this.models.get(c.misc).sm.settings.putAll(sl.settings);
         }
     }
 
@@ -302,14 +312,9 @@ public class GameManager {
      *
      * @param m model from where to get the defaults
      * @param df dataframe to populate to
-     * @return returns true
      */
-    public boolean populateDefaults(Model m, DataFrame df) {
-
-        m.onGenerateDefaults(df);
-        m.dumpToDataFrame(df);
-
-        return true;
+    public void populateDefaults(Model m, DataFrame df) {
+        m.onActualGenerateDefaults(df);
     }
 
     /**
@@ -381,11 +386,12 @@ public class GameManager {
      * Adds a extender that will be added to each subsequent target model.
      *
      * @param towhere the models name where to add
-     * @param name name of the extender
      * @param cls the extending class
      */
-    public void registerExtension(String towhere, String name, Object cls) {
-        this.models.get(towhere).clss.put(name, cls);
+    public void registerExtension(String towhere, Class cls) {
+        CCs tmp = new CCs(cls);
+        tmp.misc = towhere;
+        this.waiting_extensions.add(tmp);
     }
 
 }
