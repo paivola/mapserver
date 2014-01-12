@@ -15,7 +15,7 @@ public class DataFrame {
     public int index;
     public boolean locked;
     private final Map<StringPair, Object> data;
-    private static final String dataSeperator = "\t";
+    public static String dataSeperator = ", ";
 
     /**
      * Class constructor.

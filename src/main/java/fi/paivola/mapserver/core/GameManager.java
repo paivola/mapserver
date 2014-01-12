@@ -77,6 +77,7 @@ public class GameManager {
                     .log(Level.SEVERE, null, ex);
         }
 
+        DataFrame.dataSeperator = SettingsParser.settings.get("csv_seperator").toString();
         clearFrames();
         runRegisterations();
     }

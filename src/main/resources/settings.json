@@ -1,6 +1,7 @@
 {
     "default_ticks": 10,
     "websocket_port": 8080,
+    "csv_seperator": "\t",
     "models": [
         {
             "name": "asd",
