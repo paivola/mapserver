@@ -24,7 +24,7 @@ public class AsdGlobal extends GlobalModel {
     @Override
     public void onTick(DataFrame last, DataFrame current) {
         // This right here saves a global piece of data. Others can get it by using getGlobalData.
-        current.saveGlobalData("asdness", ""+(parseInt(last.getGlobalData("asdness"))+ 1));
+        current.saveGlobalData("asdness", last.getGlobalInt("asdness") + 1);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class AsdGlobal extends GlobalModel {
 
     @Override
     public void onGenerateDefaults(DataFrame df) {
-        df.saveGlobalData("asdness", "1");
+        df.saveGlobalData("asdness", 1);
     }
 
 }

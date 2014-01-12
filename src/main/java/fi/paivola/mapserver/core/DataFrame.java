@@ -53,7 +53,7 @@ public class DataFrame {
      * @param data data itself
      * @return returns true if succeeded
      */
-    public boolean saveGlobalData(String name, String data) {
+    public boolean saveGlobalData(String name, Object data) {
         if (this.locked) {
             return false;
         }
@@ -66,8 +66,35 @@ public class DataFrame {
      * @param name name of the data
      * @return returns the data
      */
-    public String getGlobalData(String name) {
-        return this.data.get(new StringPair(" ", name)).toString();
+    public Object getGlobalData(String name) {
+        return this.data.get(new StringPair(" ", name));
+    }
+    
+    /**
+     * Gets a global string.
+     * @param name name of the data
+     * @return returns the string
+     */
+    public String getGlobalString(String name) {
+        return this.getGlobalData(name).toString();
+    }
+    
+    /**
+     * Gets a global integer.
+     * @param name name of the data
+     * @return returns the integer
+     */
+    public int getGlobalInt(String name) {
+        return Integer.parseInt(this.getGlobalData(name).toString());
+    }
+    
+    /**
+     * Gets a global integer.
+     * @param name name of the data
+     * @return returns the double
+     */
+    public double getGlobalDouble(String name) {
+        return Double.parseDouble(this.getGlobalData(name).toString());
     }
 
     /**
