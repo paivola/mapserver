@@ -25,33 +25,15 @@ public class ExamplePoint extends PointModel {
     private double annoyanceEasyness;
 
     /**
-     * Constructor for actual instances of this model.
+     * Constructor for instances of this model.
      *
      * @param id just pass it around.
-     * @param sm theoretically you would get your settings from this.
      */
-    public ExamplePoint(int id, SettingMaster sm) {
-        super(id, sm);
+    public ExamplePoint(int id) {
+        super(id);
         this.catSightings = 0;
         this.othersAnnoyed = 0;
         this.skill = 0;
-        handleSM();
-    }
-
-    /**
-     * Constructor for the prototype model, just for calling onRegisteration and
-     * such.
-     */
-    public ExamplePoint() {
-        super();
-        this.catSightings = 0;
-        this.othersAnnoyed = 0;
-        this.skill = 0;
-    }
-    
-    public void handleSM() {
-        this.skill = Double.parseDouble(((Setting)sm.settings.get("skill")).getValue());
-        this.annoyanceEasyness = Double.parseDouble(((Setting)sm.settings.get("annoy")).getValue());
     }
 
     /**
@@ -95,9 +77,6 @@ public class ExamplePoint extends PointModel {
             case "Oh thats so nice.":
                 this.othersAnnoyed++;
                 break;
-            case "settingsChanged":
-                handleSM();
-                break;
         }
     }
 
@@ -128,6 +107,12 @@ public class ExamplePoint extends PointModel {
     public void onGenerateDefaults(DataFrame df) {
         this.saveInt("catsSeen", catSightings);
         this.saveInt("othersAnnoyed", othersAnnoyed);
+    }
+
+    @Override
+    public void onUpdateSettings(SettingMaster sm) {
+        this.skill = Double.parseDouble(((Setting)sm.settings.get("skill")).getValue());
+        this.annoyanceEasyness = Double.parseDouble(((Setting)sm.settings.get("annoy")).getValue());
     }
 
 }

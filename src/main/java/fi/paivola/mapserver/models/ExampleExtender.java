@@ -13,12 +13,8 @@ import fi.paivola.mapserver.core.setting.SettingMaster;
  */
 public class ExampleExtender extends ExtensionModel {
 
-    public ExampleExtender(int id, SettingMaster sm) {
-        super(id, sm);
-    }
-
-    public ExampleExtender() {
-        super();
+    public ExampleExtender(int id) {
+        super(id);
     }
 
     /**
@@ -54,6 +50,11 @@ public class ExampleExtender extends ExtensionModel {
     @Override
     public void onGenerateDefaults(DataFrame df) {
 
+    }
+
+    @Override
+    public void onUpdateSettings(SettingMaster sm) {
+        
     }
 
 }

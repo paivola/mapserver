@@ -9,14 +9,8 @@ import fi.paivola.mapserver.core.setting.SettingMaster;
  */
 public abstract class GlobalModel extends Model {
 
-    public GlobalModel(int id, SettingMaster sm) {
-        super(id, sm);
-        this.maxConnections = 0;
-        this.type = "global";
-    }
-
-    public GlobalModel() {
-        super();
+    public GlobalModel(int id) {
+        super(id);
         this.maxConnections = 0;
         this.type = "global";
     }

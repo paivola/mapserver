@@ -11,15 +11,8 @@ public abstract class ExtensionModel extends Model {
 
     public boolean enabled;
 
-    public ExtensionModel(int id, SettingMaster sm) {
-        super(id, sm);
-        this.enabled = true;
-        this.type = "extension";
-        this.maxConnections = 0;
-    }
-
-    public ExtensionModel() {
-        super();
+    public ExtensionModel(int id) {
+        super(id);
         this.enabled = true;
         this.type = "extension";
         this.maxConnections = 0;

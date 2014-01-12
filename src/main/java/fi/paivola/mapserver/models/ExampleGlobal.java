@@ -19,17 +19,8 @@ public class ExampleGlobal extends GlobalModel {
 
     private double luck = 0;
     
-    public ExampleGlobal(int id, SettingMaster sm) {
-        super(id, sm);
-        handleSM();
-    }
-
-    public ExampleGlobal() {
-        super();
-    }
-    
-    public void handleSM() {
-        luck = Double.parseDouble(((Setting)sm.settings.get("luck")).getValue());
+    public ExampleGlobal(int id) {
+        super(id);
     }
 
     @Override
@@ -40,11 +31,7 @@ public class ExampleGlobal extends GlobalModel {
 
     @Override
     public void onEvent(Event e, DataFrame current) {
-        switch(e.name) {
-            case "settingsChanged":
-                handleSM();
-                break;
-        }
+
     }
 
     @Override
@@ -56,6 +43,11 @@ public class ExampleGlobal extends GlobalModel {
     @Override
     public void onGenerateDefaults(DataFrame df) {
         df.saveGlobalData("cats", 1);
+    }
+
+    @Override
+    public void onUpdateSettings(SettingMaster sm) {
+        luck = Double.parseDouble(((Setting)sm.settings.get("luck")).getValue());
     }
 
 }

@@ -14,13 +14,8 @@ import fi.paivola.mapserver.utils.Color;
  */
 public class ExampleConnection extends ConnectionModel {
 
-    public ExampleConnection(int id, SettingMaster sm) {
-        super(id, sm);
-        this.passthrough = true;
-    }
-
-    public ExampleConnection() {
-        super();
+    public ExampleConnection(int id) {
+        super(id);
         this.passthrough = true;
     }
 
@@ -43,6 +38,11 @@ public class ExampleConnection extends ConnectionModel {
     @Override
     public void onGenerateDefaults(DataFrame df) {
 
+    }
+
+    @Override
+    public void onUpdateSettings(SettingMaster sm) {
+        
     }
 
 }

@@ -100,11 +100,11 @@ public class GameManager {
             SettingMaster blank = new SettingMaster();
 
             try {
-                c = cls.getDeclaredConstructor();
+                c = cls.getDeclaredConstructor(int.class);
                 c.setAccessible(true);
                 Model m;
                 try {
-                    m = c.newInstance();
+                    m = c.newInstance(-1);
                     m.onActualRegisteration(this, blank);
                     ((CCs) pair.getValue()).sm = blank;
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
@@ -174,10 +174,11 @@ public class GameManager {
         Model m = null;
         try {
             Constructor<Model> c;
-            c = cls.getDeclaredConstructor(int.class, SettingMaster.class);
+            c = cls.getDeclaredConstructor(int.class);
             c.setAccessible(true);
             try {
-                m = c.newInstance(this.current_id++, sm);
+                m = c.newInstance(this.current_id++);
+                m.onActualUpdateSettings(sm);
             } catch (InstantiationException | IllegalAccessException |
                     IllegalArgumentException | InvocationTargetException ex) {
                 Logger.getLogger(GameManager.class.getName())

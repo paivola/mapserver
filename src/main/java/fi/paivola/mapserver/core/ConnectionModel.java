@@ -11,15 +11,8 @@ public abstract class ConnectionModel extends Model {
 
     public boolean passthrough;
 
-    public ConnectionModel(int id, SettingMaster sm) {
-        super(id, sm);
-        this.type = "connection";
-        this.passthrough = true;
-        this.maxConnections = 2;
-    }
-
-    public ConnectionModel() {
-        super();
+    public ConnectionModel(int id) {
+        super(id);
         this.type = "connection";
         this.passthrough = true;
         this.maxConnections = 2;

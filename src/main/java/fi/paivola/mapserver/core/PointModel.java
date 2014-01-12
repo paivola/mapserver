@@ -9,14 +9,8 @@ import fi.paivola.mapserver.core.setting.SettingMaster;
  */
 public abstract class PointModel extends Model {
 
-    public PointModel(int id, SettingMaster sm) {
-        super(id, sm);
-        this.type = "point";
-        this.maxConnections = 9999;
-    }
-
-    public PointModel() {
-        super();
+    public PointModel(int id) {
+        super(id);
         this.type = "point";
         this.maxConnections = 9999;
     }
