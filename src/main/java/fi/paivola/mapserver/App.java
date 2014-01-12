@@ -20,7 +20,7 @@ public class App {
 
     public static void main(String[] args) throws UnknownHostException, IOException, ParseException, InterruptedException {
         
-        SettingsParser sp = new SettingsParser();
+        SettingsParser.parse();
         
         if(profilingRun) { // For profiling
         

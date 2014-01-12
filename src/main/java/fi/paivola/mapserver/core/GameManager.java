@@ -44,7 +44,6 @@ public class GameManager {
      * All of the active models, EG. objects.
      */
     private final Map<String, Model> active_models;
-    private SettingsParser sp;
     /**
      * How many models are active / where are we going.
      */
@@ -69,13 +68,17 @@ public class GameManager {
         this.current_id = 0;
         log.setLevel(Level.FINE);
 
-        try {
-            this.sp = new SettingsParser(settings_file);
-            this.models = this.sp.getModels();
-        } catch (IOException | ParseException ex) {
-            Logger.getLogger(GameManager.class.getName())
-                    .log(Level.SEVERE, null, ex);
+        if(SettingsParser.settings == null) {
+            try {
+                SettingsParser.parse();
+            } catch (IOException ex) {
+                Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        
+        this.models = SettingsParser.getModels();
 
         DataFrame.dataSeperator = SettingsParser.settings.get("csv_seperator").toString();
         clearFrames();
