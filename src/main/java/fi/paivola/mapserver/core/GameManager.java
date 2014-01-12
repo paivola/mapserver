@@ -51,9 +51,9 @@ public class GameManager {
      * Should we print final data when done?
      */
     public int printOnDone = 0;
-    
+
     private final static Logger log = Logger.getLogger("mapserver");
-    
+
     /**
      * Are we done?
      */
@@ -67,14 +67,14 @@ public class GameManager {
         this.current_id = 0;
         log.setLevel(Level.FINE);
 
-        if(SettingsParser.settings == null) {
+        if (SettingsParser.settings == null) {
             try {
                 SettingsParser.parse();
-            } catch (    IOException | ParseException ex) {
+            } catch (IOException | ParseException ex) {
                 Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         this.models = SettingsParser.getModels();
 
         DataFrame.dataSeperator = SettingsParser.settings.get("csv_seperator").toString();
@@ -96,9 +96,9 @@ public class GameManager {
             cls = (Class) ((CCs) pair.getValue()).cls;
             Constructor<Model> c;
             log.log(Level.FINE, "Registering {0}", pair.getKey());
-            
+
             SettingMaster blank = new SettingMaster();
-            
+
             try {
                 c = cls.getDeclaredConstructor();
                 c.setAccessible(true);
@@ -117,32 +117,32 @@ public class GameManager {
             }
         }
     }
-    
+
     /**
      * Get all of the default SettingMasters.
-     * 
-     * @return 
+     *
+     * @return
      */
     public Map<String, JSONObject> getSettings() {
         Map<String, JSONObject> settings = new HashMap<>();
         for (Map.Entry pair : this.models.entrySet()) {
-            settings.put(pair.getKey().toString(), ((CCs)pair.getValue()).sm.getJSONObject());
+            settings.put(pair.getKey().toString(), ((CCs) pair.getValue()).sm.getJSONObject());
         }
         return settings;
     }
-    
+
     /**
      * Get all of the data formatted somehow.
-     * 
-     * @return 
+     *
+     * @return
      */
     public Map<String, String[]> getData() {
         Map<String, String[]> data = new HashMap<>();
-        
+
         for (int i = 0; i < this.tick_amount; i++) {
-            data.put(""+i, this.frames.get(i).getATonOfStrings());
+            data.put("" + i, this.frames.get(i).getATonOfStrings());
         }
-        
+
         return data;
     }
 
@@ -158,7 +158,7 @@ public class GameManager {
 
     public boolean addModel(Model m, String type) {
         m.addExtensions(this, models.get(type).clss);
-        return (this.active_models.put(""+m.id, m) == null);
+        return (this.active_models.put("" + m.id, m) == null);
     }
 
     /**
@@ -189,9 +189,10 @@ public class GameManager {
         }
         return m;
     }
-    
+
     /**
      * Creates a model with the default SettingMaster for that model.
+     *
      * @param type name of the models type
      * @return returns the model if success, null otherwise
      */
@@ -217,40 +218,40 @@ public class GameManager {
 
         return true;
     }
-    
+
     /**
      * Do we know a model by this id. ToDo: Better way :-)
-     * 
+     *
      * @param id id of the model
-     * @return   Returns true if contains, false otherwise
+     * @return Returns true if contains, false otherwise
      */
     public boolean containsModel(int id) {
-        return id<this.current_id;
+        return id < this.current_id;
     }
-    
+
     /**
      * Gets a model by id.
-     * 
+     *
      * @param id id of the model
-     * @return   Returns the model
+     * @return Returns the model
      */
     public Model getActive(String id) {
         return this.active_models.get(id);
     }
-    
+
     /**
      * Gets the default SettingMaster for specified model type.
-     * 
+     *
      * @param type what model type are you looking for
      * @return SettingMaster
      */
     public SettingMaster getDefaultSM(String type) {
         return this.models.get(type).sm;
     }
-    
+
     /**
      * Gets the default SettingMaster for specified class.
-     * 
+     *
      * @param cls what model type are you looking for
      * @return SettingMaster
      */
@@ -259,8 +260,8 @@ public class GameManager {
          * Lets find our name...
          */
         String type = "";
-        for(Entry<String, CCs> e : this.models.entrySet()) {
-            if(cls.equals(e.getValue().cls)) {
+        for (Entry<String, CCs> e : this.models.entrySet()) {
+            if (cls.equals(e.getValue().cls)) {
                 type = e.getKey();
             }
         }
@@ -288,27 +289,27 @@ public class GameManager {
      * @return returns true
      */
     public boolean stepTrough() {
-        
+
         log.log(Level.FINE, "Stepping trough");
 
         while (this.tick_current <= this.tick_amount) {
             this.step();
-            if(this.printOnDone == 2) {
+            if (this.printOnDone == 2) {
                 String[] tmparr = this.frames.get(this.tick_current - 1).getATonOfStrings();
-                System.out.println("TICK: "+(this.tick_current - 1));
+                System.out.println("TICK: " + (this.tick_current - 1));
                 for (String s : tmparr) {
                     System.out.println(s);
                 }
             }
         }
-        
+
         this.ready = true;
         log.log(Level.FINE, "Stepped trough");
-        
-        if(this.printOnDone == 1) {
-            for(Entry<String, String[]> e : this.getData().entrySet()) {
-                System.out.println("TICK: "+e.getKey());
-                for(String s : e.getValue()) {
+
+        if (this.printOnDone == 1) {
+            for (Entry<String, String[]> e : this.getData().entrySet()) {
+                System.out.println("TICK: " + e.getKey());
+                for (String s : e.getValue()) {
                     System.out.println(s);
                 }
             }

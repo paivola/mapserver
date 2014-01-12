@@ -9,6 +9,7 @@ import fi.paivola.mapserver.utils.Color;
 
 /**
  * Example connection model.
+ *
  * @author juhani
  */
 public class AsdConnection extends ConnectionModel {
@@ -17,7 +18,7 @@ public class AsdConnection extends ConnectionModel {
         super(id, sm);
         this.passthrough = true;
     }
-    
+
     public AsdConnection() {
         super();
         this.passthrough = true;

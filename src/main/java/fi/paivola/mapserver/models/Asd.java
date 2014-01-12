@@ -12,6 +12,7 @@ import fi.paivola.mapserver.utils.Icon;
 
 /**
  * Example point model READ THIS PLEASE.
+ *
  * @author juhani
  */
 public class Asd extends PointModel {
@@ -23,6 +24,7 @@ public class Asd extends PointModel {
 
     /**
      * Constructor for actual instances of this model.
+     *
      * @param id just pass it around.
      * @param sm theoretically you would get your settings from this.
      */
@@ -30,9 +32,10 @@ public class Asd extends PointModel {
         super(id, sm);
         this.boomcount = 0;
     }
-    
+
     /**
-     * Constructor for the prototype model, just for calling onRegisteration and such.
+     * Constructor for the prototype model, just for calling onRegisteration and
+     * such.
      */
     public Asd() {
         super();
@@ -41,6 +44,7 @@ public class Asd extends PointModel {
 
     /**
      * This is executed each frame of the simulation.
+     *
      * @param last last dataframe, where you get data from (such as globals)
      * @param current current dataframe, you write data for exporting here
      */
@@ -52,8 +56,10 @@ public class Asd extends PointModel {
     }
 
     /**
-     * If you have a event waiting, this is run before onTick for each of those events.
-     * @param e 
+     * If you have a event waiting, this is run before onTick for each of those
+     * events.
+     *
+     * @param e
      */
     @Override
     public void onEvent(Event e, DataFrame current) {
@@ -68,9 +74,11 @@ public class Asd extends PointModel {
     }
 
     /**
-     * This is run once, define constant stuff here (setting master most notably)
+     * This is run once, define constant stuff here (setting master most
+     * notably)
+     *
      * @param gm
-     * @param sm 
+     * @param sm
      */
     @Override
     public void onRegisteration(GameManager gm, SettingMaster sm) {
@@ -83,8 +91,10 @@ public class Asd extends PointModel {
     }
 
     /**
-     * Here you are supposed to handle generating the default values for each variable, or something.
-     * @param df 
+     * Here you are supposed to handle generating the default values for each
+     * variable, or something.
+     *
+     * @param df
      */
     @Override
     public void onGenerateDefaults(DataFrame df) {

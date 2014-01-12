@@ -2,9 +2,9 @@ package fi.paivola.mapserver.core.setting;
 
 import org.json.simple.JSONObject;
 
-
 /**
- * Abstract base class for settings, they are used for getting data from the UI back to the models.
+ * Abstract base class for settings, they are used for getting data from the UI
+ * back to the models.
  *
  * @author Juhani
  */
@@ -18,22 +18,23 @@ public abstract class Setting {
         this.name = name;
         this.ready = false;
     }
-    
+
     public abstract Setting setValue(String value);
+
     public abstract String getValue();
-    
+
     public abstract Setting setDefault(String def);
-    
+
     /**
      * Formats a setting to a JSON string.
-     * 
-     * @return  String full of JSON
+     *
+     * @return String full of JSON
      */
     @Override
     public String toString() {
         return this.getJSONObject().toJSONString();
     }
-    
+
     public abstract JSONObject getJSONObject();
 
 }

@@ -6,11 +6,11 @@ import org.json.simple.JSONObject;
 
 /**
  * Class for integer settings.
- * 
+ *
  * @author juhani
  */
 public class SettingInt extends Setting {
-    
+
     private int value;
     private RangeInt range;
     private int def;
@@ -30,7 +30,7 @@ public class SettingInt extends Setting {
         this.value = value;
         this.def = 0;
     }
-    
+
     public SettingInt setRange(int start, int end) {
         this.range = new RangeInt(start, end);
         return this;
@@ -55,15 +55,15 @@ public class SettingInt extends Setting {
 
     @Override
     public JSONObject getJSONObject() {
-        JSONObject obj  = new JSONObject();
-        
+        JSONObject obj = new JSONObject();
+
         obj.put("type", this.type);
         obj.put("name", this.name);
         obj.put("default", this.def);
         obj.put("value", this.value);
         obj.put("range", this.range.getJSONObject());
-        
+
         return obj;
     }
-    
+
 }

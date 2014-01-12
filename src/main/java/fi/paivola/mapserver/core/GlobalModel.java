@@ -14,7 +14,7 @@ public abstract class GlobalModel extends Model {
         this.maxConnections = 0;
         this.type = "global";
     }
-        
+
     public GlobalModel() {
         super();
         this.maxConnections = 0;

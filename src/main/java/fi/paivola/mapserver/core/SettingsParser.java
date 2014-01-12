@@ -31,9 +31,9 @@ public class SettingsParser {
         if (is == null) {
             is = SettingsParser.class.getClassLoader().getResourceAsStream("settings.json");
         }
-        
+
         java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-        settings = (JSONObject) (new JSONParser().parse( s.hasNext() ? s.next() : ""));
+        settings = (JSONObject) (new JSONParser().parse(s.hasNext() ? s.next() : ""));
 
     }
 

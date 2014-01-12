@@ -14,9 +14,10 @@ public class Event {
      * Enumeration of the possible types.
      */
     public static enum Type {
+
         INT, DOUBLE, STRING, NOTIFICATION, OBJECT
     }
-    
+
     /**
      * What type of event this is (?).
      */
@@ -45,20 +46,23 @@ public class Event {
     }
 
     public int getInt() {
-        if(this.type == Type.INT)
+        if (this.type == Type.INT) {
             return parseInt("" + this.value);
+        }
         return 0;
     }
 
     public String getString() {
-        if(this.type == Type.STRING)
+        if (this.type == Type.STRING) {
             return "" + this.value;
+        }
         return null;
     }
 
     public double getDouble() {
-        if(this.type == Type.DOUBLE)
+        if (this.type == Type.DOUBLE) {
             return parseDouble("" + this.value);
+        }
         return 0;
     }
 }

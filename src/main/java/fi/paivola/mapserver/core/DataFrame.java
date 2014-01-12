@@ -69,27 +69,30 @@ public class DataFrame {
     public Object getGlobalData(String name) {
         return this.data.get(new StringPair(" ", name));
     }
-    
+
     /**
      * Gets a global string.
+     *
      * @param name name of the data
      * @return returns the string
      */
     public String getGlobalString(String name) {
         return this.getGlobalData(name).toString();
     }
-    
+
     /**
      * Gets a global integer.
+     *
      * @param name name of the data
      * @return returns the integer
      */
     public int getGlobalInt(String name) {
         return Integer.parseInt(this.getGlobalData(name).toString());
     }
-    
+
     /**
      * Gets a global integer.
+     *
      * @param name name of the data
      * @return returns the double
      */
@@ -103,15 +106,15 @@ public class DataFrame {
      * @return An array of CSV strings containing all of the data saved
      */
     public String[] getATonOfStrings() {
-        String[] str = new String[this.data.size()+1];
+        String[] str = new String[this.data.size() + 1];
         int i = 0;
-        str[i++] = "id"+dataSeperator+"name"+dataSeperator+"value";
+        str[i++] = "id" + dataSeperator + "name" + dataSeperator + "value";
         for (Map.Entry pairs : this.data.entrySet()) {
-            str[i++] = ((StringPair)pairs.getKey()).one + dataSeperator + ((StringPair)pairs.getKey()).two + dataSeperator + pairs.getValue();
+            str[i++] = ((StringPair) pairs.getKey()).one + dataSeperator + ((StringPair) pairs.getKey()).two + dataSeperator + pairs.getValue();
         }
         return str;
     }
-    
+
     public static String getFormatted(String key, Object value) {
         return key + dataSeperator + value.toString();
     }

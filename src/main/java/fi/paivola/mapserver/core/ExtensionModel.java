@@ -17,7 +17,7 @@ public abstract class ExtensionModel extends Model {
         this.type = "extension";
         this.maxConnections = 0;
     }
-    
+
     public ExtensionModel() {
         super();
         this.enabled = true;
@@ -45,7 +45,7 @@ public abstract class ExtensionModel extends Model {
 
     /**
      * Internal function that runs some checks and calls onExtensionTick.
-     * 
+     *
      * @param last last dataframe
      * @param current current dataframe
      */

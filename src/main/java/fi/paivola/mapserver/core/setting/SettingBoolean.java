@@ -4,11 +4,11 @@ import org.json.simple.JSONObject;
 
 /**
  * Class for checkbox settings.
- * 
+ *
  * @author juhani
  */
 public class SettingBoolean extends Setting {
-    
+
     private boolean value;
     private boolean def;
 
@@ -46,25 +46,25 @@ public class SettingBoolean extends Setting {
     @Override
     public String toString() {
         JSONObject obj = new JSONObject();
-        
+
         obj.put("type", this.type);
         obj.put("name", this.name);
         obj.put("value", this.value);
         obj.put("default", this.def);
-        
+
         return obj.toString();
     }
 
     @Override
     public JSONObject getJSONObject() {
         JSONObject obj = new JSONObject();
-        
+
         obj.put("type", this.type);
         obj.put("name", this.name);
         obj.put("value", this.value);
         obj.put("default", this.def);
-        
+
         return obj;
     }
-    
+
 }

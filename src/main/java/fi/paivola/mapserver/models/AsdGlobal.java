@@ -8,6 +8,7 @@ import fi.paivola.mapserver.core.setting.SettingMaster;
 
 /**
  * Example global model READ THIS.
+ *
  * @author juhani
  */
 public class AsdGlobal extends GlobalModel {
@@ -15,7 +16,7 @@ public class AsdGlobal extends GlobalModel {
     public AsdGlobal(int id, SettingMaster sm) {
         super(id, sm);
     }
-    
+
     public AsdGlobal() {
         super();
     }

@@ -6,7 +6,7 @@ import org.json.simple.JSONObject;
 
 /**
  * Class for double settings.
- * 
+ *
  * @author juhani
  */
 public class SettingDouble extends Setting {
@@ -14,7 +14,7 @@ public class SettingDouble extends Setting {
     private double value;
     private double def;
     private RangeDouble range;
-    
+
     public SettingDouble(String name) {
         super(name);
         this.type = "double";
@@ -22,7 +22,7 @@ public class SettingDouble extends Setting {
         this.value = 0.0;
         this.def = 0.0;
     }
-    
+
     public SettingDouble(String name, double value, RangeDouble range) {
         super(name);
         this.type = "double";
@@ -56,14 +56,14 @@ public class SettingDouble extends Setting {
     @Override
     public JSONObject getJSONObject() {
         JSONObject obj = new JSONObject();
-        
+
         obj.put("type", this.type);
         obj.put("name", this.name);
         obj.put("default", this.def);
         obj.put("value", this.value);
         obj.put("range", this.range.getJSONObject());
-        
+
         return obj;
     }
-    
+
 }

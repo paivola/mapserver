@@ -14,7 +14,7 @@ public abstract class PointModel extends Model {
         this.type = "point";
         this.maxConnections = 9999;
     }
-    
+
     public PointModel() {
         super();
         this.type = "point";

@@ -14,66 +14,72 @@ import java.util.logging.LogManager;
 import org.json.simple.parser.ParseException;
 
 public class App {
-    
+
     static final boolean profilingRun = false;
 
     public static void main(String[] args) throws UnknownHostException, IOException, ParseException, InterruptedException {
-        
+
         SettingsParser.parse();
-        
-        if(profilingRun) { // For profiling
-        
+
+        if (profilingRun) { // For profiling
+
             LogManager.getLogManager().reset();
 
-            for(int i = 0; i < 1000; i++) {
+            for (int i = 0; i < 1000; i++) {
                 runTest();
             }
-        
-        }else{
+
+        } else {
 
             WSServer ws = new WSServer(parseInt(SettingsParser.settings.get("websocket_port").toString()));
             ws.start();
 
-            BufferedReader sysin = new BufferedReader( new InputStreamReader( System.in ) );
+            BufferedReader sysin = new BufferedReader(new InputStreamReader(System.in));
             printHelp();
             mainloop:
-            while(true) {
+            while (true) {
                 String in = sysin.readLine();
-                switch(in) {
-                    case "q": case "quit": case "e": case "exit":
+                switch (in) {
+                    case "q":
+                    case "quit":
+                    case "e":
+                    case "exit":
                         ws.stop();
                         break mainloop;
-                    case "t": case "test":
+                    case "t":
+                    case "test":
                         ws.stop();
                         runTest();
                         break mainloop;
-                    case "h": case "help":
+                    case "h":
+                    case "help":
                         printHelp();
                         break;
                     default:
-                        System.out.println("Unknown command ("+in+")");
+                        System.out.println("Unknown command (" + in + ")");
                         printHelp();
                         break;
                 }
             }
         }
     }
-    
+
     static void printHelp() {
         System.out.println("q|e|quit|exit   - Quits the program\n"
-                         + "t|test          - Run the test function\n"
-                         + "h|help          - Display this help");
+                + "t|test          - Run the test function\n"
+                + "h|help          - Display this help");
     }
-    
+
     /**
-     * This function can be used for testing your own models. Please modify this!
+     * This function can be used for testing your own models. Please modify
+     * this!
      */
     static void runTest() {
-        
+
         // How many ticks? Each one is a week.
-        GameThread one = new GameThread((int) Math.floor(52.177457*20));
+        GameThread one = new GameThread((int) Math.floor(52.177457 * 20));
         GameManager gm = one.game;
-        
+
         // Create and add
         Model mg = gm.createModel("asdGlobal");
         gm.addModel(mg, "asdGlobal");
@@ -98,11 +104,12 @@ public class App {
         gm.linkModels(m4, m5);
         gm.linkModels(m5, m6);
         gm.linkModels(m6, m1);
-        
+
         // Print final data in the end?
-        if(!profilingRun)
+        if (!profilingRun) {
             gm.printOnDone = 2;
-        
+        }
+
         // Start the gamethread
         one.start();
     }

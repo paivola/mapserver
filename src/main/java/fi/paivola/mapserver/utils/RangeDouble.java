@@ -21,12 +21,12 @@ public class RangeDouble {
         }
         return i;
     }
-    
+
     @Override
     public String toString() {
-        return "{min:"+this.s+",max:"+this.e+"}";
+        return "{min:" + this.s + ",max:" + this.e + "}";
     }
-    
+
     public JSONObject getJSONObject() {
         JSONObject obj = new JSONObject();
         obj.put("min", this.s);
