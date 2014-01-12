@@ -72,7 +72,7 @@ public class App {
     static void runTest() {
         
         // How many ticks? Each one is a week.
-        GameThread one = new GameThread(52*20);
+        GameThread one = new GameThread((int) Math.floor(52.177457*20));
         GameManager gm = one.game;
         
         // Create and add
