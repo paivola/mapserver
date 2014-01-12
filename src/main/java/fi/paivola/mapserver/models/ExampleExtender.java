@@ -54,7 +54,7 @@ public class ExampleExtender extends ExtensionModel {
 
     @Override
     public void onUpdateSettings(SettingMaster sm) {
-        
+
     }
 
 }

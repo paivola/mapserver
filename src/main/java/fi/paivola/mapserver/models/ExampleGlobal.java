@@ -18,7 +18,7 @@ import java.util.Random;
 public class ExampleGlobal extends GlobalModel {
 
     private double luck = 0;
-    
+
     public ExampleGlobal(int id) {
         super(id);
     }
@@ -47,7 +47,7 @@ public class ExampleGlobal extends GlobalModel {
 
     @Override
     public void onUpdateSettings(SettingMaster sm) {
-        luck = Double.parseDouble(((Setting)sm.settings.get("luck")).getValue());
+        luck = Double.parseDouble(((Setting) sm.settings.get("luck")).getValue());
     }
 
 }

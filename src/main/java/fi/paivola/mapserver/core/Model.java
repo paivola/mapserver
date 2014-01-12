@@ -77,7 +77,7 @@ public abstract class Model {
     public boolean needsSM;
 
     /**
-     * 
+     *
      *
      * @param id id of this model
      */
@@ -426,22 +426,23 @@ public abstract class Model {
      * @param df dataframe
      */
     public abstract void onGenerateDefaults(DataFrame df);
-    
+
     /**
-     * Called when there is a new SettingMaster and this model needs to be updated.
-     * 
-     * @param sm 
+     * Called when there is a new SettingMaster and this model needs to be
+     * updated.
+     *
+     * @param sm
      */
     public void onActualUpdateSettings(SettingMaster sm) {
         this.needsSM = false;
         this.name = sm.name;
         this.onUpdateSettings(sm);
     }
-    
+
     /**
-     * Called when there are settings to be changed.
-     * 
-     * @param sm 
+     * Called when there are settings to be changed, HANDLE THE CHANGES PLEASE.
+     *
+     * @param sm
      */
     public abstract void onUpdateSettings(SettingMaster sm);
 }

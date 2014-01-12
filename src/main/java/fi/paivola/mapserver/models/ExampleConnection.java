@@ -42,7 +42,7 @@ public class ExampleConnection extends ConnectionModel {
 
     @Override
     public void onUpdateSettings(SettingMaster sm) {
-        
+
     }
 
 }

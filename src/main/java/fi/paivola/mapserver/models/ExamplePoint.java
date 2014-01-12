@@ -48,7 +48,7 @@ public class ExamplePoint extends PointModel {
          If there are cats in the world, there is a chance of atleast 
          one of them being atleast here. What a strange world do we live in.
          */
-        if (last.getGlobalInt("cats") > 0 && (new Random()).nextFloat() < this.skill) { 
+        if (last.getGlobalInt("cats") > 0 && (new Random()).nextFloat() < this.skill) {
             // If we saw a cat, let's tell our neighbours about it!
             this.addEventToAll(current, new Event("I saw a cat!", Event.Type.NOTIFICATION, null));
             this.catSightings++;
@@ -66,12 +66,13 @@ public class ExamplePoint extends PointModel {
      */
     @Override
     public void onEvent(Event e, DataFrame current) {
-        switch(e.name) {
+        switch (e.name) {
             // Somebody else saw a cat
             case "I saw a cat!":
                 // Are we annoyed?
-                if((new Random()).nextFloat() < this.annoyanceEasyness)
+                if ((new Random()).nextFloat() < this.annoyanceEasyness) {
                     this.addEventTo(e.sender, current, new Event("Oh thats so nice.", Event.Type.NOTIFICATION, null));
+                }
                 break;
             // Somebody got annoyed, yeaa!
             case "Oh thats so nice.":
@@ -111,8 +112,8 @@ public class ExamplePoint extends PointModel {
 
     @Override
     public void onUpdateSettings(SettingMaster sm) {
-        this.skill = Double.parseDouble(((Setting)sm.settings.get("skill")).getValue());
-        this.annoyanceEasyness = Double.parseDouble(((Setting)sm.settings.get("annoy")).getValue());
+        this.skill = Double.parseDouble(((Setting) sm.settings.get("skill")).getValue());
+        this.annoyanceEasyness = Double.parseDouble(((Setting) sm.settings.get("annoy")).getValue());
     }
 
 }
