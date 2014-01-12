@@ -1,23 +1,23 @@
 {
     "default_ticks": 10,
     "websocket_port": 8080,
-    "csv_seperator": "\t",
+    "csv_seperator": ",\t",
     "models": [
         {
-            "name": "asd",
-            "class": "fi.paivola.mapserver.models.Asd"
+            "name": "examplePoint",
+            "class": "fi.paivola.mapserver.models.ExamplePoint"
         },
         {
-            "name": "asdExtender",
-            "class": "fi.paivola.mapserver.models.AsdExtender"
+            "name": "exampleExtender",
+            "class": "fi.paivola.mapserver.models.ExampleExtender"
         },
         {
-            "name": "asdConnection",
-            "class": "fi.paivola.mapserver.models.AsdConnection"
+            "name": "exampleConnection",
+            "class": "fi.paivola.mapserver.models.ExampleConnection"
         },
         {
-            "name": "asdGlobal",
-            "class": "fi.paivola.mapserver.models.AsdGlobal"
+            "name": "exampleGlobal",
+            "class": "fi.paivola.mapserver.models.ExampleGlobal"
         }
     ]
 }

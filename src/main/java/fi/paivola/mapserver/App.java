@@ -81,21 +81,21 @@ public class App {
         GameManager gm = one.game;
 
         // Create and add
-        Model mg = gm.createModel("asdGlobal");
-        gm.addModel(mg, "asdGlobal");
+        Model mg = gm.createModel("exampleGlobal");
+        gm.addModel(mg, "exampleGlobal");
 
-        Model m1 = gm.createModel("asd");
-        gm.addModel(m1, "asd");
-        Model m2 = gm.createModel("asdConnection");
-        gm.addModel(m2, "asdConnection");
-        Model m3 = gm.createModel("asd");
-        gm.addModel(m3, "asd");
-        Model m4 = gm.createModel("asdConnection");
-        gm.addModel(m4, "asdConnection");
-        Model m5 = gm.createModel("asd");
-        gm.addModel(m5, "asd");
-        Model m6 = gm.createModel("asdConnection");
-        gm.addModel(m6, "asdConnection");
+        Model m1 = gm.createModel("examplePoint");
+        gm.addModel(m1, "examplePoint");
+        Model m2 = gm.createModel("exampleConnection");
+        gm.addModel(m2, "exampleConnection");
+        Model m3 = gm.createModel("examplePoint");
+        gm.addModel(m3, "examplePoint");
+        Model m4 = gm.createModel("exampleConnection");
+        gm.addModel(m4, "exampleConnection");
+        Model m5 = gm.createModel("examplePoint");
+        gm.addModel(m5, "examplePoint");
+        Model m6 = gm.createModel("exampleConnection");
+        gm.addModel(m6, "exampleConnection");
 
         // And link!
         gm.linkModels(m1, m2);

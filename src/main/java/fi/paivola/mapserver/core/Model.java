@@ -96,6 +96,7 @@ public abstract class Model {
         } else {
             this.proto = false;
             this.sm = sm;
+            this.name = sm.name;
         }
         this.ll = new LatLng(0, 0);
     }

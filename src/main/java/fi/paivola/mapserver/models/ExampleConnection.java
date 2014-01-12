@@ -12,14 +12,14 @@ import fi.paivola.mapserver.utils.Color;
  *
  * @author juhani
  */
-public class AsdConnection extends ConnectionModel {
+public class ExampleConnection extends ConnectionModel {
 
-    public AsdConnection(int id, SettingMaster sm) {
+    public ExampleConnection(int id, SettingMaster sm) {
         super(id, sm);
         this.passthrough = true;
     }
 
-    public AsdConnection() {
+    public ExampleConnection() {
         super();
         this.passthrough = true;
     }
@@ -37,7 +37,7 @@ public class AsdConnection extends ConnectionModel {
     @Override
     public void onRegisteration(GameManager gm, SettingMaster sm) {
         sm.color = new Color(64, 128, 256);
-        sm.name = "asdConnection";
+        sm.name = "exampleConnection";
     }
 
     @Override
