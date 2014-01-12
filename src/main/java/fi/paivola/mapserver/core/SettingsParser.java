@@ -3,10 +3,8 @@ package fi.paivola.mapserver.core;
 import fi.paivola.mapserver.utils.CCs;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +20,6 @@ import org.json.simple.parser.ParseException;
  */
 public class SettingsParser {
 
-    public static List<String> models;
     public static JSONObject settings = null;
 
     public static void parse() throws IOException, ParseException {
@@ -34,9 +31,7 @@ public class SettingsParser {
         if (is == null) {
             is = SettingsParser.class.getClassLoader().getResourceAsStream("settings.json");
         }
-
-        models = new ArrayList<>();
-
+        
         java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
         settings = (JSONObject) (new JSONParser().parse( s.hasNext() ? s.next() : ""));
 

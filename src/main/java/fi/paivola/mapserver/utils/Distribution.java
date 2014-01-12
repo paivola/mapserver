@@ -23,7 +23,6 @@ public class Distribution {
      * @param m middle
      * @param e higher end, higher values = 0;
      */
-
     public Distribution(double s, double m, double e) {
         if(s == m || e == m)
             throw new IllegalArgumentException("m must be != s and != e");
@@ -49,9 +48,10 @@ public class Distribution {
     }
 
     /**
-     * Return a number located at a specific point.
+     * Returns a number located at a specific point.
+     * @param i point between lower end and higher end
+     * @return value et given point
      */
-    
     public double exact(double i) {
         if(i <= s || i >= e)
             return 0;
@@ -61,9 +61,9 @@ public class Distribution {
     }
 
     /**
-     * Return a random number from the distribution.
+     * Returns a random number from the distribution.
+     * @return random number from the distribution
      */
-
     public double random() {
         return exact(Math.random()*(e - s) + s);
     }

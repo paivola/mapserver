@@ -33,9 +33,6 @@ public class StringPair {
         if (!Objects.equals(this.one, other.one)) {
             return false;
         }
-        if (!Objects.equals(this.two, other.two)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.two, other.two);
     }
 }

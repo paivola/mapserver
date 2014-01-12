@@ -1,6 +1,5 @@
 package fi.paivola.mapserver.core;
 
-import fi.paivola.mapserver.core.setting.Setting;
 import fi.paivola.mapserver.core.setting.SettingMaster;
 import fi.paivola.mapserver.utils.CCs;
 import java.io.IOException;
@@ -71,9 +70,7 @@ public class GameManager {
         if(SettingsParser.settings == null) {
             try {
                 SettingsParser.parse();
-            } catch (IOException ex) {
-                Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ParseException ex) {
+            } catch (    IOException | ParseException ex) {
                 Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -168,6 +165,7 @@ public class GameManager {
      * Creates a model based on a SettingMaster.
      *
      * @param type name of the models type
+     * @param sm
      * @return returns the model if success, null otherwise
      */
     public Model createModel(String type, SettingMaster sm) {
