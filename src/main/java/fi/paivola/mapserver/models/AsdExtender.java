@@ -27,7 +27,7 @@ public class AsdExtender extends ExtensionModel {
      */
     @Override
     public void onExtensionTick(DataFrame l, DataFrame c) {
-        this.parent.addEventToAll(c, new Event("boom2", "integer", "1"));
+        this.parent.addEventToAll(c, new Event("boom2", Event.Type.INT, 1));
         //System.out.println(this.id + " (extender) sent boom2 trough " + p.id);
     }
 

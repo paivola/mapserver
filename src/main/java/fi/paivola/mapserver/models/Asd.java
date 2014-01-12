@@ -46,7 +46,7 @@ public class Asd extends PointModel {
      */
     @Override
     public void onTick(DataFrame last, DataFrame current) {
-        this.addEventToAll(current, new Event("boom", "integer", last.getGlobalData("asdness")));
+        this.addEventToAll(current, new Event("boom", Event.Type.INT, last.getGlobalData("asdness")));
         //System.out.println(this.id + " sent boom");
         this.saveInt("booms", boomcount);
     }

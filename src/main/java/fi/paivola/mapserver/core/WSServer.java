@@ -263,7 +263,7 @@ public class WSServer extends WebSocketServer {
             return;
         
         mod.sm = SettingMaster.fromJSON((JSONObject)in.get("settings"));
-        mod.addEvent(new Event("settingsChanged", "notice", ""), mod);
+        mod.addEvent(new Event("settingsChanged", Event.Type.NOTIFICATION, null), mod);
         
         success(out);
     }
