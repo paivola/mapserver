@@ -31,18 +31,28 @@ public class Event {
      */
     public String name;
     /**
-     * In what frame was this sent.
-     */
-    public int frame;
-    /**
      * Who sent this event?
      */
     public Model sender;
+    /**
+     * Target of this event.
+     */
+    public Model target;
+
+    public Event(Event e) {
+        this.name = e.name;
+        this.type = e.type;
+        this.value = e.value;
+        this.target = e.target;
+        this.sender = e.sender;
+    }
 
     public Event(String name, Type type, Object value) {
         this.name = name;
         this.type = type;
         this.value = value;
+        this.target = null;
+        this.sender = null;
     }
 
     public int getInt() {

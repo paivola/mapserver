@@ -11,6 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.simple.JSONObject;
@@ -58,6 +62,8 @@ public class GameManager {
 
     private final static Logger log = Logger.getLogger("mapserver");
 
+    private ExecutorService es;
+
     /**
      * Are we done?
      */
@@ -70,6 +76,7 @@ public class GameManager {
         this.active_models = new HashMap<>();
         this.waiting_extensions = new ArrayList<>();
         this.current_id = 0;
+
         log.setLevel(Level.FINE);
 
         if (SettingsParser.settings == null) {
@@ -326,6 +333,8 @@ public class GameManager {
 
         log.log(Level.FINE, "Stepping trough");
 
+        this.es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
         while (this.tick_current <= this.tick_amount) {
             this.step();
             if (this.printOnDone == 2) {
@@ -336,6 +345,8 @@ public class GameManager {
                 }
             }
         }
+
+        this.es.shutdown();
 
         this.ready = true;
         log.log(Level.FINE, "Stepped trough");
@@ -363,18 +374,30 @@ public class GameManager {
 
         DataFrame current = this.frames.get(this.tick_current);
         current.locked = false;
+
+        CountDownLatch latch = new CountDownLatch(this.active_models.size());
+
         if (this.tick_current > 0) {
             DataFrame last = this.frames.get(this.tick_current - 1);
             for (Model value : this.active_models.values()) {
-                value.onTickStart(last, current);
+                es.execute(new ModelRunner(latch, value, last, current, false));
+                //value.onTickStart(last, current);
             }
         } else { //step 0 needs to use default values
             log.log(Level.FINE, "Generating defaults ({0})", this.active_models.size());
             for (Model value : this.active_models.values()) {
-                this.populateDefaults(value, current);
+                es.execute(new ModelRunner(latch, value, null, current, true));
+                //this.populateDefaults(value, current);
             }
             log.log(Level.FINE, "Done");
         }
+
+        try {
+            latch.await();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         current.locked = true;
 
         this.tick_current++;

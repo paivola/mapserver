@@ -61,7 +61,7 @@ public class ExampleExtender extends ExtensionModel {
 
     @Override
     public void onRegisteration(GameManager gm, SettingMaster sm) {
-        sm.name = "exampleExtender"; 
+        sm.name = "exampleExtender";
         sm.exts = "examplePoint"; // what are we extending?
         // you can add new settings normally, they will belong to the parent after this.
         sm.settings.put("annoy", new SettingDouble("How easy is it to annoy this model?", 0.5, new RangeDouble(0, 1)));

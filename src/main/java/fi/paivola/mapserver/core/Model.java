@@ -8,7 +8,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -34,10 +33,6 @@ public abstract class Model {
      * List of all connections (connection models).
      */
     public List<Model> connections;
-    /**
-     * List of events waiting.
-     */
-    public List<Event> events;
     /**
      * All data that are automatically saved to a DataFrame.
      */
@@ -80,7 +75,6 @@ public abstract class Model {
     public Model(int id) {
         this.id = id;
         this.connections = new ArrayList<>();
-        this.events = new ArrayList<>();
         this.data = new HashMap();
         this.extensions = new HashMap();
         this.allowedNames = new ArrayList<>();
@@ -141,15 +135,9 @@ public abstract class Model {
             return;
         }
 
-        // lets check if there is some events waiting to get trough
-        // fixes java.util.ConcurrentModificationException
-        List<Event> _buf = new ArrayList<>();
-        for (Event i : this.events) {
-            if (i.frame == last.index) {
-                _buf.add(i);
-            }
-        }
-        for (Event i : _buf) {
+        List<Event> events = last.getEventsFor(this);
+
+        for (Event i : events) {
             this.onEvent(i, current);
         }
 
@@ -157,20 +145,12 @@ public abstract class Model {
         for (Map.Entry pairs : this.extensions.entrySet()) {
             // lets go trough the events ONCE again... this time for extensions
             ((ExtensionModel) pairs.getValue()).data = data;
-            for (Event i : _buf) {
+            for (Event i : events) {
                 ((ExtensionModel) pairs.getValue()).onEvent(i, current);
             }
             ((ExtensionModel) pairs.getValue())
                     .onTickStart(last, current);
             data = ((ExtensionModel) pairs.getValue()).data;
-        }
-
-        // lets delete the events that we used
-        Iterator<Event> it = this.events.iterator();
-        while (it.hasNext()) {
-            if (it.next().frame == last.index) {
-                it.remove();
-            }
         }
 
         this.dumpToDataFrame(current);
@@ -189,26 +169,21 @@ public abstract class Model {
     }
 
     /**
-     * Adds an event to this model
-     *
-     * @param e event to add
-     * @param m model from where the event originates
-     */
-    public void addEvent(Event e, Model m) {
-        this.events.add(e);
-    }
-
-    /**
-     * Adds a event to all connections.
+     * Adds a event to specific model. If that model is a pass through
+     * connection, it will be added forward.
      *
      * @param model the target of the event
      * @param frame dataframe of when it's added
      * @param e event thats added
      */
     public void addEventTo(Model model, DataFrame frame, Event e) {
-        e.frame = frame.index;
+        Model target = model;
+        while (target instanceof ConnectionModel && ((ConnectionModel) target).passthrough) {
+            target = ((ConnectionModel) target).other(this);
+        }
         e.sender = this;
-        model.addEvent(e, this);
+        e.target = target;
+        frame.addEvent(e);
     }
 
     /**
@@ -218,10 +193,8 @@ public abstract class Model {
      * @param e event thats added
      */
     public void addEventToAll(DataFrame frame, Event e) {
-        e.frame = frame.index;
-        e.sender = this;
         for (Model i : this.connections) {
-            i.addEvent(e, this);
+            this.addEventTo(i, frame, new Event(e));
         }
     }
 
@@ -472,4 +445,5 @@ public abstract class Model {
      * @param sm
      */
     public abstract void onUpdateSettings(SettingMaster sm);
+
 }

@@ -18,27 +18,13 @@ public abstract class ConnectionModel extends Model {
         this.maxConnections = 2;
     }
 
-    /**
-     * Adds a event to all connections except one.
-     *
-     * @param e event thats added
-     * @param m model to ignore
-     */
-    public void addEventToAllExceptOne(Event e, Model m) {
-        for (Model i : this.connections) {
-            if (i != m) {
-                i.addEvent(e, m);
+    public Model other(Model another) {
+        for (Model conn : connections) {
+            if (conn.id != another.id) {
+                return conn;
             }
         }
-    }
-
-    @Override
-    public void addEvent(Event e, Model m) {
-        if (this.passthrough) {
-            this.addEventToAllExceptOne(e, m);
-        } else {
-            super.addEvent(e, m);
-        }
+        return null;
     }
 
     /**

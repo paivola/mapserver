@@ -1,8 +1,12 @@
 package fi.paivola.mapserver.core;
 
 import fi.paivola.mapserver.utils.StringPair;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * DataFrame is used for saving data permanently. Either for other models to get
@@ -14,8 +18,9 @@ public class DataFrame {
 
     public int index;
     public boolean locked;
-    private final Map<StringPair, Object> data;
+    private final ConcurrentHashMap<StringPair, Object> data;
     public static String dataSeperator = ", ";
+    private final List<Event> events;
 
     /**
      * Class constructor.
@@ -24,7 +29,8 @@ public class DataFrame {
      */
     public DataFrame(int index) {
         this.index = index;
-        this.data = new HashMap();
+        this.data = new ConcurrentHashMap();
+        this.events = new ArrayList<>();
         this.locked = true;
     }
 
@@ -53,7 +59,7 @@ public class DataFrame {
      * @param data data itself
      * @return returns true if succeeded
      */
-    public boolean saveGlobalData(String name, Object data) {
+    public synchronized boolean saveGlobalData(String name, Object data) {
         if (this.locked) {
             return false;
         }
@@ -66,7 +72,7 @@ public class DataFrame {
      * @param name name of the data
      * @return returns the data
      */
-    public Object getGlobalData(String name) {
+    public synchronized Object getGlobalData(String name) {
         return this.data.get(new StringPair(" ", name));
     }
 
@@ -121,6 +127,28 @@ public class DataFrame {
 
     public Map<StringPair, Object> getRaw() {
         return this.data;
+    }
+
+    public void addEvent(Event e) {
+        if (this.locked) {
+            return;
+        }
+        this.events.add(e);
+    }
+
+    public List<Event> getEventsFor(Model m) {
+        List<Event> search = new ArrayList<>();
+        Iterator<Event> it = events.iterator();
+        while (it.hasNext()) {
+            Event e = it.next();
+            if (e == null) {
+                continue;
+            }
+            if (e.target.id == m.id) {
+                search.add(e);
+            }
+        }
+        return search;
     }
 
 }
