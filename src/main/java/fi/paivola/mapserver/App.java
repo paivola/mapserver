@@ -88,23 +88,23 @@ public class App {
         SettingMaster sm = gm.getDefaultSM("exampleGlobal");
         sm.settings.get("luck").setValue("0.7");
         mg.onActualUpdateSettings(sm);
-        
+
         int size = 32;
-        
+
         Model[] points = new Model[size];
         Model[] conns = new Model[size];
-        
-        for(int i = 0; i < size; i++) {
+
+        for (int i = 0; i < size; i++) {
             points[i] = gm.createModel("examplePoint");
             conns[i] = gm.createModel("exampleConnection");
         }
-        
-        for(int i = 0; i < size; i++) {
-            if(i>0) {
-                gm.linkModelsWith(points[i-1], points[i], conns[i-1]);
+
+        for (int i = 0; i < size; i++) {
+            if (i > 0) {
+                gm.linkModelsWith(points[i - 1], points[i], conns[i - 1]);
             }
         }
-        gm.linkModelsWith(points[size-1], points[0], conns[size-1]);
+        gm.linkModelsWith(points[size - 1], points[0], conns[size - 1]);
 
         // Print final data in the end?
         if (!profilingRun) {

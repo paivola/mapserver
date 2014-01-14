@@ -130,8 +130,8 @@ public class DataFrame {
 
     /**
      * Adds a event to this dataframe.
-     * 
-     * @param e 
+     *
+     * @param e
      */
     public synchronized void addEvent(Event e) {
         if (this.locked) {
@@ -142,7 +142,7 @@ public class DataFrame {
 
     /**
      * Gets all of the events for a model.
-     * 
+     *
      * @param m Model to get the events for.
      * @return List of events.
      */
