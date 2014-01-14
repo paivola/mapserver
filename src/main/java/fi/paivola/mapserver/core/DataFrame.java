@@ -2,7 +2,6 @@ package fi.paivola.mapserver.core;
 
 import fi.paivola.mapserver.utils.StringPair;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +58,7 @@ public class DataFrame {
      * @param data data itself
      * @return returns true if succeeded
      */
-    public synchronized boolean saveGlobalData(String name, Object data) {
+    public boolean saveGlobalData(String name, Object data) {
         if (this.locked) {
             return false;
         }
@@ -72,7 +71,7 @@ public class DataFrame {
      * @param name name of the data
      * @return returns the data
      */
-    public synchronized Object getGlobalData(String name) {
+    public Object getGlobalData(String name) {
         return this.data.get(new StringPair(" ", name));
     }
 
@@ -129,13 +128,24 @@ public class DataFrame {
         return this.data;
     }
 
-    public void addEvent(Event e) {
+    /**
+     * Adds a event to this dataframe.
+     * 
+     * @param e 
+     */
+    public synchronized void addEvent(Event e) {
         if (this.locked) {
             return;
         }
         this.events.add(e);
     }
 
+    /**
+     * Gets all of the events for a model.
+     * 
+     * @param m Model to get the events for.
+     * @return List of events.
+     */
     public List<Event> getEventsFor(Model m) {
         List<Event> search = new ArrayList<>();
         Iterator<Event> it = events.iterator();
