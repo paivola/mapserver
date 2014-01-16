@@ -40,14 +40,13 @@ public class ExamplePoint extends PointModel {
      */
     @Override
     public void onTick(DataFrame last, DataFrame current) {
-        /* These cat's are quite strange. 
-         If there are cats in the world, there is a chance of atleast 
-         one of them being atleast here. What a strange world do we live in.
-         */
-        if (last.getGlobalInt("cats") > 0 && (new Random()).nextFloat() < this.skill) {
-            // If we saw a cat, let's tell our neighbours about it!
-            this.addEventToAll(current, new Event("I saw a cat!", Event.Type.NOTIFICATION, null));
-            this.catSightings++;
+        // If our skill of seeing cats is high enough...
+        if ((new Random()).nextFloat() < this.skill) {
+            // we tell each of our neighbours that we saw some cats
+            for (int i = 0; i < last.getGlobalInt("cats"); i++) {
+                this.addEventToAll(current, new Event("I saw a cat!", Event.Type.NOTIFICATION, null));
+            }
+            this.catSightings += last.getGlobalInt("cats");
         }
 
         this.saveInt("catsSeen", catSightings);

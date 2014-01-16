@@ -86,7 +86,7 @@ public class App {
 
         // This is how you change a "setting" from the code.
         SettingMaster sm = gm.getDefaultSM("exampleGlobal");
-        sm.settings.get("luck").setValue("0.7");
+        sm.settings.get("cats").setValue("2");
         mg.onActualUpdateSettings(sm);
 
         int size = 32;
