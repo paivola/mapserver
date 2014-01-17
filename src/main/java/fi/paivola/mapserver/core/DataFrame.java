@@ -2,6 +2,7 @@ package fi.paivola.mapserver.core;
 
 import fi.paivola.mapserver.utils.StringPair;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ public class DataFrame {
     private final ConcurrentHashMap<StringPair, Object> data;
     public static String dataSeperator = ", ";
     private final List<Event> events;
+    private Calendar date;
 
     /**
      * Class constructor.
@@ -31,6 +33,9 @@ public class DataFrame {
         this.data = new ConcurrentHashMap();
         this.events = new ArrayList<>();
         this.locked = true;
+        this.date = Calendar.getInstance();
+        this.date.set(Calendar.WEEK_OF_YEAR, index%52+1);
+        this.date.add(Calendar.YEAR, (int)index/52);
     }
 
     /**
@@ -161,4 +166,12 @@ public class DataFrame {
         return search;
     }
 
+    /**
+     * Get the current date.
+     * @return current date
+     */
+    public Calendar getDate() {
+        return this.date;
+    }
+    
 }
