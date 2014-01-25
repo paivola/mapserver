@@ -29,6 +29,8 @@ public class App {
         if (args.length > 0) {
             File file = new File(args[0]);
             stream = new FileInputStream(file);
+            TestcaseRunner tr = new TestcaseRunner(stream);
+            return;
         } else {
             stream = App.class.getClassLoader().getResourceAsStream("default_testcase.csv");
         }

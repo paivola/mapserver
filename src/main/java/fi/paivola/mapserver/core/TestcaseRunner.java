@@ -3,13 +3,10 @@ package fi.paivola.mapserver.core;
 import au.com.bytecode.opencsv.CSVReader;
 import fi.paivola.mapserver.core.setting.Setting;
 import fi.paivola.mapserver.core.setting.SettingMaster;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -54,6 +51,8 @@ public class TestcaseRunner {
     private ArrayList<ParamE> paramE;
     private ArrayList<DefparamE> defparamE;
 
+    private int ticks = (int) Math.floor(52.177457 * 20);
+
     public TestcaseRunner(InputStream stream) throws IOException, Exception {
         modelE = new ArrayList<>();
         linkE = new ArrayList<>();
@@ -63,6 +62,9 @@ public class TestcaseRunner {
         String[] nextLine;
         int line = 1;
         while ((nextLine = reader.readNext()) != null) {
+            for (int i = 0; i < nextLine.length; i++) {
+                nextLine[i] = nextLine[i].trim();
+            }
             onParseLine(line++, nextLine);
         }
         run();
@@ -77,6 +79,9 @@ public class TestcaseRunner {
             return;
         }
         switch (act) {
+            case "set":
+                onSet(line, a);
+                break;
             case "model":
                 onModel(line, a);
                 break;
@@ -90,7 +95,23 @@ public class TestcaseRunner {
                 onDefparam(line, a);
                 break;
             default:
-                throw new Exception("Unknown command "+act);
+                throw new Exception("Unknown command " + act);
+        }
+    }
+
+    private void onSet(int line, String[] a) {
+        if (a.length != 3) {
+            return;
+        }
+
+        String what = a[1];
+        String to = a[2];
+        switch (what) {
+            case "ticks":
+                ticks = Integer.parseInt(a[2]);
+                break;
+            default:
+                break;
         }
     }
 
@@ -166,14 +187,14 @@ public class TestcaseRunner {
                     }
                 }
             } catch (Exception ex) {
-                
+
             }
         }
         model.model.onActualUpdateSettings(sm);
     }
 
     private void run() throws Exception {
-        GameThread one = new GameThread((int) Math.floor(52.177457 * 20));
+        GameThread one = new GameThread(ticks);
         GameManager gm = one.game;
 
         ArrayList<ModelA> models = new ArrayList<>();
