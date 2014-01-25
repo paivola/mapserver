@@ -4,11 +4,16 @@ import fi.paivola.mapserver.core.GameManager;
 import fi.paivola.mapserver.core.GameThread;
 import fi.paivola.mapserver.core.Model;
 import fi.paivola.mapserver.core.SettingsParser;
+import fi.paivola.mapserver.core.TestcaseRunner;
 import fi.paivola.mapserver.core.WSServer;
 import fi.paivola.mapserver.core.setting.SettingMaster;
+import fi.paivola.mapserver.models.ExampleGlobal;
 import fi.paivola.mapserver.utils.CSVDumper;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import static java.lang.Integer.parseInt;
 import java.net.UnknownHostException;
@@ -19,7 +24,14 @@ public class App {
 
     static final boolean profilingRun = false;
 
-    public static void main(String[] args) throws UnknownHostException, IOException, ParseException, InterruptedException {
+    public static void main(String[] args) throws UnknownHostException, IOException, ParseException, InterruptedException, Exception {
+        InputStream stream = null;
+        if (args.length > 0) {
+            File file = new File(args[0]);
+            stream = new FileInputStream(file);
+        } else {
+            stream = App.class.getClassLoader().getResourceAsStream("default_testcase.csv");
+        }
 
         SettingsParser.parse();
 
@@ -53,6 +65,10 @@ public class App {
                         ws.stop();
                         runTest();
                         break mainloop;
+                    case "f":
+                        ws.stop();
+                        TestcaseRunner tr = new TestcaseRunner(stream);
+                        break mainloop;
                     case "h":
                     case "help":
                         printHelp();
@@ -69,6 +85,7 @@ public class App {
     static void printHelp() {
         System.out.println("q|e|quit|exit   - Quits the program\n"
                 + "t|test          - Run the test function\n"
+                + "f               - Run the TestcaseRunner\n"
                 + "h|help          - Display this help");
     }
 

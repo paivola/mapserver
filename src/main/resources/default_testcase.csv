@@ -1,0 +1,9 @@
+model,examplePoint
+model,examplePoint
+model,exampleConnection
+link,1,2,3
+model,exampleGlobal
+
+defparam,exampleGlobal,cats,32
+defparam,examplePoint,annoy,1
+param,2,annoy,0
