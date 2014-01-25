@@ -417,4 +417,11 @@ public class GameManager {
         this.waiting_extensions.add(tmp);
     }
 
+    /**
+     * @return Are we done?
+     */
+    public boolean isReady(){
+        return this.ready;
+    }
+    
 }
