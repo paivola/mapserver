@@ -29,6 +29,7 @@ Usage
 * Read the documentation in `target/site/apidocs/index.html`
 * Run `mvn compile` to compile the program
 * Run `mvn exec:java` to run the program
+* Run `mvn exec:java -Dexec.args="src/main/resources/default_testcase.csv"` to run with a testcase CSV (change the path)
 
 OR
 
