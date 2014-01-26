@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -124,10 +125,17 @@ public class TestcaseRunner {
         String[] nextLine;
         int line = 1;
         while ((nextLine = reader.readNext()) != null) {
+            int size = 0;
             for (int i = 0; i < nextLine.length; i++) {
                 nextLine[i] = nextLine[i].trim();
+                if(nextLine[i].length()>0) {
+                    size++;
+                }
             }
-            onParseLine(line++, nextLine);
+            String[] realLine = new String[size];
+            System.arraycopy(nextLine, 0, realLine, 0, size);
+            
+            onParseLine(line++, realLine);
         }
         while (runs_done < runs) {
             run();
@@ -319,7 +327,7 @@ public class TestcaseRunner {
             csv.add(cs);
         }
 
-        gm.printOnDone = 2;
+        gm.printOnDone = 0;
         one.start();
         
         for (CSVDumper cs : csv) {
