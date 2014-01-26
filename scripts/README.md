@@ -1,7 +1,10 @@
 Usage
 ------
+
 Write into the command line
+
 	$ octave plot.m input.csv
+
 and the file output.png will be generated with all your data in it.
 
 NOTE
