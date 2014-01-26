@@ -7,7 +7,6 @@ import fi.paivola.mapserver.core.SettingsParser;
 import fi.paivola.mapserver.core.TestcaseRunner;
 import fi.paivola.mapserver.core.WSServer;
 import fi.paivola.mapserver.core.setting.SettingMaster;
-import fi.paivola.mapserver.models.ExampleGlobal;
 import fi.paivola.mapserver.utils.CSVDumper;
 import java.io.BufferedReader;
 import java.io.File;
@@ -135,7 +134,7 @@ public class App {
         one.start();
 
         //Save cats to a csv file
-        CSVDumper csv = new CSVDumper();
+        CSVDumper csv = new CSVDumper(0, "cats_out");
         csv.add("cats"); //global
         csv.add(points[0], "catsSeen"); //local
         csv.save(gm, true);

@@ -18,15 +18,17 @@ import java.util.logging.Logger;
  */
 public class CSVDumper {
 
-    public static final String csv_separator = ";";
-    public static final String decimal_separator = ",";
+    public static final String csv_separator = ",";
+    public static final String decimal_separator = ".";
 
     private final List<String> lines = new LinkedList<>();
     private PrintWriter out = null;
 
-    public CSVDumper() {
+    public CSVDumper(int run, String name) {
         try {
-            out = new PrintWriter(new FileWriter(new File("dump.csv")));
+            File f = new File("out"+java.io.File.separator+run+java.io.File.separator+name+".csv");
+            f.getParentFile().mkdirs();
+            out = new PrintWriter(new FileWriter(f));
         } catch (IOException ex) {
             Logger.getLogger(CSVDumper.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -7,4 +7,11 @@ model, exampleGlobal
 defparam, exampleGlobal, cats, 32
 defparam, examplePoint, annoy, 1
 param, 2, annoy, 0
+
 set, ticks, 10
+set, runs, 10
+
+dump, cats_out
+waste, 14, cats
+waste, 14, 1, catsSeen
+waste, 14, 2, catsSeen
