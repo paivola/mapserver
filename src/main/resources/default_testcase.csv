@@ -10,8 +10,9 @@ param, 2, annoy, 0
 
 set, ticks, 10
 set, runs, 10
+set, name, default
 
 dump, cats_out
-waste, 14, cats
-waste, 14, 1, catsSeen
-waste, 14, 2, catsSeen
+waste, 15, cats
+waste, 15, 1, catsSeen
+waste, 15, 2, catsSeen

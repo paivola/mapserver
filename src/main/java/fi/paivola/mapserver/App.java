@@ -134,7 +134,7 @@ public class App {
         one.start();
 
         //Save cats to a csv file
-        CSVDumper csv = new CSVDumper(0, "cats_out");
+        CSVDumper csv = new CSVDumper("none", "cats_out");
         csv.add("cats"); //global
         csv.add(points[0], "catsSeen"); //local
         csv.save(gm, true);

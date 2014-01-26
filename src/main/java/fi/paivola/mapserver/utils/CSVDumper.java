@@ -24,7 +24,7 @@ public class CSVDumper {
     private final List<String> lines = new LinkedList<>();
     private PrintWriter out = null;
 
-    public CSVDumper(int run, String name) {
+    public CSVDumper(String run, String name) {
         try {
             File f = new File("out"+java.io.File.separator+run+java.io.File.separator+name+".csv");
             f.getParentFile().mkdirs();

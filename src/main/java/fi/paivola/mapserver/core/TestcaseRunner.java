@@ -7,8 +7,11 @@ import fi.paivola.mapserver.utils.CSVDumper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  *
@@ -103,6 +106,8 @@ public class TestcaseRunner {
     private int ticks = (int) Math.floor(52.177457 * 20);
     private int runs = 1;
     private int runs_done = 0;
+    private String name = "unnamed";
+    private String timestamp;
 
     public TestcaseRunner(InputStream stream) throws IOException, Exception {
         modelE = new ArrayList<>();
@@ -110,6 +115,11 @@ public class TestcaseRunner {
         paramE = new ArrayList<>();
         defparamE = new ArrayList<>();
         dumpE = new ArrayList<>();
+        Date date = new Date();
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+        sdf.setTimeZone(tz);
+        timestamp = sdf.format(date);
         CSVReader reader = new CSVReader(new InputStreamReader(stream));
         String[] nextLine;
         int line = 1;
@@ -176,6 +186,9 @@ public class TestcaseRunner {
                 break;
             case "runs":
                 runs = Integer.parseInt(a[2]);
+                break;
+            case "name":
+                name = a[2];
                 break;
             default:
                 break;
@@ -295,7 +308,7 @@ public class TestcaseRunner {
         }
         List<CSVDumper> csv = new ArrayList<>();
         for (DumpE e : dumpE) {
-            CSVDumper cs = new CSVDumper(runs_done, e.name);
+            CSVDumper cs = new CSVDumper(name+"-"+timestamp+java.io.File.separator+runs_done, e.name);
             for (WasteE ee : e.stuff) {
                 if(ee.model == 0) { // global
                     cs.add(ee.what);
