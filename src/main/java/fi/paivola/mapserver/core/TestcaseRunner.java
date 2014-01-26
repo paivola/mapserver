@@ -128,13 +128,13 @@ public class TestcaseRunner {
             int size = 0;
             for (int i = 0; i < nextLine.length; i++) {
                 nextLine[i] = nextLine[i].trim();
-                if(nextLine[i].length()>0) {
+                if (nextLine[i].length() > 0) {
                     size++;
                 }
             }
             String[] realLine = new String[size];
             System.arraycopy(nextLine, 0, realLine, 0, size);
-            
+
             onParseLine(line++, realLine);
         }
         while (runs_done < runs) {
@@ -183,9 +183,9 @@ public class TestcaseRunner {
         }
     }
 
-    private void onSet(int line, String[] a) {
+    private void onSet(int line, String[] a) throws Exception {
         if (a.length != 3) {
-            return;
+            throw new Exception("Invalid amount of arguments, expected 2");
         }
 
         String what = a[1];
@@ -205,74 +205,77 @@ public class TestcaseRunner {
         }
     }
 
-    private void onModel(int line, String[] a) {
+    private void onModel(int line, String[] a) throws Exception {
         if (a.length != 2) {
-            return;
+            throw new Exception("Invalid amount of arguments, expected 1");
         }
         ModelE e = new ModelE(line, a[1]);
         modelE.add(e);
     }
 
-    private void onLink(int line, String[] a) {
+    private void onLink(int line, String[] a) throws Exception {
         if (a.length != 4) {
-            return;
+            throw new Exception("Invalid amount of arguments, expected 3");
         }
         LinkE e = new LinkE(Integer.parseInt(a[1]), Integer.parseInt(a[2]), Integer.parseInt(a[3]));
         linkE.add(e);
     }
 
-    private void onDefparam(int line, String[] a) {
+    private void onDefparam(int line, String[] a) throws Exception {
         if (a.length != 4) {
-            return;
+            throw new Exception("Invalid amount of arguments, expected 3");
         }
 
         DefparamE e = new DefparamE(a[1], a[2], a[3]);
         defparamE.add(e);
     }
 
-    private void onParam(int line, String[] a) {
+    private void onParam(int line, String[] a) throws Exception {
         if (a.length != 4) {
-            return;
+            throw new Exception("Invalid amount of arguments, expected 3");
         }
 
         ParamE e = new ParamE(Integer.parseInt(a[1]), a[2], a[3]);
         paramE.add(e);
     }
-    
-    private void onDump(int line, String[] a) {
+
+    private void onDump(int line, String[] a) throws Exception {
         if (a.length != 2) {
-            return;
+            throw new Exception("Invalid amount of arguments, expected 1");
         }
-        
+
         DumpE e = new DumpE(line, a[1]);
         dumpE.add(e);
     }
-    
-    private void onWaste(int line, String[] a) {
+
+    private void onWaste(int line, String[] a) throws Exception {
         if (a.length == 3) { // global
             WasteE e = new WasteE(0, a[2]);
             getDump(Integer.parseInt(a[1])).stuff.add(e);
         } else if (a.length == 4) { // local
             WasteE e = new WasteE(Integer.parseInt(a[2]), a[3]);
             getDump(Integer.parseInt(a[1])).stuff.add(e);
+        } else {
+            throw new Exception("Invalid amount of arguments, expected 2 or 3");
         }
-    }
-    
-    private DumpE getDump(int line) {
-        for(DumpE e : dumpE) {
-            if(e.line == line)
-                return e;
-        }
-        return null;
     }
 
-    private Model resolveLineToModel(int line, ArrayList<ModelA> models) {
+    private DumpE getDump(int line) throws Exception {
+        for (DumpE e : dumpE) {
+            if (e.line == line) {
+                return e;
+            }
+        }
+        throw new Exception("Could not find dump by line "+line);
+    }
+
+    private Model resolveLineToModel(int line, ArrayList<ModelA> models) throws Exception {
         for (ModelA i : models) {
             if (i.line == line) {
                 return i.model;
             }
         }
-        return null;
+        throw new Exception("Could not find model by line "+line);
     }
 
     private void resolveParams(GameManager gm, ModelA model) throws Exception {
@@ -283,17 +286,13 @@ public class TestcaseRunner {
             }
         }
         for (ParamE e : paramE) {
-            try {
-                if (e.line == model.line) {
-                    Setting s = sm.settings.get(e.what);
-                    if (s != null) {
-                        s.setValue(e.value);
-                    } else {
-                        throw new Exception("Fuck");
-                    }
+            if (e.line == model.line) {
+                Setting s = sm.settings.get(e.what);
+                if (s != null) {
+                    s.setValue(e.value);
+                } else {
+                    throw new Exception("Failed at getting setting named "+e.what+" from "+model.name);
                 }
-            } catch (Exception ex) {
-
             }
         }
         model.model.onActualUpdateSettings(sm);
@@ -318,9 +317,9 @@ public class TestcaseRunner {
         }
         List<CSVDumper> csv = new ArrayList<>();
         for (DumpE e : dumpE) {
-            CSVDumper cs = new CSVDumper(name+"-"+timestamp+"/"+runs_done, e.name);
+            CSVDumper cs = new CSVDumper(name + "-" + timestamp + "/" + runs_done, e.name);
             for (WasteE ee : e.stuff) {
-                if(ee.model == 0) { // global
+                if (ee.model == 0) { // global
                     cs.add(ee.what);
                 } else {
                     cs.add(resolveLineToModel(ee.model, models), ee.what);
@@ -331,7 +330,7 @@ public class TestcaseRunner {
 
         gm.printOnDone = 0;
         one.start();
-        
+
         for (CSVDumper cs : csv) {
             cs.save(gm, true);
         }
