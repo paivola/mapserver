@@ -26,7 +26,7 @@ public class CSVDumper {
 
     public CSVDumper(String run, String name) {
         try {
-            File f = new File("out"+java.io.File.separator+run+java.io.File.separator+name+".csv");
+            File f = new File("out"+"/"+run+"/"+name+".csv");
             f.getParentFile().mkdirs();
             out = new PrintWriter(new FileWriter(f));
         } catch (IOException ex) {

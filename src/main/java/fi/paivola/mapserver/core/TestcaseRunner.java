@@ -118,7 +118,7 @@ public class TestcaseRunner {
         dumpE = new ArrayList<>();
         Date date = new Date();
         TimeZone tz = TimeZone.getTimeZone("UTC");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         sdf.setTimeZone(tz);
         timestamp = sdf.format(date);
         CSVReader reader = new CSVReader(new InputStreamReader(stream), ',', '\"', 1);
@@ -318,7 +318,7 @@ public class TestcaseRunner {
         }
         List<CSVDumper> csv = new ArrayList<>();
         for (DumpE e : dumpE) {
-            CSVDumper cs = new CSVDumper(name+"-"+timestamp+java.io.File.separator+runs_done, e.name);
+            CSVDumper cs = new CSVDumper(name+"-"+timestamp+"/"+runs_done, e.name);
             for (WasteE ee : e.stuff) {
                 if(ee.model == 0) { // global
                     cs.add(ee.what);
