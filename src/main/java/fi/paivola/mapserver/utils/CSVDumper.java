@@ -26,7 +26,7 @@ public class CSVDumper {
 
     public CSVDumper(String run, String name) {
         try {
-            File f = new File("out"+"/"+run+"/"+name+".csv");
+            File f = new File("out" + "/" + run + "/" + name + ".csv");
             f.getParentFile().mkdirs();
             out = new PrintWriter(new FileWriter(f));
         } catch (IOException ex) {
@@ -85,8 +85,11 @@ public class CSVDumper {
     }
 
     private void write(Object[] ss) {
-        for (Object s : ss) {
-            out.print((s + csv_separator).replace(".", decimal_separator));
+        for (int i = 0; i < ss.length; i++) {
+            out.print((ss[i].toString()).replace(".", decimal_separator));
+            if (i < ss.length - 1) {
+                out.print(csv_separator);
+            }
         }
         out.println();
     }

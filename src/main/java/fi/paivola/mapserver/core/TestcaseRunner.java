@@ -118,7 +118,7 @@ public class TestcaseRunner {
         dumpE = new ArrayList<>();
         Date date = new Date();
         TimeZone tz = TimeZone.getTimeZone("UTC");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HHmmss'Z'");
         sdf.setTimeZone(tz);
         timestamp = sdf.format(date);
         CSVReader reader = new CSVReader(new InputStreamReader(stream), ',', '\"', 1);
