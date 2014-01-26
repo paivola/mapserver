@@ -121,9 +121,9 @@ public class TestcaseRunner {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
         sdf.setTimeZone(tz);
         timestamp = sdf.format(date);
-        CSVReader reader = new CSVReader(new InputStreamReader(stream));
+        CSVReader reader = new CSVReader(new InputStreamReader(stream), ',', '\"', 1);
         String[] nextLine;
-        int line = 1;
+        int line = 2;
         while ((nextLine = reader.readNext()) != null) {
             int size = 0;
             for (int i = 0; i < nextLine.length; i++) {
@@ -147,6 +147,8 @@ public class TestcaseRunner {
         String act = null;
         if (a.length != 0) {
             act = a[0];
+        } else {
+            return;
         }
         if (act == null) {
             return;

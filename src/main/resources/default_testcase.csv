@@ -1,18 +1,19 @@
+command, argument1, argument2, argument3
 model, examplePoint,,
 model, examplePoint,,
 model, exampleConnection,,
-link, 1, 2, 3
+link, 2, 3, 4
 model, exampleGlobal,,
-
+,,,
 defparam, exampleGlobal, cats, 32
 defparam, examplePoint, annoy, 1
-param, 2, annoy, 0
-
+param, 3, annoy, 0
+,,,
 set, ticks, 100,
 set, runs, 100,
 set, name, default,
-
+,,,
 dump, cats_out,,
-waste, 15, cats,
-waste, 15, 1, catsSeen
-waste, 15, 2, catsSeen
+waste, 16, cats,
+waste, 16, 2, catsSeen
+waste, 16, 3, catsSeen
