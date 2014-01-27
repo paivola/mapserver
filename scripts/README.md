@@ -3,7 +3,7 @@ Usage
 
 Write into the command line
 
-	$ octave plot.m input.csv
+	$ octave plotscript.m input.csv
 
 and the file output.png will be generated with all your data in it.
 
@@ -15,5 +15,5 @@ or may not work with other versions.
 
 Dependencies
 ------
-* OCTAVE
-* GNUPLOT
+* GNU Octave
+* gnuplot
