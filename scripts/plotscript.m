@@ -15,4 +15,5 @@ xlabel("time");
 ylabel("values");
 
 figure(1);
-print("output.png", "-dpng");
+fullname = [filename ".png"];
+print(fullname, "-dpng");

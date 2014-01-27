@@ -1,6 +1,9 @@
+At the moment this makes .png files of every .csv-file in directory. 
+
 Usage: Write into the command line
-	$ octave plot.m input.csv
-and the file output.png will be generated with all your data in it.
+	$  for i in *.csv;do octave plotscript.m "$i";done
+
+and the files will be generated with all your data in it.
 
 Assumes that the first line is uncommented text and no others contain it.
 
