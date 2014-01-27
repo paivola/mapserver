@@ -7,13 +7,21 @@ plotscript.m
 ============
 
 Usage
-------
+This script makes .png-file of one .csv-file or all .csv-files in the same directory. 
 
-Write into the command line
+Making one .png-file:
 
-	$ octave plotscript.m input.csv
+        Write into the command line
 
-and the file output.png will be generated with all your data in it.
+		$ octave plotscript.m input.csv
+
+Making .png-files of all .csv-files in the same directory:
+	
+	Write into the command line
+		
+		$ for i in *.csv;do octave plotscript.m "$i";done
+
+.png-files will be named: input.csv.png
 
 NOTE
 ------
@@ -22,6 +30,5 @@ or may not work with other versions.
 * Assumes that the first line is uncommented text and no others contain it.
 
 Dependencies
-------
 * GNU Octave
 * gnuplot
