@@ -28,6 +28,7 @@ def main():
             with open(os.path.join("out", "testcase_" + str(inx) + ".csv"), "w") as fp2:
                 fp2.write(data)
                 fp2.close()
+            print "Saved " + os.path.join("out", "testcase_" + str(inx) + ".csv")
 
         fp.close()
 
