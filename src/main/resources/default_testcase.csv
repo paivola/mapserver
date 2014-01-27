@@ -1,6 +1,6 @@
 command, argument1, argument2, argument3
-model, examplePoint,,
-model, examplePoint,,
+model, examplePoint,0.4,15.5
+model, examplePoint,0.2,15.1
 model, exampleConnection,,
 link, 2, 3, 4
 model, exampleGlobal,,

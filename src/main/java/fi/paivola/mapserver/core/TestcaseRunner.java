@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -25,7 +24,11 @@ public class TestcaseRunner {
         public ModelE(int line, String name) {
             this.name = name;
             this.line = line;
+            x = -1;
+            y = -1;
         }
+        public double x;
+        public double y;
         public String name;
         public int line;
     }
@@ -208,11 +211,18 @@ public class TestcaseRunner {
     }
 
     private void onModel(int line, String[] a) throws Exception {
-        if (a.length != 2) {
-            throw new Exception("Invalid amount of arguments, expected 1");
+        if (a.length == 2) {
+            ModelE e = new ModelE(line, a[1]);
+            modelE.add(e);
+        } else if (a.length == 4) {
+            ModelE e = new ModelE(line, a[1]);
+            e.x = Double.parseDouble(a[2]);
+            e.y = Double.parseDouble(a[3]);
+            modelE.add(e);
+        } else {
+            throw new Exception("Invalid amount of arguments, expected 1 o 3");
         }
-        ModelE e = new ModelE(line, a[1]);
-        modelE.add(e);
+
     }
 
     private void onLink(int line, String[] a) throws Exception {
@@ -268,7 +278,7 @@ public class TestcaseRunner {
                 return e;
             }
         }
-        throw new Exception("Could not find dump by line "+line);
+        throw new Exception("Could not find dump by line " + line);
     }
 
     private Model resolveLineToModel(int line, ArrayList<ModelA> models) throws Exception {
@@ -277,7 +287,7 @@ public class TestcaseRunner {
                 return i.model;
             }
         }
-        throw new Exception("Could not find model by line "+line);
+        throw new Exception("Could not find model by line " + line);
     }
 
     private void resolveParams(GameManager gm, ModelA model) throws Exception {
@@ -293,7 +303,7 @@ public class TestcaseRunner {
                 if (s != null) {
                     s.setValue(e.value);
                 } else {
-                    throw new Exception("Failed at getting setting named "+e.what+" from "+model.name);
+                    throw new Exception("Failed at getting setting named " + e.what + " from " + model.name);
                 }
             }
         }
@@ -307,6 +317,9 @@ public class TestcaseRunner {
         ArrayList<ModelA> models = new ArrayList<>();
         for (ModelE e : modelE) {
             Model a = gm.createModel(e.name);
+            if(e.x != -1 && e.y != -1) {
+                a.setLatLng(e.x, e.y);
+            }
             ModelA aa = new ModelA(e.line, e.name, a);
             resolveParams(gm, aa);
             models.add(aa);
