@@ -1,7 +1,4 @@
 Usage
-------
-
-<<<<<<< HEAD
 This script makes .png-file of one .csv-file or all .csv-files in the same directory. 
 
 Making one .png-file:
@@ -18,17 +15,12 @@ Making .png-files of all .csv-files in the same directory:
 
 .png-files will be named: input.csv.png
 
-		
-=======
-Write into the command line
+NOTE
+------
+* Coded with Octave 3.2.4 (because there isn't newer versions for ubuntu), it may 
+or may not work with other versions. 
+* Assumes that the first line is uncommented text and no others contain it.
 
-	$ octave plotscript.m input.csv
-
-and the file output.png will be generated with all your data in it.
-
-
-* OCTAVE
-* GNUPLOT
-=======
+Dependencies
 * GNU Octave
 * gnuplot
