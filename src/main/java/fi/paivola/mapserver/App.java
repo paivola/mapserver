@@ -29,12 +29,14 @@ public class App {
             File file = new File(args[0]);
             if (file.isFile()) {
                 stream = new FileInputStream(file);
-                TestcaseRunner tr = new TestcaseRunner(stream);
+                TestcaseRunner tr = new TestcaseRunner(0, stream);
             } else if (file.isDirectory()) {
-                for(File f : file.listFiles()) {
+                File[] files = file.listFiles();
+                for(int i = 0; i < files.length; i++) {
+                    File f = files[i];
                     if(f.isFile()) {
                         stream = new FileInputStream(f);
-                        TestcaseRunner tr = new TestcaseRunner(stream);
+                        TestcaseRunner tr = new TestcaseRunner(i, stream);
                     }
                 }
             } else {
@@ -80,7 +82,7 @@ public class App {
                         break mainloop;
                     case "f":
                         ws.stop();
-                        TestcaseRunner tr = new TestcaseRunner(stream);
+                        TestcaseRunner tr = new TestcaseRunner(0, stream);
                         break mainloop;
                     case "h":
                     case "help":

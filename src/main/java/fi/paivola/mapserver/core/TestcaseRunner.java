@@ -109,8 +109,9 @@ public class TestcaseRunner {
     private int runs_done = 0;
     private String name = "unnamed";
     private String timestamp;
+    private int testcase_number = 0;
 
-    public TestcaseRunner(InputStream stream) throws IOException, Exception {
+    public TestcaseRunner(int testcase_number, InputStream stream) throws IOException, Exception {
         modelE = new ArrayList<>();
         linkE = new ArrayList<>();
         paramE = new ArrayList<>();
@@ -121,6 +122,7 @@ public class TestcaseRunner {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HHmmss'Z'");
         sdf.setTimeZone(tz);
         timestamp = sdf.format(date);
+        this.testcase_number = testcase_number;
         CSVReader reader = new CSVReader(new InputStreamReader(stream), ',', '\"', 1);
         String[] nextLine;
         int line = 2;
@@ -317,7 +319,7 @@ public class TestcaseRunner {
         }
         List<CSVDumper> csv = new ArrayList<>();
         for (DumpE e : dumpE) {
-            CSVDumper cs = new CSVDumper(name + "-" + timestamp + "/" + runs_done, e.name);
+            CSVDumper cs = new CSVDumper(name + "-" + testcase_number + "-" + timestamp + "/" + runs_done, e.name);
             for (WasteE ee : e.stuff) {
                 if (ee.model == 0) { // global
                     cs.add(ee.what);
