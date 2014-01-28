@@ -1,12 +1,12 @@
 command, argument1, argument2, argument3
-model, examplePoint,0.4,15.5
-model, examplePoint,0.2,15.1
+model, examplePoint,,
+model, examplePoint,,
 model, exampleConnection,,
 link, 2, 3, 4
 model, exampleGlobal,,
 ,,,
-defparam, exampleGlobal, cats, 32
-defparam, examplePoint, annoy, 1
+defparam, exampleGlobal, cats, $0
+defparam, examplePoint, annoy, $1
 param, 3, annoy, 0
 ,,,
 set, ticks, 100,

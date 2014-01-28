@@ -27,8 +27,22 @@ public class App {
         InputStream stream = null;
         if (args.length > 0) {
             File file = new File(args[0]);
-            stream = new FileInputStream(file);
-            TestcaseRunner tr = new TestcaseRunner(stream);
+            if (file.isFile()) {
+                stream = new FileInputStream(file);
+                TestcaseRunner tr = new TestcaseRunner(0, stream);
+            } else if (file.isDirectory()) {
+                File[] files = file.listFiles();
+                for(int i = 0; i < files.length; i++) {
+                    File f = files[i];
+                    if(f.isFile()) {
+                        stream = new FileInputStream(f);
+                        TestcaseRunner tr = new TestcaseRunner(i, stream);
+                    }
+                }
+            } else {
+                System.err.println("Argument needs to be a file or a folder");
+                System.exit(-1);
+            }
             return;
         } else {
             stream = App.class.getClassLoader().getResourceAsStream("default_testcase.csv");
@@ -68,7 +82,7 @@ public class App {
                         break mainloop;
                     case "f":
                         ws.stop();
-                        TestcaseRunner tr = new TestcaseRunner(stream);
+                        TestcaseRunner tr = new TestcaseRunner(0, stream);
                         break mainloop;
                     case "h":
                     case "help":

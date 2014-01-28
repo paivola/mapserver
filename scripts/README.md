@@ -1,3 +1,11 @@
+testgen.py
+==========
+
+uses `in/testcase.csv.template` and `in/testcase.csv.data` to generate stuff into `out`
+
+plotscript.m
+============
+
 Usage
 This script makes .png-file of one .csv-file or all .csv-files in the same directory. 
 
