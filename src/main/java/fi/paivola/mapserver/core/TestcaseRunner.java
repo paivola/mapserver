@@ -263,22 +263,22 @@ public class TestcaseRunner {
     private void onWaste(int line, String[] a) throws Exception {
         if (a.length == 3) { // global
             WasteE e = new WasteE(0, a[2]);
-            getDump(Integer.parseInt(a[1])).stuff.add(e);
+            getDump(a[1]).stuff.add(e);
         } else if (a.length == 4) { // local
             WasteE e = new WasteE(Integer.parseInt(a[2]), a[3]);
-            getDump(Integer.parseInt(a[1])).stuff.add(e);
+            getDump(a[1]).stuff.add(e);
         } else {
             throw new Exception("Invalid amount of arguments, expected 2 or 3");
         }
     }
 
-    private DumpE getDump(int line) throws Exception {
+    private DumpE getDump(String name) throws Exception {
         for (DumpE e : dumpE) {
-            if (e.line == line) {
+            if (e.name.equals(name)) {
                 return e;
             }
         }
-        throw new Exception("Could not find dump by line " + line);
+        throw new Exception("Could not find dump by name " + name);
     }
 
     private Model resolveLineToModel(int line, ArrayList<ModelA> models) throws Exception {

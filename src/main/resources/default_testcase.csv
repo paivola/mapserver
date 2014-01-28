@@ -14,6 +14,6 @@ set, runs, 100,
 set, name, default,
 ,,,
 dump, cats_out,,
-waste, 16, cats,
-waste, 16, 2, catsSeen
-waste, 16, 3, catsSeen
+waste, cats_out, cats,
+waste, cats_out, 2, catsSeen
+waste, cats_out, 3, catsSeen
