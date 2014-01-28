@@ -1,6 +1,6 @@
 arg_list = argv();
 filename = arg_list{1};
-file = dlmread(filename, ",", 'A2..Z999');
+file = dlmread(filename, ",", 'A2..Z999999');
 
 x = 1:1:length(file(:,1));
 
