@@ -24,12 +24,14 @@ public class TestcaseRunner {
         public ModelE(int line, String name) {
             this.name = name;
             this.line = line;
+            this.alias = "";
             x = -1;
             y = -1;
         }
         public double x;
         public double y;
         public String name;
+        public String alias;
         public int line;
     }
 
@@ -39,30 +41,32 @@ public class TestcaseRunner {
             this.line = line;
             this.model = model;
             this.name = name;
+            this.alias = "";
         }
         public Model model;
         public String name;
+        public String alias;
         public int line;
     }
 
     public class LinkE {
 
-        public LinkE(int line1, int line2, int line3) {
+        public LinkE(String line1, String line2, String line3) {
             this.line1 = line1;
             this.line2 = line2;
             this.line3 = line3;
         }
-        public int line1, line2, line3;
+        public String line1, line2, line3;
     }
 
     public class ParamE {
 
-        public ParamE(int line, String what, String value) {
+        public ParamE(String line, String what, String value) {
             this.line = line;
             this.what = what;
             this.value = value;
         }
-        public int line;
+        public String line;
         public String what;
         public String value;
     }
@@ -81,11 +85,11 @@ public class TestcaseRunner {
 
     public class WasteE {
 
-        public WasteE(int model, String what) {
+        public WasteE(String model, String what) {
             this.model = model;
             this.what = what;
         }
-        public int model;
+        public String model;
         public String what;
     }
 
@@ -211,13 +215,16 @@ public class TestcaseRunner {
     }
 
     private void onModel(int line, String[] a) throws Exception {
-        if (a.length == 2) {
-            ModelE e = new ModelE(line, a[1]);
-            modelE.add(e);
-        } else if (a.length == 4) {
-            ModelE e = new ModelE(line, a[1]);
-            e.x = Double.parseDouble(a[2]);
-            e.y = Double.parseDouble(a[3]);
+        if (a.length == 2 || a.length == 4) {
+            String s[] = a[1].split("~");
+            ModelE e = new ModelE(line, s[0]);
+            if (s.length == 2) {
+                e.alias = s[1];
+            }
+            if (a.length == 4) {
+                e.x = Double.parseDouble(a[2]);
+                e.y = Double.parseDouble(a[3]);
+            }
             modelE.add(e);
         } else {
             throw new Exception("Invalid amount of arguments, expected 1 o 3");
@@ -229,7 +236,7 @@ public class TestcaseRunner {
         if (a.length != 4) {
             throw new Exception("Invalid amount of arguments, expected 3");
         }
-        LinkE e = new LinkE(Integer.parseInt(a[1]), Integer.parseInt(a[2]), Integer.parseInt(a[3]));
+        LinkE e = new LinkE(a[1], a[2], a[3]);
         linkE.add(e);
     }
 
@@ -247,7 +254,7 @@ public class TestcaseRunner {
             throw new Exception("Invalid amount of arguments, expected 3");
         }
 
-        ParamE e = new ParamE(Integer.parseInt(a[1]), a[2], a[3]);
+        ParamE e = new ParamE(a[1], a[2], a[3]);
         paramE.add(e);
     }
 
@@ -262,10 +269,10 @@ public class TestcaseRunner {
 
     private void onWaste(int line, String[] a) throws Exception {
         if (a.length == 3) { // global
-            WasteE e = new WasteE(0, a[2]);
+            WasteE e = new WasteE("", a[2]);
             getDump(a[1]).stuff.add(e);
         } else if (a.length == 4) { // local
-            WasteE e = new WasteE(Integer.parseInt(a[2]), a[3]);
+            WasteE e = new WasteE(a[2], a[3]);
             getDump(a[1]).stuff.add(e);
         } else {
             throw new Exception("Invalid amount of arguments, expected 2 or 3");
@@ -281,12 +288,22 @@ public class TestcaseRunner {
         throw new Exception("Could not find dump by name " + name);
     }
 
-    private Model resolveLineToModel(int line, ArrayList<ModelA> models) throws Exception {
-        for (ModelA i : models) {
-            if (i.line == line) {
-                return i.model;
+    private Model resolveLineToModel(String line, ArrayList<ModelA> models) throws Exception {
+        try {
+            int linen = Integer.parseInt(line);
+            for (ModelA i : models) {
+                if (i.line == linen) {
+                    return i.model;
+                }
+            }
+        } catch (NumberFormatException nFE) {
+            for (ModelA i : models) {
+                if (i.alias.equals(line)) {
+                    return i.model;
+                }
             }
         }
+
         throw new Exception("Could not find model by line " + line);
     }
 
@@ -298,12 +315,23 @@ public class TestcaseRunner {
             }
         }
         for (ParamE e : paramE) {
-            if (e.line == model.line) {
-                Setting s = sm.settings.get(e.what);
-                if (s != null) {
-                    s.setValue(e.value);
-                } else {
-                    throw new Exception("Failed at getting setting named " + e.what + " from " + model.name);
+            try {
+                if (Integer.parseInt(e.line) == model.line) {
+                    Setting s = sm.settings.get(e.what);
+                    if (s != null) {
+                        s.setValue(e.value);
+                    } else {
+                        throw new Exception("Failed at getting setting named " + e.what + " from " + model.name);
+                    }
+                }
+            } catch (NumberFormatException nFE) {
+                if (e.line.equals(model.alias)) {
+                    Setting s = sm.settings.get(e.what);
+                    if (s != null) {
+                        s.setValue(e.value);
+                    } else {
+                        throw new Exception("Failed at getting setting named " + e.what + " from " + model.name);
+                    }
                 }
             }
         }
@@ -317,10 +345,11 @@ public class TestcaseRunner {
         ArrayList<ModelA> models = new ArrayList<>();
         for (ModelE e : modelE) {
             Model a = gm.createModel(e.name);
-            if(e.x != -1 && e.y != -1) {
+            if (e.x != -1 && e.y != -1) {
                 a.setLatLng(e.x, e.y);
             }
             ModelA aa = new ModelA(e.line, e.name, a);
+            aa.alias = e.alias;
             resolveParams(gm, aa);
             models.add(aa);
         }
@@ -334,7 +363,7 @@ public class TestcaseRunner {
         for (DumpE e : dumpE) {
             CSVDumper cs = new CSVDumper(name + "-" + testcase_number + "-" + timestamp + "/" + runs_done, e.name);
             for (WasteE ee : e.stuff) {
-                if (ee.model == 0) { // global
+                if (ee.model.equals("")) { // global
                     cs.add(ee.what);
                 } else {
                     cs.add(resolveLineToModel(ee.model, models), ee.what);

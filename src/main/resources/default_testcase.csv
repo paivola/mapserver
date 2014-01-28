@@ -1,19 +1,21 @@
 command, argument1, argument2, argument3
-model, examplePoint,0.4,15.5
-model, examplePoint,0.2,15.1
-model, exampleConnection,,
-link, 2, 3, 4
-model, exampleGlobal,,
+model, examplePoint~p1,0.4,15.5
+model, examplePoint~p2,0.2,15.1
+model, exampleConnection~c1,,
+link, p1, p2, c1
+model, exampleGlobal~g1,,
 ,,,
 defparam, exampleGlobal, cats, 32
-defparam, examplePoint, annoy, 1
-param, 3, annoy, 0
+defparam, examplePoint, annoy, 0.5
+param, p2, annoy, 0
 ,,,
 set, ticks, 100,
-set, runs, 100,
+set, runs, 1,
 set, name, default,
 ,,,
 dump, cats_out,,
 waste, cats_out, cats,
-waste, cats_out, 2, catsSeen
-waste, cats_out, 3, catsSeen
+waste, cats_out, p1, catsSeen
+waste, cats_out, p1, othersAnnoyed
+waste, cats_out, p2, catsSeen
+waste, cats_out, p2, othersAnnoyed
