@@ -17,7 +17,7 @@ Making one .png-file:
 
 Making .png-files of all .csv-files in the same directory:
 	
-	Write into the command line
+	Write into the command line  (UNIX. For Windows: Use git for this) 
 		
 		$ for i in *.csv;do octave plotscript.m "$i";done
 
