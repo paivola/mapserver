@@ -178,6 +178,14 @@ public abstract class Model {
      */
     public void addEventTo(Model model, DataFrame frame, Event e) {
         Model target = model;
+        if (target == null) {
+            try {
+                throw new Exception("Target model can't be null!");
+            } catch (Exception ex) {
+                Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+                System.exit(-1);
+            }
+        }
         while (target instanceof ConnectionModel && ((ConnectionModel) target).passthrough) {
             target = ((ConnectionModel) target).other(this);
         }
