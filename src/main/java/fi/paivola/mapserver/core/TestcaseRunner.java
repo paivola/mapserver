@@ -125,9 +125,9 @@ public class TestcaseRunner {
         defparamE = new ArrayList<>();
         dumpE = new ArrayList<>();
         Date date = new Date();
-        TimeZone tz = TimeZone.getTimeZone("UTC");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HHmmss'Z'");
-        sdf.setTimeZone(tz);
+        //TimeZone tz = TimeZone.getTimeZone("UTC");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        //sdf.setTimeZone(tz);
         timestamp = sdf.format(date);
         this.testcase_number = testcase_number;
         CSVReader reader = new CSVReader(new InputStreamReader(stream), ',', '\"', 1);
@@ -361,7 +361,7 @@ public class TestcaseRunner {
         }
         List<CSVDumper> csv = new ArrayList<>();
         for (DumpE e : dumpE) {
-            CSVDumper cs = new CSVDumper(name + "-" + testcase_number + "-" + timestamp + "/" + runs_done, e.name);
+            CSVDumper cs = new CSVDumper(name + "-" + testcase_number + "_" + timestamp + "/" + runs_done, e.name);
             for (WasteE ee : e.stuff) {
                 if (ee.model.equals("")) { // global
                     cs.add(ee.what);
