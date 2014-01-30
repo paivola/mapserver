@@ -16,7 +16,7 @@ def main():
                         default="in/testcase.csv.data",
                         help="data file to populate the template with")
     parser.add_argument("-s", "--skip", nargs=1, type=int,
-                        help="how many lines to skip in data", default=0)
+                        help="how many lines to skip in data", default=[0])
     args = parser.parse_args()
 
     try:
