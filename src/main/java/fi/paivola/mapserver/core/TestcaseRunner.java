@@ -311,7 +311,11 @@ public class TestcaseRunner {
         SettingMaster sm = gm.getDefaultSM(model.model.getClass());
         for (DefparamE e : defparamE) {
             if (e.model.equals(model.name)) {
-                sm.settings.get(e.what).setValue(e.value);
+                try {
+                    sm.settings.get(e.what).setValue(e.value);
+                } catch (NullPointerException ex) {
+                    throw new Exception("Could not find setting by name "+e.what+" in "+e.model);
+                }
             }
         }
         for (ParamE e : paramE) {
